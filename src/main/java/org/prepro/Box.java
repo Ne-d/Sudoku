@@ -1,4 +1,8 @@
 public class Box{
-    int val
-    boolean[] note
+    int val;
+    boolean[] note;
+    public Box(){
+        val = NULL;
+        
+    }
 }
