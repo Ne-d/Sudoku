@@ -2,11 +2,11 @@ package org.prepro;
 
 public class Box{
     private int val;
-    private boolean[] note;
+    private boolean[] notes; //les notes 
 
     public Box(){
         this.val = 0;
-        this.note = new boolean [] { true,true,true,true,true,true,true,true,true };
+        this.notes = new boolean [] { true,true,true,true,true,true,true,true,true };
     }
-    
+
 }
