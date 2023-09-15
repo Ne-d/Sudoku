@@ -29,4 +29,28 @@ public class Grid {
             System.out.print("\n");
         }
     }
+
+    public boolean valid_grid(){
+        for(int i =0; i< XSIZE; i++){
+            for(int j =0; i< YSIZE; i++){
+               if(!this.valid_val(j, i)){return false;} 
+            }
+        }
+        return true;
+    }
+
+    public boolean valid_val( int column, int line){
+        int val = this.board[column][line].getVal();
+        for(int i =0; i< 9; i++){
+            if(this.board[i][column].getVal() == val && this.board[line][i].getVal() != 0){return false;}
+            if(this.board[line][i].getVal() == val && this.board[line][i].getVal() != 0){return false;}
+        }
+        for(int i =0; i< 3; i++){
+            for(int j =0; i< 3; i++){
+               if(this.board[i][j].getVal() == val && this.board[line][i].getVal() != 0){return false;} 
+            }
+        }
+        return true;
+    }
+
 }

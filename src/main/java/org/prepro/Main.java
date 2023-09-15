@@ -5,6 +5,7 @@ package org.prepro;
 public class Main {
     public static void main(String[] args) {
         Grid grid = new Grid();
+        System.out.println("la grille est :"+ grid.valid_grid());
         grid.print();
     }
 }
