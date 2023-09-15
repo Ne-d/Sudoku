@@ -1,8 +1,12 @@
+package org.prepro;
+
 public class Box{
-    int val;
-    boolean[] note;
+    private int val;
+    private boolean[] note;
+
     public Box(){
-        val = NULL;
-        
+        this.val = 0;
+        this.note = new boolean [] { true,true,true,true,true,true,true,true,true };
     }
+    
 }
