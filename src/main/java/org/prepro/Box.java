@@ -1,8 +1,8 @@
 package org.prepro;
 
 public class Box{
-    private int val;            // 0 est quand il n'y pas de valeur 
-    private boolean[] notes;    //les notes vont de 1 à 9 avec le bool qui marque leurs présences  
+    private int val;            // The absence of a value (empty box) is represented by a zero.
+    private boolean[] notes;    // The number of a note is determined by the index in the array. Its presence is the boolean.
 
     public Box(){
         this.val = 0;

@@ -1,11 +1,15 @@
 package org.prepro;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
         Grid grid = new Grid();
-        System.out.println("la grille est :"+ grid.valid_grid());
+
+        grid.addValue(0, 0, 5);
+        grid.addValue(1, 0, 3);
+        grid.addValue(0, 1, 6);
+        grid.addValue(5, 6, 9);
+
         grid.print();
+        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
     }
 }
