@@ -6,12 +6,14 @@ public class Grid {
     private final int YSIZE; // Number of rows
     private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
 
-// Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 19 of them.
+    /**
+     * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 19 of them.
+     */
     public Grid() {
         this.board = new Box[9][9];
         this.XSIZE = 9;
         this.YSIZE = 9;
-        this.DIFFICULTY = 19;
+        this.DIFFICULTY = 17;
 
         // Initialize all boxes.
         for(int x = 0; x < XSIZE; x++) {
@@ -19,22 +21,29 @@ public class Grid {
                 this.board[x][y] = new Box();
             }
         }
-        //this.generate_number();
+        this.generate_number();
     }
-
-    // Returns the value of the box at the given coordinates
+    /**
+     * @return Returns the value of the box at the given coordinates
+     */
     public int getVal(int xPos, int yPos) {
         return this.board[xPos][yPos].getVal();
     }
 
-    // Returns true if the box at the given coordinates is empty, false if it has a value.
+
+    /**
+     * @return Returns true if the box at the given coordinates is empty, false if it has a value.
+     */
     public boolean isBoxEmpty(int xPos, int yPos) {
         return (this.board[xPos][yPos].getVal() == 0);
     }
 
-    // Adds a value to the box of given coordinates, only if the box had no value.
-    // Returns true if the box has been modified (had no value before).
-    // Returns false if the box has not been modified (already had a value).
+
+    /**
+     * @val Adds a value to the box of given coordinates, only if the box had no value.
+     * @return Returns true if the box has been modified (had no value before).
+     *  Returns false if the box has not been modified (already had a value).
+     */
     public boolean addValue(int xPos, int yPos, int val) {
         Box box = this.board[xPos][yPos];
         if(box.getVal() == 0) {
@@ -43,7 +52,7 @@ public class Grid {
         }
         return false;
     }
-
+    
     // Sets the value val to the box of given coordinates.
     public void replaceValue(int xPos, int yPos, int val) {
         this.board[xPos][yPos].setVal(val);
@@ -141,29 +150,29 @@ public class Grid {
 
         return validSoFar;
     }
-
-    // Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
+ 
+    /**
+     * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
+     */
     private void generate_number(){
         int pos_x, pos_y;
-        boolean taken;
+        boolean set_val;
 
         for(int i = 0; i < this.DIFFICULTY; i++) {
             do { // While a correct value has not yet been found
-                taken = true;
-                //System.out.print("k");
+                set_val = false;
+                System.out.print("k");
                 // Find random coordinates
                 pos_x = (int)(Math.random() * (this.XSIZE));
                 pos_y = (int)(Math.random() * (this.YSIZE));
-
-                // If the box is empty
-                if (this.board[pos_x][pos_y].getVal() == 0) {
-                    this.board[pos_x][pos_y].setVal( (int)(Math.random() * (Math.max(this.XSIZE,this.YSIZE) + 1 )) );
-                    taken = false;
-                    System.out.print(this.board[pos_x][pos_y].getVal() +"(" + pos_x + "," + pos_y +") ");
-                }
-            } while(valid_val(pos_x, pos_y) && !taken);
+                //Find random value
+                int val = (int)(Math.random() * (Math.max(this.XSIZE,this.YSIZE) + 1 ));
+                
+                if(valid_val(pos_x, pos_y)) {set_val = this.addValue(pos_x,pos_y,val);}
+                              
+            }while(!valid_val(pos_x, pos_y) && !set_val);
+        System.out.println(this.board[pos_x][pos_y].getVal() +"(" + pos_x + "," + pos_y +") ");
         }
-        System.out.println();
     }
 
     // Prints out a graphical representation of the grid to standard output.
