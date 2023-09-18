@@ -13,7 +13,7 @@ public class Grid {
         this.board = new Box[9][9];
         this.XSIZE = 9;
         this.YSIZE = 9;
-        this.DIFFICULTY = 17;
+        this.DIFFICULTY = 19;
 
         // Initialize all boxes.
         for(int x = 0; x < XSIZE; x++) {
@@ -40,7 +40,7 @@ public class Grid {
 
 
     /**
-     * @val Adds a value to the box of given coordinates, only if the box had no value.
+     * @param val Adds a value to the box of given coordinates, only if the box had no value.
      * @return Returns true if the box has been modified (had no value before).
      *  Returns false if the box has not been modified (already had a value).
      */
@@ -53,14 +53,17 @@ public class Grid {
         return false;
     }
     
-    // Sets the value val to the box of given coordinates.
+    /**
+     * Sets the value val to the box of given coordinates.
+     */
     public void replaceValue(int xPos, int yPos, int val) {
         this.board[xPos][yPos].setVal(val);
     }
 
-    // Removes the value of the box at the given coordinates.
-    // Returns true if the box has been modified (had a value before).
-    // Returns false if the box has not been modified (already had no value).
+    /**
+     * Removes the value of the box at the given coordinates.
+     * @return Returns true if the box has been modified (had a value before). Returns false if the box has not been modified (already had no value).
+     */
     public boolean removeValue(int xPos, int yPos) {
         if(!isBoxEmpty(xPos, yPos)) {
             this.board[xPos][yPos].setVal(0);
@@ -71,7 +74,9 @@ public class Grid {
         }
     }
 
-    // Returns true if a row doesn't ever have the same number more than once.
+    /**
+     * @return Returns true if a row doesn't ever have the same number more than once.
+     */
     public boolean isRowValid(int row) {
         // This array will store a boolean for each possible value (1 to 9).
         // If the value is in the row, the corresponding boolean will be set to true.
@@ -90,7 +95,9 @@ public class Grid {
         return true; // If we went through the entire row without finding duplicates, the row is valid.
     }
 
-    // Returns true if a column doesn't ever have the same number more than once.
+    /**
+     * @return Returns true if a column doesn't ever have the same number more than once.
+     */
     public boolean isColumnValid(int column) {
         // This array will store a boolean for each possible value (1 to 9).
         // If the value is in the column, the corresponding boolean will be set to true.
@@ -175,7 +182,9 @@ public class Grid {
         }
     }
 
-    // Prints out a graphical representation of the grid to standard output.
+    /**
+     * Prints out a graphical representation of the grid to standard output.
+     */
     public void print() {
         for(int x = 0; x < XSIZE; x++) {
             if(x % 3 == 0) {
@@ -202,6 +211,12 @@ public class Grid {
         return true;
     }
 
+    /**
+     * work just for 9*9
+     * @param line it's the x position
+     * @param column it's the y position
+     * @return true if the value's position are possible else return false
+     */
     public boolean valid_val(int line, int column){
         int val = this.board[column][line].getVal();
         for(int i =0; i< 9; i++){
