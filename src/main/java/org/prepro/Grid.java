@@ -21,7 +21,8 @@ public class Grid {
                 this.board[x][y] = new Box();
             }
         }
-        this.generate_number();
+        //addValue(4,4, 4);
+       this.generateNumber();
     }
     /**
      * @return Returns the value of the box at the given coordinates
@@ -161,24 +162,30 @@ public class Grid {
     /**
      * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
      */
-    private void generate_number(){
-        int pos_x, pos_y;
-        boolean set_val;
+    private void generateNumber(){
+        int posX, posY;
+        boolean setVal;
 
         for(int i = 0; i < this.DIFFICULTY; i++) {
             do { // While a correct value has not yet been found
-                set_val = false;
+                setVal = false;
                 System.out.print("k");
                 // Find random coordinates
-                pos_x = (int)(Math.random() * (this.XSIZE));
-                pos_y = (int)(Math.random() * (this.YSIZE));
+                posX = (int)(Math.random() * (this.XSIZE));
+                posY = (int)(Math.random() * (this.YSIZE));
                 //Find random value
                 int val = (int)(Math.random() * (Math.max(this.XSIZE,this.YSIZE) + 1 ));
                 
-                if(valid_val(pos_x, pos_y)) {set_val = this.addValue(pos_x,pos_y,val);}
-                              
-            }while(!valid_val(pos_x, pos_y) && !set_val);
-        System.out.println(this.board[pos_x][pos_y].getVal() +"(" + pos_x + "," + pos_y +") ");
+                if(this.isBoxEmpty(posX, posY)) {
+                    setVal = this.addValue(posX,posY,val);
+                    if(this.validVal(posX, posX)) {
+                        this.addValue(posX, posY, 0);
+                        setVal = false;
+                    }    
+                }
+         
+            }while(!validVal(posX, posY) && !setVal);
+        System.out.println(this.board[posX][posY].getVal() +"(" + posX + "," + posY +") ");
         }
     }
 
@@ -202,14 +209,15 @@ public class Grid {
         System.out.println("-------------------------");
     }
 
-    public boolean valid_grid(){
+    public boolean validGrid(){
         for(int i =0; i< XSIZE; i++){
             for(int j =0; i< YSIZE; i++){
-               if(!this.valid_val(j, i)){return false;} 
+               if(!this.validVal(j, i)){return false;} 
             }
         }
         return true;
     }
+
 
     /**
      * work just for 9*9
@@ -217,15 +225,18 @@ public class Grid {
      * @param column it's the y position
      * @return true if the value's position are possible else return false
      */
-    public boolean valid_val(int line, int column){
-        int val = this.board[column][line].getVal();
+    public boolean validVal(int line, int column){
+        int val = this.getVal(line, column);
+
         for(int i =0; i< 9; i++){
-            if(this.board[i][column].getVal() == val && this.board[line][i].getVal() != 0) { return false; }
-            if(this.board[line][i].getVal() == val && this.board[line][i].getVal() != 0) { return false; }
+            if(this.getVal(i,column) == val && this.getVal(i,column) != 0 && i !=line) 
+                { return false; }
+            if(this.getVal(line,i) == val && this.getVal(line,i) != 0 && i != column) 
+                { return false; }
         }
         for(int i =0; i< 3; i++){
             for(int j =0; i< 3; i++){
-               if(this.board[i][j].getVal() == val && this.board[line][i].getVal() != 0) { return false; }
+               if(this.board[i][j].getVal() == val && this.board[line][i].getVal() != 0 && i!= line && j !=column ) { return false; }
             }
         }
         return true;
