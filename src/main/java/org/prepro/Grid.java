@@ -21,8 +21,9 @@ public class Grid {
                 this.board[x][y] = new Box();
             }
         }
-        //addValue(4,4, 4);
-       this.generateNumber();
+        addValue(4,4, 4);
+        addValue(5,5,4);
+       //this.generateNumber();
     }
     /**
      * @return Returns the value of the box at the given coordinates
@@ -234,12 +235,10 @@ public class Grid {
             if(this.getVal(line,i) == val && this.getVal(line,i) != 0 && i != column) 
                 { return false; }
         }
-        for(int i =0; i< 3; i++){
-            for(int j =0; i< 3; i++){
-               if(this.board[i][j].getVal() == val && this.board[line][i].getVal() != 0 && i!= line && j !=column ) { return false; }
-            }
-        }
-        return true;
+        if(this.isBlockValid(column, line))
+            {return true;}
+        else 
+            return false;
     }
 
 }
