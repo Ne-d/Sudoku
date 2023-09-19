@@ -22,7 +22,7 @@ public class Grid {
             }
         }
         addValue(4,4, 4);
-        addValue(5,5,4);
+        addValue(8,4,4);
        //this.generateNumber();
     }
     /**
@@ -212,7 +212,7 @@ public class Grid {
 
     public boolean validGrid(){
         for(int i =0; i< XSIZE; i++){
-            for(int j =0; i< YSIZE; i++){
+            for(int j =0; j< YSIZE; j++){
                if(!this.validVal(j, i)){return false;} 
             }
         }
@@ -222,23 +222,24 @@ public class Grid {
 
     /**
      * work just for 9*9
-     * @param line it's the x position
-     * @param column it's the y position
      * @return true if the value's position are possible else return false
      */
-    public boolean validVal(int line, int column){
-        int val = this.getVal(line, column);
+    public boolean validVal(int posX, int posY){
+        int val = this.getVal(posX,posY);
 
         for(int i =0; i< 9; i++){
-            if(this.getVal(i,column) == val && this.getVal(i,column) != 0 && i !=line) 
+            if(this.getVal(posX,i) == val && i !=posY && this.getVal(posX,i) != 0) 
                 { return false; }
-            if(this.getVal(line,i) == val && this.getVal(line,i) != 0 && i != column) 
+            if((this.getVal(i,posY) == val && i != posX) && this.getVal(i,posY) != 0) 
                 { return false; }
         }
-        if(this.isBlockValid(column, line))
-            {return true;}
-        else 
-            return false;
+        int nbBlock = 3;
+        for(int i =0; i< XSIZE/ nbBlock; i++){
+            for(int j =0; j< YSIZE/ nbBlock; j++){
+               
+            }
+        }
+        return true;
     }
 
 }
