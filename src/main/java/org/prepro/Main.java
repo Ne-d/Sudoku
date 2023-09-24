@@ -6,6 +6,6 @@ public class Main {
         
 
         grid.print();
-        System.out.println("La grille est " + (grid.validGrid() ? "valide." : "invalide."));
+        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
     }
 }
