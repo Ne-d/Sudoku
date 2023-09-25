@@ -118,6 +118,11 @@ public class Grid {
         return true; // If we went through the entire column without finding duplicates, the column is valid.
     }
 
+    /**
+     * @param xBlock position X du block
+     * @param yBlock position Y du block
+     * @return retourne si le bloc est valide ou non
+     */
     public boolean isBlockValid(int xBlock, int yBlock) {
         int xStart = SQRTSIZE * xBlock;
         int yStart = SQRTSIZE * yBlock;
@@ -147,13 +152,13 @@ public class Grid {
             validSoFar = isRowValid(i);
         }
 
-        for (int i = 0; i < SIZE && validSoFar; i++) {
+        for (int i = 0; i < SIZE && validSoFar; i++) { // Check the validity of every column.
             validSoFar = isColumnValid(i);
         }
 
         for (int x = 0; x < SQRTSIZE && validSoFar; x++) {
-            for (int y = 0; y < SQRTSIZE && validSoFar; y++) {
-                validSoFar = isBlockValid(x, y);
+            for (int y = 0; y < SQRTSIZE && validSoFar; y++) {  // Check the validity of every block.
+                validSoFar = isBlockValid(x, y);        
             }
         }
 
@@ -194,10 +199,17 @@ public class Grid {
     /**
      * Prints out a graphical representation of the grid to standard output.
      */
+    private void printLine(int nbTiret){
+        for(int i = 0; i < nbTiret -1; i++ ){
+            System.out.print("-");
+        }
+        System.out.println("-");
+
+    }
     public void print() {
         for(int x = 0; x < SIZE; x++) {
             if(x % SQRTSIZE == 0) {
-                System.out.println("-------------------------");
+                printLine(25);
             }
             for(int y = 0; y < SIZE; y++) {
                 if(y % SQRTSIZE == 0) {
@@ -208,12 +220,11 @@ public class Grid {
             System.out.print("| ");
             System.out.print("\n");
         }
-        System.out.println("-------------------------");
+         printLine(25 );
     }
 
 
     /**
-     * work just for 9*9
      * @return true if the value's position are possible else return false
      */
     public boolean validVal(int posX, int posY){
@@ -221,7 +232,7 @@ public class Grid {
 
         if(!isColumnValid(posY)){return false;}
 
-        return true;//isBlockValid(posX, posY);
+        return isBlockValid(posX % 3, posY % 3);
     }
 
 }
