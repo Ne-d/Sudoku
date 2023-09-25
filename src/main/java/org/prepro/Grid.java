@@ -6,6 +6,7 @@ public class Grid {
     private final int SQRTSIZE; //Number for a block
     private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
 
+
     /**
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
      */
@@ -25,6 +26,8 @@ public class Grid {
         //addValue(8,4,4);
        this.generateNumber();
     }
+
+
     /**
      * @return Returns the value of the box at the given coordinates
      */
@@ -57,6 +60,9 @@ public class Grid {
     
     /**
      * Sets the value val to the box of given coordinates.
+     * @param xPos The x coordinate of the chosen box.
+     * @param yPos The y coordinate of the chosen box.
+     * @param val The value to put in the chosen box.
      */
     public void replaceValue(int xPos, int yPos, int val) {
         this.board[xPos][yPos].setVal(val);
@@ -74,6 +80,29 @@ public class Grid {
         else {
             return false;
         }
+    }
+
+    /**
+     * Determines if a rectangle is correct (has no duplicate values).
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @return True if the rectangle has no duplicate values, false otherwise.
+     */
+    public boolean isValidRect(int startX, int startY, int endX, int endY) {
+        boolean[] presentNumbers = new boolean[(startX - endX + 1) * (startY - endY + 1)];
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                int val = getVal(x, y);
+                if(val != 0 && presentNumbers[val - 1]) {
+                    return false;
+                }
+                presentNumbers[val - 1] = true;
+            }
+        }
+        return true;
     }
 
     /**
@@ -118,11 +147,7 @@ public class Grid {
         return true; // If we went through the entire column without finding duplicates, the column is valid.
     }
 
-    /**
-     * @param xBlock position X du block
-     * @param yBlock position Y du block
-     * @return retourne si le bloc est valide ou non
-     */
+
     public boolean isBlockValid(int xBlock, int yBlock) {
         int xStart = SQRTSIZE * xBlock;
         int yStart = SQRTSIZE * yBlock;
@@ -145,6 +170,7 @@ public class Grid {
         return true; // If we went through the entire block without finding duplicates, the block is valid.
     }
 
+    /*
     public boolean isValid() {
         boolean validSoFar = true;
 
@@ -152,18 +178,19 @@ public class Grid {
             validSoFar = isRowValid(i);
         }
 
-        for (int i = 0; i < SIZE && validSoFar; i++) { // Check the validity of every column.
+        for (int i = 0; i < SIZE && validSoFar; i++) {
             validSoFar = isColumnValid(i);
         }
 
         for (int x = 0; x < SQRTSIZE && validSoFar; x++) {
-            for (int y = 0; y < SQRTSIZE && validSoFar; y++) {  // Check the validity of every block.
-                validSoFar = isBlockValid(x, y);        
+            for (int y = 0; y < SQRTSIZE && validSoFar; y++) {
+                validSoFar = isBlockValid(x, y);
             }
         }
 
         return validSoFar;
     }
+    */
  
     /**
      * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
@@ -199,17 +226,10 @@ public class Grid {
     /**
      * Prints out a graphical representation of the grid to standard output.
      */
-    private void printLine(int nbTiret){
-        for(int i = 0; i < nbTiret -1; i++ ){
-            System.out.print("-");
-        }
-        System.out.println("-");
-
-    }
     public void print() {
         for(int x = 0; x < SIZE; x++) {
             if(x % SQRTSIZE == 0) {
-                printLine(25);
+                System.out.println("-------------------------");
             }
             for(int y = 0; y < SIZE; y++) {
                 if(y % SQRTSIZE == 0) {
@@ -220,19 +240,20 @@ public class Grid {
             System.out.print("| ");
             System.out.print("\n");
         }
-         printLine(25 );
+        System.out.println("-------------------------");
     }
 
 
     /**
+     * work just for 9*9
      * @return true if the value's position are possible else return false
      */
-    public boolean validVal(int posX, int posY){
+    public boolean validVal(int posX, int posY) {
         if(!isRowValid(posX)) {return false;}
 
         if(!isColumnValid(posY)){return false;}
 
-        return isBlockValid(posX % 3, posY % 3);
+        return true;//isBlockValid(posX, posY);
     }
 
 }
