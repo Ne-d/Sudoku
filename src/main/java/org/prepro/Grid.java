@@ -37,7 +37,7 @@ public class Grid {
      * @return Returns true if the box at the given coordinates is empty, false if it has a value.
      */
     public boolean isBoxEmpty(int xPos, int yPos) {
-        return (this.board[xPos][yPos].getVal() == 0);
+        return (this.getVal(xPos, yPos)== 0);
     }
 
 
@@ -164,65 +164,6 @@ public class Grid {
 
         return validSoFar;
     }
- 
-    /**
-     * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
-     */
-    private void generateNumber(){
-        int posX, posY;
-        boolean setVal;
-            int test=1;
-        for(int i = 0; i < this.DIFFICULTY; i++) {
-            do { // While a correct value has not yet been found
-                setVal = true;
-                System.out.print("k");
-                test++;
-                // Find random coordinates
-                posX = (int)(Math.random() * (this.SIZE));
-                posY = (int)(Math.random() * (this.SIZE));
-                //Find random value
-                int val = (int)(Math.random() * (Math.max(this.SIZE,this.SIZE) )+1);
-                
-                setVal = this.addValue(posX,posY,val);
-                if(!this.validVal(posX, posY) && setVal == true) {
-                    this.addValue(posX, posY, 0);
-                    setVal = false;
-                    }    
-                
-         
-            }while(!setVal);
-        System.out.println(i+" "+this.board[posX][posY].getVal() +"(" + posX + "," + posY +") ");
-        }
-        System.out.println("nb rep : "+test);
-    }
-
-    /**
-     * Prints out a graphical representation of the grid to standard output.
-     */
-    private void printLine(int nbTiret){
-        for(int i = 0; i < nbTiret -1; i++ ){
-            System.out.print("-");
-        }
-        System.out.println("-");
-
-    }
-    public void print() {
-        for(int x = 0; x < SIZE; x++) {
-            if(x % SQRTSIZE == 0) {
-                printLine(25);
-            }
-            for(int y = 0; y < SIZE; y++) {
-                if(y % SQRTSIZE == 0) {
-                    System.out.print("| ");
-                }
-                System.out.print(board[y][x].getVal() == 0 ? "  " : board[y][x].getVal() + " ");
-            }
-            System.out.print("| ");
-            System.out.print("\n");
-        }
-         printLine(25 );
-    }
-
 
     /**
      * @return true if the value's position are possible else return false
@@ -232,7 +173,63 @@ public class Grid {
 
         if(!isColumnValid(posY)){return false;}
 
-        return isBlockValid(posX % 3, posY % 3);
+        return isBlockValid(posX % SQRTSIZE, posY % SQRTSIZE);
     }
 
+    /**
+     * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
+     */
+    private void generateNumber(){
+        int posX = 0;
+        int posY = 0;
+        int val;
+        for(int i = 0; i < this.DIFFICULTY; i++) {
+            do { // While a correct value has not yet been found
+                // Find random coordinates
+                replaceValue(posY, posX, 0);
+                posX = (int)(Math.random() * (this.SIZE));
+                posY = (int)(Math.random() * (this.SIZE));
+                //Find random value
+                val = (int)(Math.random() * (Math.max(this.SIZE,this.SIZE) )+1);
+                
+                addValue(posX, posY, val);
+         
+            }while(!validVal(posX, posY));
+        System.out.println(i+" "+this.getVal(posX, posY) +"(" + posX + "," + posY +") ");
+        }
+    }
+
+    /**
+     * println ( nbTiret )
+     * @param nbTiret the number of tiret do you want.
+     */
+    private void printLine(int nbTiret){
+        for(int i = 0; i < nbTiret -1; i++ ){
+            System.out.print("-");
+        }
+        System.out.println("-");
+
+    }
+    /**
+     * Prints out a graphical representation of the grid to standard output.
+     */
+    public void print() {
+        for(int x = 0; x < SIZE; x++) {
+            if(x % SQRTSIZE == 0) {
+                printLine(25);
+            }
+            for(int y = 0; y < SIZE; y++) {
+                if(y % SQRTSIZE == 0) {
+                    System.out.print("| ");
+                }
+                System.out.print(this.getVal(x, y) == 0 ? "  " : this.getVal(x, y) + " ");
+            }
+            System.out.print("| ");
+            System.out.print("\n");
+        }
+         printLine(25 );
+    }
+
+
 }
+

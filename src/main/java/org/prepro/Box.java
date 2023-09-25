@@ -21,5 +21,8 @@ public class Box{
         this.notes[note] = false;
     }
 
+    public void addNote(int note){
+        this.notes[note] = true;
+    }
 
 }
