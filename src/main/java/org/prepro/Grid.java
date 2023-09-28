@@ -22,9 +22,9 @@ public class Grid {
                 this.board[x][y] = new Box();
             }
         }
-        //addValue(4,4, 4);
-        //addValue(8,4,4);
-       this.generateNumber();
+        addValue(4,4, 4);
+        addValue(8,4,4);
+       //this.generateNumber();
     }
 
 
@@ -93,15 +93,19 @@ public class Grid {
     public boolean isValidRect(int startX, int startY, int endX, int endY) {
         // This array will store a boolean for each possible value (1 to 9).
         // If the value is in the row, the corresponding boolean will be set to true.
-        boolean[] presentNumbers = new boolean[(startX - endX + 1) * (startY - endY + 1)];
+        boolean[] presentNumbers = new boolean[this.SIZE];
+        int val;
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-                int val = getVal(x, y);
-                if(val != 0 && presentNumbers[val - 1]) {
-                    return false;
+                val = getVal(x, y);
+                if (val !=0){
+                    if(presentNumbers[val -1]) {
+                        return false;
+                    }
+                    else {presentNumbers[val -1] = true; }
                 }
-                presentNumbers[val - 1] = true;
+
             }
         }
         return true;
@@ -131,10 +135,30 @@ public class Grid {
     public boolean isBlockValid(int xBlock, int yBlock) {
         return isValidRect(xBlock * this.SQRTSIZE,
                 yBlock * this.SQRTSIZE,
-                xBlock * (this.SQRTSIZE * 2) - 1,
-                yBlock * (this.SQRTSIZE * 2) - 1);
+                xBlock * this.SQRTSIZE + this.SQRTSIZE -1,
+                xBlock * this.SQRTSIZE + this.SQRTSIZE -1);
     }
 
+    /**
+     * @return yes if the grid is valid else false
+     */
+    public boolean isValid(){
+        boolean canceled = true;
+
+        for (int i = 1; i <= this.SIZE && canceled; i++){
+            canceled = isColumnValid(i);
+            canceled = isRowValid(i) && canceled;
+            }
+
+        for (int i = 0; i < this.SQRTSIZE && canceled; i++){
+            for (int j = 0; j < this.SQRTSIZE && canceled; j++){
+                canceled = isBlockValid(i, j);
+            }
+            
+        }
+        return canceled;
+
+    }
  
     /**
      * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
@@ -176,7 +200,7 @@ public class Grid {
     public void print() {
         for(int x = 0; x < SIZE; x++) {
             if(x % SQRTSIZE == 0) {
-                System.out.println("-------------------------");
+                printLine(25);
             }
             for(int y = 0; y < SIZE; y++) {
                 if(y % SQRTSIZE == 0) {
@@ -187,12 +211,11 @@ public class Grid {
             System.out.print("| ");
             System.out.print("\n");
         }
-        System.out.println("-------------------------");
+        printLine(25);
     }
 
 
     /**
-     * work just for 9*9
      * @return true if the value's position are possible else return false
      */
     public boolean validVal(int posX, int posY) {
@@ -200,6 +223,17 @@ public class Grid {
 
         if(!isColumnValid(posY)){return false;}
 
-        return true;//isBlockValid(posX, posY);
+        return isBlockValid(posX, posY);
+    }
+    public void afficheNote(int posX,int posY){
+        this.board[posX][posY].afficheNote();
     }
 
+    public void delete_note(int posX,int posY,int note){
+        this.board[posX][posY].delete_note(note);
+    }
+
+    public void addNote(int posX,int posY,int note){
+       this.board[posX][posY].addNote(note);
+    }
+}
