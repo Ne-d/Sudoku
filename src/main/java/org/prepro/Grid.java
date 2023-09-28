@@ -6,6 +6,7 @@ public class Grid {
     private final int SQRTSIZE; //Number for a block
     private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
 
+
     /**
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
      */
@@ -25,6 +26,8 @@ public class Grid {
         //addValue(8,4,4);
        this.generateNumber();
     }
+
+
     /**
      * @return Returns the value of the box at the given coordinates
      */
@@ -57,6 +60,9 @@ public class Grid {
     
     /**
      * Sets the value val to the box of given coordinates.
+     * @param xPos The x coordinate of the chosen box.
+     * @param yPos The y coordinate of the chosen box.
+     * @param val The value to put in the chosen box.
      */
     public void replaceValue(int xPos, int yPos, int val) {
         this.board[xPos][yPos].setVal(val);
@@ -77,105 +83,59 @@ public class Grid {
     }
 
     /**
-     * @return Returns true if a row doesn't ever have the same number more than once.
+     * Determines if a rectangle is correct (has no duplicate values).
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @return True if the rectangle has no duplicate values, false otherwise.
      */
-    public boolean isRowValid(int row) {
+    public boolean isValidRect(int startX, int startY, int endX, int endY) {
         // This array will store a boolean for each possible value (1 to 9).
         // If the value is in the row, the corresponding boolean will be set to true.
-        boolean[] presentNumbers = new boolean[9];
+        boolean[] presentNumbers = new boolean[(startX - endX + 1) * (startY - endY + 1)];
 
-        for (int i = 0; i < this.SIZE; i++) { // For each box in the row
-            if(!isBoxEmpty(i, row)) {
-                if(presentNumbers[getVal(i, row) - 1]) { // If the value has already been found, return false.
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                int val = getVal(x, y);
+                if(val != 0 && presentNumbers[val - 1]) {
                     return false;
                 }
-                else { // Else, add it to the array.
-                    presentNumbers[getVal(i, row) - 1] = true;
-                }
+                presentNumbers[val - 1] = true;
             }
         }
-        return true; // If we went through the entire row without finding duplicates, the row is valid.
+        return true;
     }
 
     /**
-     * @return Returns true if a column doesn't ever have the same number more than once.
+     * @param row The number of the row to check.
+     * @return True if the row doesn't have any duplicate numbers, false otherwise.
+     */
+    public boolean isRowValid(int row) {
+        return isValidRect(0, row - 1, this.SIZE - 1, row - 1);
+    }
+
+    /**
+     * @param column The number of the column to check.
+     * @return True if the column doesn't have any duplicate numbers, false otherwise.
      */
     public boolean isColumnValid(int column) {
-        // This array will store a boolean for each possible value (1 to 9).
-        // If the value is in the column, the corresponding boolean will be set to true.
-        boolean[] presentNumbers = new boolean[9];
-
-        for (int i = 0; i < this.SIZE; i++) { // For each box in the column.
-            if(!isBoxEmpty(column, i)) {
-                if(presentNumbers[getVal(column, i) - 1]) { // If the value has already been found, return false.
-                    return false;
-                }
-                else { // Else, add it to the array.
-                    presentNumbers[getVal(column, i) - 1] = true;
-                }
-            }
-        }
-        return true; // If we went through the entire column without finding duplicates, the column is valid.
+        return isValidRect(column - 1, 0, column - 1, this.SIZE - 1);
     }
 
     /**
-     * @param xBlock position X du block
-     * @param yBlock position Y du block
-     * @return retourne si le bloc est valide ou non
+     * @param xBlock X coordinate of the block (not the first cell)
+     * @param yBlock y coordinate of the block (not the first cell)
+     * @return True if the block doesn't have any duplicate numbers, false otherwise.
      */
     public boolean isBlockValid(int xBlock, int yBlock) {
-        int xStart = SQRTSIZE * xBlock;
-        int yStart = SQRTSIZE * yBlock;
-
-        // This array will store a boolean for each possible value (1 to 9).
-        // If the value is in the column, the corresponding boolean will be set to true.
-        boolean[] presentNumbers = new boolean[9];
-
-        for (int x = xStart; x < xStart + SQRTSIZE; x++) {
-            for (int y = yStart; y < yStart + SQRTSIZE; y++) { // For each box in the block
-                if (!isBoxEmpty(x, y)) {
-                    if (presentNumbers[getVal(x, y) - 1]) { // If the value has already been found, return false.
-                        return false;
-                    } else { // Else, add it to the array.
-                        presentNumbers[getVal(x, y) - 1] = true;
-                    }
-                }
-            }
-        }
-        return true; // If we went through the entire block without finding duplicates, the block is valid.
+        return isValidRect(xBlock * this.SQRTSIZE,
+                yBlock * this.SQRTSIZE,
+                xBlock * (this.SQRTSIZE * 2) - 1,
+                yBlock * (this.SQRTSIZE * 2) - 1);
     }
 
-    public boolean isValid() {
-        boolean validSoFar = true;
-
-        for (int i = 0; i < SIZE && validSoFar; i++) { // Check the validity of every row.
-            validSoFar = isRowValid(i);
-        }
-
-        for (int i = 0; i < SIZE && validSoFar; i++) { // Check the validity of every column.
-            validSoFar = isColumnValid(i);
-        }
-
-        for (int x = 0; x < SQRTSIZE && validSoFar; x++) {
-            for (int y = 0; y < SQRTSIZE && validSoFar; y++) {  // Check the validity of every block.
-                validSoFar = isBlockValid(x, y);        
-            }
-        }
-
-        return validSoFar;
-    }
-
-    /**
-     * @return true if the value's position are possible else return false
-     */
-    public boolean validVal(int posX, int posY){
-        if(!isRowValid(posX)) {return false;}
-
-        if(!isColumnValid(posY)){return false;}
-
-        return isBlockValid(posX % SQRTSIZE, posY % SQRTSIZE);
-    }
-
+ 
     /**
      * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
      */
@@ -216,7 +176,7 @@ public class Grid {
     public void print() {
         for(int x = 0; x < SIZE; x++) {
             if(x % SQRTSIZE == 0) {
-                printLine(25);
+                System.out.println("-------------------------");
             }
             for(int y = 0; y < SIZE; y++) {
                 if(y % SQRTSIZE == 0) {
@@ -227,9 +187,19 @@ public class Grid {
             System.out.print("| ");
             System.out.print("\n");
         }
-         printLine(25 );
+        System.out.println("-------------------------");
     }
 
 
-}
+    /**
+     * work just for 9*9
+     * @return true if the value's position are possible else return false
+     */
+    public boolean validVal(int posX, int posY) {
+        if(!isRowValid(posX)) {return false;}
+
+        if(!isColumnValid(posY)){return false;}
+
+        return true;//isBlockValid(posX, posY);
+    }
 
