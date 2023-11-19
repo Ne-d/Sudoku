@@ -272,4 +272,10 @@ public class Grid {
     public void addNote(int xPos,int yPos,int note){
        this.board[xPos][yPos].addNote(note);
     }
-}
+
+    public void rule1Row(int xPos,int yPos){}
+    public void rule1Column(){}
+    public void rule1(int xPos,int yPos){
+        rule1Row();
+        rule1Column();
+    }
