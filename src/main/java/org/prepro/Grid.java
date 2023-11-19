@@ -38,7 +38,7 @@ public class Grid {
      * @return Returns true if the box at the given coordinates is empty, false if it has a value.
      */
     public boolean isBoxEmpty(int xPos, int yPos) {
-        return (this.getVal(xPos, yPos)== 0);
+        return (this.getVal(xPos, yPos) == 0);
     }
 
 
@@ -49,7 +49,6 @@ public class Grid {
      */
     public boolean addValue(int xPos, int yPos, int val) {
         Box box = this.board[xPos][yPos];
-        if(box.getVal() == 0) {
             box.setVal(val);
             return true;
         }
@@ -87,8 +86,8 @@ public class Grid {
      * Determines if a rectangle is correct (has no duplicate values).
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
+     * @param endX   X coordinate of the end of the rectangle.
+     * @param endY   Y coordinate of the end of the rectangle.
      * @return True if the rectangle has no duplicate values, false otherwise.
      */
     public boolean isValidRect(int startX, int startY, int endX, int endY) {
@@ -100,9 +99,11 @@ public class Grid {
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
                 val = getVal(x, y);
-                if (val !=0){
-                    if(presentNumbers[val -1]) {
+                if (val != 0) {
+                    if (presentNumbers[val - 1]) {
                         return false;
+                    } else {
+                        presentNumbers[val - 1] = true;
                     }
                     else {presentNumbers[val -1] = true; }
                 }
@@ -139,24 +140,24 @@ public class Grid {
     public boolean isBlockValid(int xBlock, int yBlock) {
         return isValidRect(xBlock * this.SQRTSIZE,
                 yBlock * this.SQRTSIZE,
-                xBlock * this.SQRTSIZE + this.SQRTSIZE -1,
-                yBlock * this.SQRTSIZE + this.SQRTSIZE -1);
+                xBlock * this.SQRTSIZE + this.SQRTSIZE - 1,
+                yBlock * this.SQRTSIZE + this.SQRTSIZE - 1);
     }
 
 
     /**
      * @return yes if the grid is valid else false
      */
-    public boolean isValid(){
+    public boolean isValid() {
         boolean canceled = true;
 
-        for (int i = 1; i <= this.SIZE && canceled; i++){
+        for (int i = 1; i <= this.SIZE && canceled; i++) {
             canceled = isColumnValid(i);
             canceled = canceled && isRowValid(i);
-            }
+        }
 
-        for (int i = 0; i < this.SQRTSIZE && canceled; i++){
-            for (int j = 0; j < this.SQRTSIZE && canceled; j++){
+        for (int i = 0; i < this.SQRTSIZE && canceled; i++) {
+            for (int j = 0; j < this.SQRTSIZE && canceled; j++) {
                 canceled = isBlockValid(i, j);
             }
             
@@ -190,7 +191,7 @@ public class Grid {
 
                 this.print();
             }
-            System.out.println(i+" "+this.getVal(posX, posY) +"(" + posX + "," + posY +") ");
+            System.out.println(i + " " + this.getVal(posX, posY) + "(" + posX + "," + posY + ") ");
         }
     }
 
@@ -199,8 +200,8 @@ public class Grid {
      * Prints nbDash number of dashes
      * @param nbDash the amount of dashes to be printed
      */
-    private void printLine(int nbDash){
-        for(int i = 0; i < nbDash -1; i++ ){
+    private void printLine(int nbDash) {
+        for (int i = 0; i < nbDash - 1; i++) {
             System.out.print("-");
         }
         System.out.println("-");
@@ -246,7 +247,7 @@ public class Grid {
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      */
-    public void afficheNote(int xPos,int yPos){
+    public void afficheNote(int xPos, int yPos) {
         System.out.print("Notes case (" + xPos + ", " + yPos + "): ");
         this.board[xPos][yPos].afficheNote();
     }
@@ -258,7 +259,7 @@ public class Grid {
      * @param yPos Y coordinate of the chosen box
      * @param note The note to remove
      */
-    public void deleteNote(int xPos, int yPos, int note){
+    public void deleteNote(int xPos, int yPos, int note) {
         this.board[xPos][yPos].deleteNote(note);
     }
 
@@ -269,8 +270,8 @@ public class Grid {
      * @param yPos Y coordinate of the chosen box
      * @param note The note to add
      */
-    public void addNote(int xPos,int yPos,int note){
-       this.board[xPos][yPos].addNote(note);
+    public void addNote(int xPos, int yPos, int note) {
+        this.board[xPos][yPos].addNote(note);
     }
 
     public void rule1Row(int xPos,int yPos){}

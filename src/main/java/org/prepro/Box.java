@@ -48,6 +48,28 @@ public class Box {
     }
 
     /**
+     * Find if a note is set in this box or not
+     * @param note The note to look for
+     * @return Whether the note is set or not
+     */
+    public boolean isNotePresent(int note) {
+        return ((this.notes >> note - 1) & 1) == 1;
+    }
+
+    /**
+     * @return The amount of notes for this box
+     */
+    public int getNbNote() {
+        int sum = 0;
+        for (int i = 0; i < this.SIZE; i++) {
+            if (((this.notes >> i) & 1) == 1) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    /**
      * Prints the content of the notes in this box
      */
     public void afficheNote() {
