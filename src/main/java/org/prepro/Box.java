@@ -38,7 +38,12 @@ public class Box {
     public void deleteNote(int note){
         this.notes = this.notes & ~(int)Math.pow(2, note - 1);
     }
-
+    /**
+     * delete all note
+     */
+    public void deleteAllNote(){
+        this.notes = 0;
+    }
     /**
      * Adds a note to this box
      * @param note The note to be added

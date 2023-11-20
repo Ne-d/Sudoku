@@ -12,11 +12,12 @@ public class Grid {
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
      */
     public Grid() {
-        this.board = new Box[9][9];
+
         this.SIZE = 9;
         this.SQRTSIZE = ((int)Math.sqrt(SIZE));
         this.DIFFICULTY = 17;
-
+        this.board = new Box[SIZE][SIZE];
+        
         // Initialize all boxes.
         for(int x = 0; x < SIZE; x++) {
             for(int y = 0; y < SIZE; y++) {
@@ -48,11 +49,14 @@ public class Grid {
      * @return Returns true if the box has been modified (had no value before), false otherwise.
      */
     public boolean addValue(int xPos, int yPos, int val) {
-        Box box = this.board[xPos][yPos];
-            box.setVal(val);
-            return true;
-        }
-        return false;
+    	Box box = this.board[xPos][yPos];
+        if(box.getVal() != 0) {return false;}
+        box.setVal(val);
+        this.deletenotes(xPos, 0, xPos, this.SIZE-1, val); //delete note column
+        this.deletenotes(0, yPos, this.SIZE-1, yPos, val); //delete note line
+        this.deletenotes((xPos/this.SQRTSIZE)*this.SQRTSIZE, (yPos/this.SQRTSIZE)*this.SQRTSIZE, (1 + xPos/this.SQRTSIZE)*this.SQRTSIZE -1, (1 + yPos/this.SQRTSIZE)*this.SQRTSIZE - 1, val); //delete note square
+        this.deleteAllNote(xPos, yPos);
+        return true;
     }
 
 
@@ -102,8 +106,6 @@ public class Grid {
                 if (val != 0) {
                     if (presentNumbers[val - 1]) {
                         return false;
-                    } else {
-                        presentNumbers[val - 1] = true;
                     }
                     else {presentNumbers[val -1] = true; }
                 }
@@ -263,6 +265,29 @@ public class Grid {
         this.board[xPos][yPos].deleteNote(note);
     }
 
+    /**
+     * Deletes a note of the chosen box
+     * @param xPos X coordinate of the chosen box
+     * @param yPos Y coordinate of the chosen box
+     */
+    public void deleteAllNote(int xPos, int yPos){
+        this.board[xPos][yPos].deleteAllNote();
+    }
+    /**
+     * delete all note in the field witch is equals to  val
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @param val value of the note witch is delete
+     */
+    private void deletenotes(int startX, int startY, int endX, int endY, int val) {
+	    for (int x = startX; x <= endX; x++) {
+	        for (int y = startY; y <= endY; y++) {
+	        	this.deleteNote(x, y, val);
+	        }
+	    }
+    }
 
     /**
      * Adds a note to the chosen box
@@ -274,9 +299,34 @@ public class Grid {
         this.board[xPos][yPos].addNote(note);
     }
 
-    public void rule1Row(int xPos,int yPos){}
-    public void rule1Column(){}
-    public void rule1(int xPos,int yPos){
-        rule1Row();
-        rule1Column();
+    /**
+     * complete a rectangle with some simple rule. WARNING the recantle must be a row or a column or a square
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @return if the grid has been modified
+     */
+    public boolean simplerule(int startX, int startY, int endX, int endY) {
+    	int [] blocNotes = new int[this.SIZE];
+        int nbNotes;
+        int j;
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+            	nbNotes = board[x][y].getNbNote();
+            	j=0;
+	            for(int i=0; i<9 || j == nbNotes; i++) {
+	            	if( board[x][y].isNotePresent(i)) {
+	            		blocNotes[i]++;
+	            		j++;
+                        if(nbNotes == 1 && this.getVal(x, y) != 0){ 
+                        	this.addValue(x, y, i);
+                        	return true;
+                        }
+	            	}
+	            }
+            }
+        }
+        return false;
+    }  
     }
