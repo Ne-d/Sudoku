@@ -308,18 +308,18 @@ public class Grid {
      * @return if the grid has been modified
      */
     public boolean simplerule(int startX, int startY, int endX, int endY) {
-    	int [] blocNotes = new int[this.SIZE];
         int nbNotes;
         int j;
+        
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
             	nbNotes = board[x][y].getNbNote();
             	j=0;
-	            for(int i=0; i<9 || j == nbNotes; i++) {
+            	
+	            for(int i=0; i<9 && j != nbNotes; i++) {
 	            	if( board[x][y].isNotePresent(i)) {
-	            		blocNotes[i]++;
 	            		j++;
-                        if(nbNotes == 1 && this.getVal(x, y) != 0){ 
+                        if(nbNotes == 1){ 
                         	this.addValue(x, y, i);
                         	return true;
                         }

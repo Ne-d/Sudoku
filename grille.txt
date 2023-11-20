@@ -1,8 +1,4 @@
-package org.prepro;
-
-public class Main {
-    public static void main(String[] args) {
-        Grid grid = new Grid();
+grille 1
 
         grid.addValue(0, 0, 7); //line 1
         grid.addValue(1, 0, 2);
@@ -27,7 +23,7 @@ public class Main {
         grid.addValue(0, 3, 6); // line 4
         grid.addValue(3, 3, 3);
         grid.addValue(7, 3, 2);
-        grid.addValue(8, 3, 1);
+        grid.addValue(7, 3, 1);
         
         grid.addValue(1, 4, 7); // line 5
         grid.addValue(5, 4, 4);
@@ -47,16 +43,4 @@ public class Main {
         grid.addValue(5, 7, 3);
         
         grid.addValue(3, 8, 2); // line 9
-        grid.addValue(6, 8, 1);
-
-        grid.print();
-        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
-        grid.afficheNote(0, 1);
-        grid.afficheNote(2, 1);
-        grid.afficheNote(1, 2);
-        grid.afficheNote(0, 0);
-        
-        System.out.println(grid.simplerule(0, 0, 2, 2));
-        grid.print();
-    }
-}
+        grid.addValue(5, 8, 1);
