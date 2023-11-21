@@ -298,9 +298,37 @@ public class Grid {
     public void addNote(int xPos, int yPos, int note) {
         this.board[xPos][yPos].addNote(note);
     }
-
     /**
-     * complete a rectangle with some simple rule. WARNING the recantle must be a row or a column or a square
+     *
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @return if the grid has been modified
+     */
+    private boolean isNotePresentOnce(int startX, int startY, int endX, int endY, int[] nbNotesRec) {
+        for (int oc = 0; oc < this.SIZE; oc++) { //parcours du tableau des notes du block
+
+            if (nbNotesRec[oc] == 1) { // regarde si une note est présente qu'une seule fois dans le rectangle
+
+                for (int x = startX; x <= endX; x++) {
+                    for (int y = startY; y <= endY; y++) {
+
+                        for (int i = 1; i <= 9; i++) { //cherche la note
+
+                            if (board[x][y].isNotePresent(i) && i==oc+1) {
+                                this.addValue(x, y, i);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * complete a rectangle with some simple rule. WARNING the rectangle must be a row or a column or a square
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
      * @param endX X coordinate of the end of the rectangle.
@@ -308,6 +336,7 @@ public class Grid {
      * @return if the grid has been modified
      */
     public boolean simplerule(int startX, int startY, int endX, int endY) {
+        int[] nbNotesRec = new int[this.SIZE];
         int nbNotes;
         int j;
         
@@ -315,9 +344,9 @@ public class Grid {
             for (int y = startY; y <= endY; y++) {
             	nbNotes = board[x][y].getNbNote();
             	j=0;
-            	
-	            for(int i=0; i<9 && j != nbNotes; i++) {
+	            for(int i=1; i<=9 && j != nbNotes; i++) {
 	            	if( board[x][y].isNotePresent(i)) {
+                        nbNotesRec[i-1]++;
 	            		j++;
                         if(nbNotes == 1){ 
                         	this.addValue(x, y, i);
@@ -327,6 +356,7 @@ public class Grid {
 	            }
             }
         }
-        return false;
-    }  
+        return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
     }
+
+}
