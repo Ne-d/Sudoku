@@ -359,4 +359,23 @@ public class Grid {
         return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
     }
 
+    /**
+     * Do the verification of the three first rules of Sudoku with a print in the console
+     */
+    public void rulesOneTwoThreeVerification() {
+        for (int x = 0; x < 9; x++) {
+            for (int y = 0; y < 9; y++) {
+                boolean continueColumn;
+                boolean continueRow;
+                boolean continueBlock;
+                do {
+                    continueColumn = this.simplerule(x, 0, x, 8);
+                    continueRow = this.simplerule(0, y, 8, y);
+                    continueBlock = this.simplerule((x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
+                }
+                while (continueColumn && continueRow && continueBlock);
+            }
+        }
+    }
+
 }
