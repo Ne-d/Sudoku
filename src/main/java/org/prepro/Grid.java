@@ -360,6 +360,52 @@ public class Grid {
     }
 
     /**
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @param note the note will looking for
+     * @return the number of note found
+     */
+    private int isNotePresent(int startX, int startY, int endX, int endY, int note) {
+        int found = 0;
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+
+                for (int i = 1; i <= 9; i++) { //cherche la note
+
+                    if (board[x][y].isNotePresent(i)) {
+                        found ++;
+                    }
+                    
+                }
+            }
+
+        }
+        return found;
+    }
+    
+    /**
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @param note the note will looking for
+     * @return if the grid has been modified
+     */
+    private boolean ruleElevenTwelve(int startX, int startY, int endX, int endY, int note){
+        int nbFound = isNotePresent(startX+1, startY, endX, endY, note);
+        if (nbFound > 3){return false;}
+
+        boolean gridModified = false;
+        for(int i = startX; i < endX; i++){ 
+            deletenotes(i, 0, i, this.SIZE, note); //delete all note in the column
+            deletenotes(0, i, this.SIZE, i, note); //delete all note in the row
+        }
+        return gridModified;
+    }
+
+    /**
      * Do the verification of the three first rules of Sudoku with a print in the console
      */
     public void rulesOneTwoThreeVerification() {
