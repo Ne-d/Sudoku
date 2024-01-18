@@ -1,6 +1,9 @@
 package org.prepro;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Grid {
     private final Box[][] board;
     private final int SIZE; // Number of columns and line
@@ -52,9 +55,9 @@ public class Grid {
     	Box box = this.board[xPos][yPos];
         if(box.getVal() != 0) {return false;}
         box.setVal(val);
-        this.deletenotes(xPos, 0, xPos, this.SIZE-1, val); //delete note column
-        this.deletenotes(0, yPos, this.SIZE-1, yPos, val); //delete note line
-        this.deletenotes((xPos/this.SQRTSIZE)*this.SQRTSIZE, (yPos/this.SQRTSIZE)*this.SQRTSIZE, (1 + xPos/this.SQRTSIZE)*this.SQRTSIZE -1, (1 + yPos/this.SQRTSIZE)*this.SQRTSIZE - 1, val); //delete note square
+        this.deleteNotes(xPos, 0, xPos, this.SIZE-1, val); //delete note column
+        this.deleteNotes(0, yPos, this.SIZE-1, yPos, val); //delete note line
+        this.deleteNotes((xPos/this.SQRTSIZE)*this.SQRTSIZE, (yPos/this.SQRTSIZE)*this.SQRTSIZE, (1 + xPos/this.SQRTSIZE)*this.SQRTSIZE -1, (1 + yPos/this.SQRTSIZE)*this.SQRTSIZE - 1, val); //delete note square
         this.deleteAllNote(xPos, yPos);
         return true;
     }
@@ -281,7 +284,7 @@ public class Grid {
      * @param endY Y coordinate of the end of the rectangle.
      * @param val value of the note witch is delete
      */
-    private void deletenotes(int startX, int startY, int endX, int endY, int val) {
+    private void deleteNotes(int startX, int startY, int endX, int endY, int val) {
 	    for (int x = startX; x <= endX; x++) {
 	        for (int y = startY; y <= endY; y++) {
 	        	this.deleteNote(x, y, val);
@@ -359,6 +362,7 @@ public class Grid {
         return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
     }
 
+    // TODO: Make a generic version with all the rules
     /**
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
@@ -424,4 +428,59 @@ public class Grid {
         }
     }
 
+    static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
+        if(len == 0) {
+            resultList.add(result.clone());
+            return;
+        }
+        for(int i = startPosition; i <= size + 1 - len; i++) {
+            result[result.length - len] = i;
+            combinations_aux(size, len - 1, i + 1, result, resultList);
+        }
+    }
+
+    static List<int[]> combinations(int size, int k) {
+        List<int[]> res = new ArrayList<>();
+
+        combinations_aux(size, k, 1, new int[k], res);
+
+        return res;
+    }
+
+    /*
+    public void k_uplets(int k, int startX, int startY, int endX, int endY) {
+        // Generate the array
+        boolean[][] tab = new boolean[k][this.SIZE];
+        int[] k_uplet = new int[k];
+
+        for(int i = 0; i < SIZE; i++) { // For every box
+            for(int j = 0; j < k; j++) { // For every member of the k-uplet
+                // Magie magie : on met toutes les combinaisons d'entiers dans k_uplet les unes après les autres
+                int numcase = 0;
+                for(int x = startX; x <= endX; x++) {
+                    for(int y = startY; y <= endY; y++) { // For every box in the selected rectangle
+                        tab[j][numcase] = board[x][y].isNotePresent(j);
+                    }
+                }
+            }
+        }
+    }
+    Probablement pas la bonne version, voir en dessous. */
+
+    public void k_upletsTest(int k, int startX, int startY, int endX, int endY) {
+        List<int[]> tupples = combinations(this.SIZE, k);
+        for(int i = 0; i < tupples.size(); i++) {
+            boolean[][] tab = new boolean[k][this.SIZE];
+
+            for(int j = 0; j < k; j++) { //Tous les membres du k-uplet
+                int numcase = 0;
+
+                for(int x = startX; x <= endX; x++) {
+                    for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
+                        tab[j][numcase] = board[x][y].isNotePresent(j);
+                    }
+                }
+            }
+        }
+    }
 }
