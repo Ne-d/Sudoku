@@ -468,6 +468,11 @@ public class Grid {
         return res;
     }
 
+    public void k_uplet_hidden(int[] notes, boolean[][] tab,  int startX, int startY){
+        int k = tab.length;
+        
+    }
+
     /**
      * @param k size of the k uplet
      * @param startX X coordinate of the beginning of the rectangle.
@@ -475,7 +480,6 @@ public class Grid {
      * @param endX X coordinate of the end of the rectangle.
      * @param endY Y coordinate of the end of the rectangle.
      * @return if a k_uplet as found
-     * 
      */
     public boolean k_upletsTest(int k, int startX, int startY, int endX, int endY) {
 
