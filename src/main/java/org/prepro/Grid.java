@@ -447,26 +447,15 @@ public class Grid {
         return res;
     }
 
-    /*
-    public void k_uplets(int k, int startX, int startY, int endX, int endY) {
-        // Generate the array
-        boolean[][] tab = new boolean[k][this.SIZE];
-        int[] k_uplet = new int[k];
-
-        for(int i = 0; i < SIZE; i++) { // For every box
-            for(int j = 0; j < k; j++) { // For every member of the k-uplet
-                // Magie magie : on met toutes les combinaisons d'entiers dans k_uplet les unes après les autres
-                int numcase = 0;
-                for(int x = startX; x <= endX; x++) {
-                    for(int y = startY; y <= endY; y++) { // For every box in the selected rectangle
-                        tab[j][numcase] = board[x][y].isNotePresent(j);
-                    }
-                }
-            }
-        }
-    }
-    Probablement pas la bonne version, voir en dessous. */
-
+    /**
+     * @param k size of the k uplet
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @return if a k_uplet as found
+     * 
+     */
     public boolean k_upletsTest(int k, int startX, int startY, int endX, int endY) {
 
         List<int[]> tupples = combinations(this.SIZE, k);
@@ -483,17 +472,17 @@ public class Grid {
                     }
                 }
             }
-            int nbfound = 0; // notes sur les memes cases
+            int nbfound = 0; // notes sur les memes 
+            List<int[]> comb = combinations(k,2);
             for (int t = 0; t < this.SIZE; t++ ){
-                boolean present = tab[0][t];
 
-                for(int w = 1; w < k; w++){
-                    if(tab[w][t] && present){nbfound++;}
-                    else{present = tab[w][t];}
+                for(int w = 0; w < comb.size(); w++){
+                    if(tab[comb.get(w)[0] -1][t] && tab[comb.get(w)[1] - 1][t]){
+                        nbfound++;}
                 }
 
             }
-            if(nbfound == k){return true;}
+            if(nbfound == k*comb.size()){return true;}
         }
         return false;
     }
