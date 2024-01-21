@@ -4,6 +4,9 @@ import org.prepro.Grid;
 
 public class test {
 
+    /**
+     * Test the 6th rule with an example
+     */
     public void testPair(){
         Grid test = new Grid();
         test.addValue(0, 2, 2);
@@ -40,9 +43,11 @@ public class test {
         test.addValue(8, 6, 6);
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //doit etre vrai
+        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO doit etre vrai
     }
-
+    /**
+     * Test the 7th rule with an example
+     */
     public void testTriplet(){
         Grid test = new Grid();
         test.addValue(0, 0, 3);
@@ -78,10 +83,13 @@ public class test {
         test.addValue(8, 6, 4);
 
         test.print();
-        System.out.println(test.k_upletsTest(3,0,0,2,2)); //doit etre vrai
+        System.out.println(test.k_upletsTest(3,0,0,2,2)); //TODO doit etre vrai
     }
 
-    public void testHidedPair(){
+    /**
+     * Test the 9th rule with an example
+     */
+    public void testHiddenPair(){
         Grid test = new Grid();
 
         test.addValue(0, 2, 9);
@@ -117,10 +125,13 @@ public class test {
         test.addValue(8, 4, 7);
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //A REVOIR ! -JM
+        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO A REVOIR ! -JM
     }
 
-    public void testHidedTriplet(){
+    /**
+     * Test the 10th rule with an example
+     */
+    public void testHiddenTriplet(){
         Grid test = new Grid();
 
         test.addValue(0, 2, 8);
@@ -152,9 +163,12 @@ public class test {
         test.addValue(8, 1, 1);
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //A REVOIR ! -JM
+        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO A REVOIR ! -JM
     }
 
+    /**
+     * Generates and returns a grid
+     */
     public Grid testGrid() {
         Grid grid1 = new Grid();
         grid1.addValue(0, 0, 7); //line 1
@@ -205,6 +219,9 @@ public class test {
         return grid1;
     }
 
+    /**
+     * Generates and returns another grid
+     */
     public Grid testGrid2() {
         Grid grid2 = new Grid();
         grid2.addValue(0, 0, 5); //line 1
@@ -242,6 +259,9 @@ public class test {
         return grid2;
     }
 
+    /**
+     * Test for a grid in parameters the 4 first rules of SUDOKU
+     */
     public void testingRules1to4(Grid grid) {
         System.out.println();
         grid.print();
