@@ -48,7 +48,7 @@ public class Main {
 
         grid1.addValue(3, 8, 2); // line 9
         grid1.addValue(6, 8, 1);
-
+        
 
         Grid grid2 = new Grid();
         grid2.addValue(0, 0, 5); //line 1
@@ -84,8 +84,6 @@ public class Main {
         grid2.addValue(1, 8, 6); // line 9
         grid2.addValue(8, 8, 9);
 
-
-
         grid1.print();
         System.out.println("La grille est " + (grid1.isValid() ? "valide." : "invalide."));
         grid1.afficheNote(0, 1);
@@ -107,6 +105,19 @@ public class Main {
         System.out.println();
         grid2.print();
         System.out.println(grid2.isValid() ? "La grille est valide." : "La grille est invalide.");
-         */
+        */
+        Grid test = new Grid();
+        test.addValue(0, 0, 9);
+        test.addValue(1, 0, 7);
+
+        test.addValue(0, 1, 8);
+        test.addValue(1, 1, 6);
+
+
+        test.addValue(0, 2, 3);
+        test.addValue(2, 2, 2);
+
+        test.print();
+        System.out.println(test.k_upletsTest(3,0,0,2,2)); //doit etre vrai
     }
 }

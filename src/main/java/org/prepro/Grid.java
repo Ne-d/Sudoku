@@ -403,8 +403,8 @@ public class Grid {
 
         boolean gridModified = false;
         for(int i = startX; i < endX; i++){ 
-            deletenotes(i, 0, i, this.SIZE, note); //delete all note in the column
-            deletenotes(0, i, this.SIZE, i, note); //delete all note in the row
+            this.deleteNotes(i, 0, i, this.SIZE, note); //delete all note in the column
+            this.deleteNotes(0, i, this.SIZE, i, note); //delete all note in the row
         }
         return gridModified;
     }
@@ -467,7 +467,8 @@ public class Grid {
     }
     Probablement pas la bonne version, voir en dessous. */
 
-    public void k_upletsTest(int k, int startX, int startY, int endX, int endY) {
+    public boolean k_upletsTest(int k, int startX, int startY, int endX, int endY) {
+
         List<int[]> tupples = combinations(this.SIZE, k);
         for(int i = 0; i < tupples.size(); i++) {
             boolean[][] tab = new boolean[k][this.SIZE];
@@ -477,10 +478,23 @@ public class Grid {
 
                 for(int x = startX; x <= endX; x++) {
                     for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
-                        tab[j][numcase] = board[x][y].isNotePresent(j);
+                        tab[j][numcase] = board[x][y].isNotePresent(tupples.get(i)[j]);
+                        numcase++;
                     }
                 }
             }
+            int nbfound = 0; // notes sur les memes cases
+            for (int t = 0; t < this.SIZE; t++ ){
+                boolean present = tab[0][t];
+
+                for(int w = 1; w < k; w++){
+                    if(tab[w][t] && present){nbfound++;}
+                    else{present = tab[w][t];}
+                }
+
+            }
+            if(nbfound == k){return true;}
         }
+        return false;
     }
 }
