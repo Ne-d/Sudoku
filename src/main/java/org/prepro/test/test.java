@@ -43,43 +43,83 @@ public class test {
         System.out.println(test.k_upletsTest(2,0,0,2,2)); //doit etre vrai
     }
 
-        public void testTriplet(){
-            Grid test = new Grid();
-            test.addValue(0, 0, 3);
-            test.addValue(0, 1, 7);
-            test.addValue(0, 7, 9);
+    public void testTriplet(){
+        Grid test = new Grid();
+        test.addValue(0, 0, 3);
+        test.addValue(0, 1, 7);
+        test.addValue(0, 7, 9);
 
-            test.addValue(1, 0, 9);
-            test.addValue(1, 4, 7);
+        test.addValue(1, 0, 9);
+        test.addValue(1, 4, 7);
 
-            test.addValue(2, 3, 4);
-            test.addValue(2, 4, 2);
-            test.addValue(2, 8, 6);
+        test.addValue(2, 3, 4);
+        test.addValue(2, 4, 2);
+        test.addValue(2, 8, 6);
 
-            test.addValue(3, 2, 1);
-            test.addValue(3, 4, 8);
-            test.addValue(3, 5, 4);
-            test.addValue(3, 6, 2);
+        test.addValue(3, 2, 1);
+        test.addValue(3, 4, 8);
+        test.addValue(3, 5, 4);
+        test.addValue(3, 6, 2);
 
 
 
-            test.addValue(5, 0, 8);
-            test.addValue(5, 3, 6);
-            test.addValue(5, 7, 5);
+        test.addValue(5, 0, 8);
+        test.addValue(5, 3, 6);
+        test.addValue(5, 7, 5);
 
-            test.addValue(6, 2, 6);
-            test.addValue(6, 5, 2);
-            test.addValue(6, 7, 1);
+        test.addValue(6, 2, 6);
+        test.addValue(6, 5, 2);
+        test.addValue(6, 7, 1);
 
-            test.addValue(7, 7, 3);
-            test.addValue(7, 8, 9);
+        test.addValue(7, 7, 3);
+        test.addValue(7, 8, 9);
 
-            test.addValue(8, 1, 5);
-            test.addValue(8, 6, 4);
+        test.addValue(8, 1, 5);
+        test.addValue(8, 6, 4);
 
-            test.print();
-            System.out.println(test.k_upletsTest(3,0,0,2,2)); //doit etre vrai
+        test.print();
+        System.out.println(test.k_upletsTest(3,0,0,2,2)); //doit etre vrai
     }
+
+    public void testHidedPair(){
+        Grid test = new Grid();
+
+        test.addValue(0, 2, 9);
+        test.addValue(0, 4, 3);
+        test.addValue(0, 5, 2);
+
+        test.addValue(1, 3, 7);
+
+        test.addValue(2, 0, 1);
+        test.addValue(2, 1, 6);
+        test.addValue(2, 2, 2);
+
+        test.addValue(3, 1, 1);
+        test.addValue(3, 4, 2);
+        test.addValue(3, 6, 5);
+        test.addValue(3, 7, 6);
+
+        test.addValue(4, 3, 9);
+
+        test.addValue(5, 1, 5);
+        test.addValue(5, 6, 1);
+        test.addValue(5, 8, 7);
+
+        test.addValue(6, 6, 4);
+        test.addValue(6, 8, 3);
+
+        test.addValue(7, 1, 2);
+        test.addValue(7, 2, 6);
+        test.addValue(7, 5, 9);
+
+        test.addValue(8, 2, 5);
+        test.addValue(8, 3, 8);
+        test.addValue(8, 4, 7);
+
+        test.print();
+        System.out.println(test.k_upletsTest(2,0,0,2,2)); //A REVOIR ! -JM
+    }
+
 
 
     public Grid testGrid() {
