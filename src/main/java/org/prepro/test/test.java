@@ -120,7 +120,40 @@ public class test {
         System.out.println(test.k_upletsTest(2,0,0,2,2)); //A REVOIR ! -JM
     }
 
+    public void testHidedTriplet(){
+        Grid test = new Grid();
 
+        test.addValue(0, 2, 8);
+        test.addValue(0, 5, 7);
+
+        test.addValue(1, 1, 4);
+        test.addValue(1, 2, 2);
+        test.addValue(1, 5, 5);
+
+
+
+        test.addValue(3, 2, 3);
+        test.addValue(3, 5, 6);
+        test.addValue(3, 6, 8);
+        test.addValue(3, 8, 1);
+
+        test.addValue(4, 8, 6);
+
+        test.addValue(5, 0, 9);
+
+        test.addValue(6, 1, 8);
+        test.addValue(6, 3, 1);
+        test.addValue(6, 4, 3);
+        test.addValue(6, 6, 4);
+        test.addValue(6, 7, 7);
+
+        test.addValue(7, 4, 9);
+
+        test.addValue(8, 1, 1);
+
+        test.print();
+        System.out.println(test.k_upletsTest(2,0,0,2,2)); //A REVOIR ! -JM
+    }
 
     public Grid testGrid() {
         Grid grid1 = new Grid();
