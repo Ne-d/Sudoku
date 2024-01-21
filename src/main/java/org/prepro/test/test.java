@@ -121,4 +121,14 @@ public class test {
         grid2.addValue(8, 8, 9);
         return grid2;
     }
+
+    public void testingRules1to4(Grid grid) {
+        System.out.println();
+        grid.print();
+        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
+        grid.rulesOneTwoThreeVerification();
+        System.out.println();
+        grid.print();
+        System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
+    }
 }
