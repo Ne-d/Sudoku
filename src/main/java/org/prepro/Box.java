@@ -45,6 +45,21 @@ public class Box {
         this.notes = 0;
     }
     /**
+     * delete all note execpt the note present in notes
+     * @param notes which aren't delete
+     */
+    public void deleteAllNote(int []notes){
+        for(int i = 0; i < this.SIZE; i++){
+
+            boolean delete = true;
+            for (int j = 0; j < notes.length; j++){
+                
+                if(notes[j] == i){delete = false;}
+            }
+            if(delete){deleteNote(i);}
+        }
+    }
+    /**
      * Adds a note to this box
      * @param note The note to be added
      */

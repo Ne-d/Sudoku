@@ -468,9 +468,29 @@ public class Grid {
         return res;
     }
 
-    public void k_uplet_hidden(int[] notes, boolean[][] tab,  int startX, int startY){
-        int k = tab.length;
-        
+    public void k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX, int endY){
+        int k = pK_uplet.length;
+        int largeur = endX - startX;
+
+        int x,y;
+        for (int i = 0; i < this.SIZE; i++){
+            x = i % largeur;
+            y = i / largeur;
+
+            boolean delete = true;
+            for (int j = 0; j < k; j++){
+                if(pK_uplet[j] == i){
+                   delete = false;
+                   board[x][y].deleteAllNote(notes);
+                }
+            }
+            if(delete){
+                for (int j = 0; j < k; j++){
+                    board[x][y].deleteNote(notes[j]);
+                }
+            }
+        }
+
     }
 
     /**
@@ -489,9 +509,9 @@ public class Grid {
 
             for(int j = 0; j < k; j++) { //Tous les membres du k-uplet
                 int numcase = 0;
-
-                for(int x = startX; x <= endX; x++) {
-                    for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
+                
+                for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
+                    for(int x = startX; x <= endX; x++) {
                         tab[j][numcase] = board[x][y].isNotePresent(tupples.get(i)[j]);
                         numcase++;
                     }
