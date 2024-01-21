@@ -435,35 +435,21 @@ public class Grid {
     }
 
 
-    /**
-     * Generates all combinations (tuples) of len elements from start to end
-     * @param start The first number to count up from
-     * @param end The last number to count up to
-     * @param len The amount of elements in the combination
-     * @param result Used to call recursively
-     * @param resultList Stores a reference to the resultList that will be returned so the recursive calls can add to it
-     */
-    private static void combinations_aux(int start, int end, int len, int[] result, List<int[]> resultList) {
+    static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
         if(len == 0) {
             resultList.add(result.clone());
             return;
         }
-        for(int i = start; i <= end + 1 - len; i++) {
+        for(int i = startPosition; i <= size + 1 - len; i++) {
             result[result.length - len] = i;
-            combinations_aux(end, len - 1, i + 1, result, resultList);
+            combinations_aux(size, len - 1, i + 1, result, resultList);
         }
     }
 
-    /**
-     * Generates all combinations of k integers from 1 to size
-     * @param size The upper limit of the integers
-     * @param k The numbers of elements in each combination
-     * @return A list of int arrays. Each array contains a unique combination
-     */
     static List<int[]> combinations(int size, int k) {
         List<int[]> res = new ArrayList<>();
 
-        combinations_aux(1, size, k, new int[k], res);
+        combinations_aux(size, k, 1, new int[k], res);
 
         return res;
     }
@@ -517,17 +503,22 @@ public class Grid {
                     }
                 }
             }
+
             int nbfound = 0; // notes sur les memes 
             List<int[]> comb = combinations(k,2);
-            for (int t = 0; t < this.SIZE; t++ ){
 
-                for(int w = 0; w < comb.size(); w++){
-                    if(tab[comb.get(w)[0] -1][t] && tab[comb.get(w)[1] - 1][t]){
-                        nbfound++;}
+            for (int t = 0; t < this.SIZE; t++ ) { // Pour chaque case de la zone
+                for(int w = 0; w < comb.size(); w++) { // Pour chaque combinaison entre les colonnes de tab
+                    if(tab[comb.get(w)[0] - 1][t] && tab[comb.get(w)[1] - 1][t]) { // Compare les valeurs pour chaque combinaison de colonnes
+                        nbfound++;
+                    }
                 }
 
             }
-            if(nbfound == k*comb.size()){return true;}
+            if(nbfound == k*comb.size()) {
+                System.out.println("nbfound = " + nbfound);
+                return true;
+            }
         }
         return false;
     }

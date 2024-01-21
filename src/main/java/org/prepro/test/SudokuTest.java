@@ -1,53 +1,120 @@
 package org.prepro.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.prepro.Grid;
 
-public class test {
+import org.junit.jupiter.api.Test;
+
+public class SudokuTest {
 
     /**
      * Test the 6th rule with an example
      */
+    @Test
     public void testPair(){
         Grid test = new Grid();
-        test.addValue(0, 2, 2);
-        test.addValue(0, 4, 8);
-        test.addValue(0, 5, 5);
-        test.addValue(0, 8, 4);
+        test.addValue(2, 0, 2);
+        test.addValue(4, 0, 8);
+        test.addValue(5, 0, 5);
+        test.addValue(8, 0, 4);
 
-        test.addValue(1, 4, 3);
-        test.addValue(1, 7, 6);
+        test.addValue(4, 1, 3);
+        test.addValue(7, 1, 6);
 
         test.addValue(2, 2, 4);
-        test.addValue(2, 3, 2);
-        test.addValue(2, 4, 1);
-        test.addValue(2, 7, 3);
+        test.addValue(3, 2, 2);
+        test.addValue(4, 2, 1);
+        test.addValue(7, 2, 3);
 
 
-        test.addValue(3, 7, 5);
-        test.addValue(3, 8, 2);
+        test.addValue(7, 3, 5);
+        test.addValue(8, 3, 2);
 
-        test.addValue(4, 6, 3);
-        test.addValue(4, 7, 1);
+        test.addValue(6, 4, 3);
+        test.addValue(7, 4, 1);
 
-        test.addValue(5, 0, 9);
+        test.addValue(0, 5, 9);
 
-        test.addValue(6, 0, 8);
-        test.addValue(6, 5, 6);
+        test.addValue(0, 6, 8);
+        test.addValue(5, 6, 6);
 
-        test.addValue(7, 0, 2);
-        test.addValue(7, 1, 5);
-        test.addValue(7, 3, 4);
-        test.addValue(7, 8, 8);
+        test.addValue(0, 7, 2);
+        test.addValue(1, 7, 5);
+        test.addValue(3, 7, 4);
+        test.addValue(8, 7, 8);
 
-        test.addValue(8, 5, 1);
-        test.addValue(8, 6, 6);
+        test.addValue(5, 8, 1);
+        test.addValue(6, 8, 6);
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO doit etre vrai
+        test.afficheNote(3, 0);
+        test.afficheNote(3, 1);
+        test.afficheNote(5, 1);
+        test.afficheNote(5, 2);
+
+        Assertions.assertTrue(test.k_upletsTest(2,3,0,5,2));
     }
+
+    @Test
+    public void testPair2() {
+        Grid test = new Grid();
+        test.addValue(0, 0, 8);
+        test.addValue(1, 0, 4);
+        test.addValue(3, 0, 2);
+        test.addValue(7, 0, 9);
+        test.addValue(8, 0, 1);
+
+        test.addValue(3, 1, 1);
+        test.addValue(4, 1, 6);
+        test.addValue(5, 1, 9);
+        test.addValue(6, 1, 4);
+        test.addValue(8, 1, 8);
+
+        test.addValue(0, 2, 1);
+        test.addValue(2, 2, 9);
+        test.addValue(3, 2, 4);
+        test.addValue(7, 2, 5);
+        test.addValue(8, 2, 7);
+
+        test.addValue(0, 3, 7);
+        test.addValue(1, 3, 1);
+        test.addValue(2, 3, 8);
+        test.addValue(3, 3, 3);
+        test.addValue(4, 3, 2);
+        test.addValue(5, 3, 4);
+        test.addValue(7, 3, 6);
+
+        test.addValue(2, 4, 2);
+        test.addValue(5, 4, 6);
+
+        test.addValue(2, 6, 1);
+        test.addValue(3, 6, 6);
+        test.addValue(4, 6, 9);
+        test.addValue(7, 6, 8);
+
+        test.addValue(1, 7, 9);
+        test.addValue(3, 7, 8);
+        test.addValue(6, 7, 1);
+
+        test.addValue(0, 8, 5);
+        test.addValue(1, 8, 8);
+        test.addValue(3, 8, 7);
+        test.addValue(4, 8, 4);
+        test.addValue(5, 8, 1);
+
+        test.print();
+        test.afficheNote(0, 1);
+        test.afficheNote(1, 1);
+        test.afficheNote(2, 1);
+        test.afficheNote(7, 1);
+
+        Assertions.assertTrue(test.k_upletsTest(2,0,1,8,1));
+    }
+
     /**
      * Test the 7th rule with an example
      */
+    @Test
     public void testTriplet(){
         Grid test = new Grid();
         test.addValue(0, 0, 3);
@@ -83,12 +150,13 @@ public class test {
         test.addValue(6, 8, 4);
 
         test.print();
-        //System.out.println(test.k_upletsTest(3,0,0,2,2)); //TODO doit etre vrai
+        Assertions.assertTrue(test.k_upletsTest(3,0,0,2,2));
     }
 
     /**
      * Test the 9th rule with an example
      */
+    @Test
     public void testHiddenPair(){
         Grid test = new Grid();
 
@@ -131,6 +199,7 @@ public class test {
     /**
      * Test the 10th rule with an example
      */
+    @Test
     public void testHiddenTriplet(){
         Grid test = new Grid();
 
