@@ -454,14 +454,21 @@ public class Grid {
         return res;
     }
 
-    public void k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX, int endY){
+    /**
+     * @param pK_uplet positions of the k_uplet found
+     * @param notes of the k_uplet
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     */
+    public void k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX){
         int k = pK_uplet.length;
-        int largeur = endX - startX;
+        int largeur = endX - startX +1;
 
         int x,y;
         for (int i = 0; i < this.SIZE; i++){
-            x = i % largeur;
-            y = i / largeur;
+            x = i % largeur + startX;
+            y = i / largeur + startY;
 
             boolean delete = true;
             for (int j = 0; j < k; j++){
@@ -479,6 +486,12 @@ public class Grid {
 
     }
 
+    public boolean verifIsPresent(int[] tab, int val){
+        for(int i = 0; i< tab.length; i++){
+            if(tab[i] == val){return true;}
+        }
+        {return false;}
+    }
     /**
      * @param k size of the k uplet
      * @param startX X coordinate of the beginning of the rectangle.
@@ -492,31 +505,41 @@ public class Grid {
         List<int[]> tupples = combinations(this.SIZE, k);
         for(int i = 0; i < tupples.size(); i++) {
             boolean[][] tab = new boolean[k][this.SIZE];
-
+            boolean hidden = true;
             for(int j = 0; j < k; j++) { //Tous les membres du k-uplet
                 int numcase = 0;
-                
+
                 for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
                     for(int x = startX; x <= endX; x++) {
                         tab[j][numcase] = board[x][y].isNotePresent(tupples.get(i)[j]);
+                        if(tab[j][numcase] && board[x][y].getNbNote() == k && hidden){hidden = false;}
+                        else{hidden = true;}
                         numcase++;
                     }
                 }
             }
 
-            int nbfound = 0; // notes sur les memes 
+            int nbfound = 0; // notes sur les memes
+            int[] pos = new int[k];
+            int ajouter = 0;
+            int largeur = endX - startX +1;
             List<int[]> comb = combinations(k,2);
 
             for (int t = 0; t < this.SIZE; t++ ) { // Pour chaque case de la zone
                 for(int w = 0; w < comb.size(); w++) { // Pour chaque combinaison entre les colonnes de tab
+                    
                     if(tab[comb.get(w)[0] - 1][t] && tab[comb.get(w)[1] - 1][t]) { // Compare les valeurs pour chaque combinaison de colonnes
-                        nbfound++;
+                        if(hidden || board[(t % largeur) + startX][(t / largeur) + startY].getNbNote() == k){
+                            if(!verifIsPresent(pos, t)){pos[ajouter] = t; ajouter++;}
+                            nbfound++;
+                        }
                     }
                 }
 
             }
             if(nbfound == k*comb.size()) {
-                System.out.println("nbfound = " + nbfound);
+                k_uplet_delNotes(pos, tupples.get(i), startX, startY, endX);
+                System.out.print("nbfound = " + nbfound + " k _uplet "); for(int val : tupples.get(i) ){System.out.print(val);} System.out.println(); // affichage
                 return true;
             }
         }
