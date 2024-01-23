@@ -530,7 +530,7 @@ public class Grid {
                     
                     if(tab[comb.get(w)[0] - 1][t] && tab[comb.get(w)[1] - 1][t]) { // Compare les valeurs pour chaque combinaison de colonnes
                         if(hidden || board[(t % largeur) + startX][(t / largeur) + startY].getNbNote() == k){
-                            if(!verifIsPresent(pos, t)){pos[ajouter] = t; ajouter++;}
+                            if(!verifIsPresent(pos, t) && ajouter != k){pos[ajouter] = t; ajouter++;}
                             nbfound++;
                         }
                     }
