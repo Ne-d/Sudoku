@@ -579,5 +579,18 @@ public class Grid {
         }
     }
     // TODO: Make a generic version with all the rules
+    public void allRules(){
+        for(int k = 1; k < 4; k++){
+            for (int x = 0; x < 9; x++) {
+                for (int y = 0; y < 9; y++) {
+                    boolean k_uplet = false;
+                    do{
+                        rulesOneTwoThreeVerification();
+                        k_uplet = k_upletsTest(k, x, y, x, y);
+                    }while(k_uplet);   
+                }
+            }
+        }
+    }
 
 }
