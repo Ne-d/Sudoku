@@ -37,7 +37,7 @@ public class Box {
      * @return True if the note has been deleted
      */
     public boolean deleteNote(int note){
-        boolean alreadyPresent = !isNotePresent(note);
+        boolean alreadyPresent = isNotePresent(note);
         this.notes = this.notes & ~(int)Math.pow(2, note - 1);
         return alreadyPresent;
     }
@@ -53,7 +53,7 @@ public class Box {
      */
     public boolean deleteAllNote(int []notes){
         boolean modif = false;
-        for(int i = 0; i < this.SIZE; i++){
+        for(int i = 1; i < this.SIZE; i++){
 
             boolean delete = true;
             for (int j = 0; j < notes.length; j++){
