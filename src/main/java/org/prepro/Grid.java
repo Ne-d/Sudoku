@@ -456,8 +456,10 @@ public class Grid {
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
      * @param endX X coordinate of the end of the rectangle.
+     * @return if the grid has been changed
      */
-    public void k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX){
+    public boolean k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX){
+        boolean gridModif = false;
         int k = pK_uplet.length;
         int largeur = endX - startX +1;
 
@@ -470,15 +472,16 @@ public class Grid {
             for (int j = 0; j < k; j++){
                 if(pK_uplet[j] == i){
                    delete = false;
-                   board[x][y].deleteAllNote(notes);
+                   if(board[x][y].deleteAllNote(notes)){gridModif = true;}
                 }
             }
             if(delete){
                 for (int j = 0; j < k; j++){
-                    board[x][y].deleteNote(notes[j]);
+                    if(board[x][y].deleteNote(notes[j])){gridModif = true;}
                 }
             }
         }
+        return gridModif;
     }
     public boolean verifIsPresent(int[] tab, int val){
         for(int i = 0; i< tab.length; i++){
@@ -532,9 +535,8 @@ public class Grid {
 
             }
             if(nbfound == k*comb.size()) {
-                k_uplet_delNotes(pos, tupples.get(i), startX, startY, endX);
                 System.out.print("nbfound = " + nbfound + " k _uplet "); for(int val : tupples.get(i) ){System.out.print(val);} System.out.println(); // affichage
-                return true;
+                return k_uplet_delNotes(pos, tupples.get(i), startX, startY, endX);
             }
         }
         return false;

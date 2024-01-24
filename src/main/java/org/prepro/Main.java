@@ -1,7 +1,5 @@
 package org.prepro;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -32,15 +30,15 @@ public class Main {
                 i = Integer.parseInt(argv);
                 switch (command) {
                     case "ligne":
-                        grid.k_upletsTest(1, 0, i, grid.SIZE-1, i);
+                        System.out.println("la grille a été modifer : "+ grid.k_upletsTest(1, 0, i, grid.SIZE-1, i));
                         break;
                     case "colonne":
-                        grid.k_upletsTest(1, i, 0, i, grid.SIZE-1);
+                        System.out.println("la grille a été modifer : "+ grid.k_upletsTest(1, i, 0, i, grid.SIZE-1));
                         break;
                     case "block":
                         int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
                         int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                        grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                        System.out.println("la grille a été modifer : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
                         break;
                 }
                 //grid.print();
@@ -54,15 +52,15 @@ public class Main {
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            grid.k_upletsTest(2, 0, i, grid.SIZE-1, i);
+                        System.out.println("la grille a été modifer : "+ grid.k_upletsTest(2, 0, i, grid.SIZE-1, i));
                             break;
                         case "colonne":
-                            grid.k_upletsTest(2, i, 0, i, grid.SIZE-1);
+                            System.out.println("la grille a été modifer : "+ grid.k_upletsTest(2, i, 0, i, grid.SIZE-1));
                             break;
                         case "block":
                             int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
                             int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            grid.k_upletsTest(2, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                            System.out.println("la grille a été modifer : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
                             break;
                     }
                     //grid.print();
@@ -76,15 +74,15 @@ public class Main {
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            grid.k_upletsTest(3, 0, i, grid.SIZE-1, i);
+                            System.out.println("la grille a été modifer : "+ grid.k_upletsTest(3, 0, i, grid.SIZE-1, i));
                             break;
                         case "colonne":
-                            grid.k_upletsTest(3, i, 0, i, grid.SIZE-1);
+                            System.out.println("la grille a été modifer : "+ grid.k_upletsTest(3, i, 0, i, grid.SIZE-1));
                             break;
                         case "block":
                             int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
                             int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            grid.k_upletsTest(3, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                            System.out.println("la grille a été modifer : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
                             break;
                     }
                     //grid.print();
