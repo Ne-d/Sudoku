@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Grid {
     private final Box[][] board;
-    private final int SIZE; // Number of columns and line
-    private final int SQRTSIZE; //Number for a block
+    public final int SIZE; // Number of columns and line
+    public final int SQRTSIZE; //Number for a block
     private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
 
 
@@ -218,6 +218,17 @@ public class Grid {
         System.out.println("-");
 
     }
+    /**
+     * Prints nbEqual number of equals
+     * @param nbEqual the amount of equals to be printed
+     */
+    private void printLineEqual(int nbEqual) {
+        for (int i = 0; i < nbEqual - 1; i++) {
+            System.out.print("=");
+        }
+        System.out.println("=");
+
+    }
 
 
     /**
@@ -239,7 +250,31 @@ public class Grid {
         }
         printLine(25);
     }
-
+    /**
+     * Prints out a graphical representation of the grid to standard output.
+     */
+    private void printWithNotes_aux(int y, int debut) {
+        int note=debut;
+        int x = -1;
+        for(int j = 0; j < SIZE*SQRTSIZE; j++){
+            if(j % SIZE == 0){System.out.print("|");}
+            if(j % SQRTSIZE == 0){System.out.print("| ");note = debut;x++;}
+            System.out.print(!this.board[x][y].isNotePresent(note) ? "  " : note + " ");
+            note++;
+        }
+    }
+    public void printWithNotes(){
+        int nbEqual = SIZE*SQRTSIZE*2+23;
+        for(int y = 0; y < SIZE; y++){
+            if (y % SQRTSIZE == 0){printLineEqual(nbEqual);}
+            for(int i = 1; i<SIZE;i = i+3){
+                printWithNotes_aux(y, i);
+                System.out.println("||");
+            }
+            if ((y+1) % SQRTSIZE != 0){printLine(nbEqual);}
+        }
+        printLineEqual(nbEqual);
+    }
 
     /**
      * @return true if the value's position are possible else return false
@@ -368,7 +403,6 @@ public class Grid {
         return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
     }
 
-    // TODO: Make a generic version with all the rules
     /**
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
@@ -381,7 +415,7 @@ public class Grid {
         int found = 0;
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
-
+                
                 for (int i = 1; i <= 9; i++) { //cherche la note
 
                     if (board[x][y].isNotePresent(i)) {
@@ -390,51 +424,13 @@ public class Grid {
                     
                 }
             }
-
+            
         }
         return found;
     }
     
-    /**
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @param note the note will looking for
-     * @return if the grid has been modified
-     */
-    private boolean ruleElevenTwelve(int startX, int startY, int endX, int endY, int note){
-        int nbFound = isNotePresent(startX+1, startY, endX, endY, note);
-        if (nbFound > 3){return false;}
-
-        boolean gridModified = false;
-        for(int i = startX; i < endX; i++){ 
-            this.deleteNotes(i, 0, i, this.SIZE, note); //delete all note in the column
-            this.deleteNotes(0, i, this.SIZE, i, note); //delete all note in the row
-        }
-        return gridModified;
-    }
-
-    /**
-     * Do the verification of the three first rules of Sudoku with a print in the console
-     */
-    public void rulesOneTwoThreeVerification() {
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
-                boolean continueColumn;
-                boolean continueRow;
-                boolean continueBlock;
-                do {
-                    continueColumn = this.simplerule(x, 0, x, 8);
-                    continueRow = this.simplerule(0, y, 8, y);
-                    continueBlock = this.simplerule((x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
-                }
-                while (continueColumn && continueRow && continueBlock);
-            }
-        }
-    }
-
-
+    
+    
     static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
         if(len == 0) {
             resultList.add(result.clone());
@@ -445,12 +441,12 @@ public class Grid {
             combinations_aux(size, len - 1, i + 1, result, resultList);
         }
     }
-
+    
     static List<int[]> combinations(int size, int k) {
         List<int[]> res = new ArrayList<>();
-
+        
         combinations_aux(size, k, 1, new int[k], res);
-
+        
         return res;
     }
 
@@ -483,9 +479,7 @@ public class Grid {
                 }
             }
         }
-
     }
-
     public boolean verifIsPresent(int[] tab, int val){
         for(int i = 0; i< tab.length; i++){
             if(tab[i] == val){return true;}
@@ -505,7 +499,7 @@ public class Grid {
         List<int[]> tupples = combinations(this.SIZE, k);
         for(int i = 0; i < tupples.size(); i++) {
             boolean[][] tab = new boolean[k][this.SIZE];
-            boolean hidden = true;
+            boolean hidden = true; 
             for(int j = 0; j < k; j++) { //Tous les membres du k-uplet
                 int numcase = 0;
 
@@ -545,4 +539,45 @@ public class Grid {
         }
         return false;
     }
+    
+    /**
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX X coordinate of the end of the rectangle.
+     * @param endY Y coordinate of the end of the rectangle.
+     * @param note the note will looking for
+     * @return if the grid has been modified
+     */
+    private boolean ruleElevenTwelve(int startX, int startY, int endX, int endY, int note){
+        int nbFound = isNotePresent(startX+1, startY, endX, endY, note);
+        if (nbFound > 3){return false;}
+
+        boolean gridModified = false;
+        for(int i = startX; i < endX; i++){ 
+            this.deleteNotes(i, 0, i, this.SIZE, note); //delete all note in the column
+            this.deleteNotes(0, i, this.SIZE, i, note); //delete all note in the row
+        }
+        return gridModified;
+    }
+    
+    /**
+     * Do the verification of the three first rules of Sudoku with a print in the console
+     */
+    public void rulesOneTwoThreeVerification() {
+        for (int x = 0; x < 9; x++) {
+            for (int y = 0; y < 9; y++) {
+                boolean continueColumn;
+                boolean continueRow;
+                boolean continueBlock;
+                do {
+                    continueColumn = this.simplerule(x, 0, x, 8);
+                    continueRow = this.simplerule(0, y, 8, y);
+                    continueBlock = this.simplerule((x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
+                }
+                while (continueColumn && continueRow && continueBlock);
+            }
+        }
+    }
+    // TODO: Make a generic version with all the rules
+
 }

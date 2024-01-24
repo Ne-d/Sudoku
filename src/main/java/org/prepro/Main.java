@@ -1,8 +1,107 @@
 package org.prepro;
 
-import org.junit.jupiter.api.Assertions;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Main {
+
+    public static boolean useRule(Grid grid, Scanner scanner){
+        String command = "";
+        String commandRecognized = "elementaire|singleton|pair|triplet|QUIT"; //number of the recognize rule
+        String commandRecognized2 = "block|ligne|colonne";
+        String argv = "";
+        int i = -1;
+        try{
+            
+            System.out.print( "put your command: " );
+            if (scanner.hasNext()) {command = scanner.next(commandRecognized);}           
+            
+            switch(command) {
+                case "elementaire":
+                    grid.rulesOneTwoThreeVerification();
+                    grid.print();
+                    grid.printWithNotes();
+                    break;
+                case "singleton":
+                System.out.print( "put your command among "+ commandRecognized2+" : " );
+                if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                System.out.print("put the number: ");
+                if(scanner.hasNext()){argv = scanner.next();}
+                i = Integer.parseInt(argv);
+                switch (command) {
+                    case "ligne":
+                        grid.k_upletsTest(1, 0, i, grid.SIZE-1, i);
+                        break;
+                    case "colonne":
+                        grid.k_upletsTest(1, i, 0, i, grid.SIZE-1);
+                        break;
+                    case "block":
+                        int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
+                        int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
+                        grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                        break;
+                }
+                //grid.print();
+                grid.printWithNotes();
+                break;
+                case "pair":
+                    System.out.print( "put your command among "+ commandRecognized2+" : " );
+                    if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                    System.out.print("put the number: ");
+                    if(scanner.hasNext()){argv = scanner.next();}
+                    i = Integer.parseInt(argv);
+                    switch (command) {
+                        case "ligne":
+                            grid.k_upletsTest(2, 0, i, grid.SIZE-1, i);
+                            break;
+                        case "colonne":
+                            grid.k_upletsTest(2, i, 0, i, grid.SIZE-1);
+                            break;
+                        case "block":
+                            int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
+                            int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
+                            grid.k_upletsTest(2, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                            break;
+                    }
+                    //grid.print();
+                    grid.printWithNotes();
+                    break;
+                case "triplet":
+                    System.out.print( "put your command among "+ commandRecognized2+" : " );
+                    if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                    System.out.print("put the number: ");
+                    if(scanner.hasNext()){argv = scanner.next();}
+                    i = Integer.parseInt(argv);
+                    switch (command) {
+                        case "ligne":
+                            grid.k_upletsTest(3, 0, i, grid.SIZE-1, i);
+                            break;
+                        case "colonne":
+                            grid.k_upletsTest(3, i, 0, i, grid.SIZE-1);
+                            break;
+                        case "block":
+                            int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
+                            int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
+                            grid.k_upletsTest(3, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1);
+                            break;
+                    }
+                    //grid.print();
+                    grid.printWithNotes();
+                    break;
+                case "QUIT":
+                    return false;
+            }
+        }catch(NoSuchElementException e){
+            System.out.println("list of command : "+ commandRecognized);
+            if(scanner.hasNext())scanner.next(); //avoid infinity loop
+        }
+        catch(Exception e){
+            System.out.println("An error was occured : " + e+ "\n\t"+ e.getMessage());
+        }
+        return true;
+    }
     public static void main(String[] args) {
         /*
         Grid grid1 = new Grid();
@@ -147,15 +246,9 @@ public class Main {
         test.addValue(6, 8, 6);
 
         test.print();
-        test.afficheNote(3, 0);
-        test.afficheNote(3, 1);
-        test.afficheNote(5, 1);
-        test.afficheNote(5, 2);
 
-        System.out.println(test.k_upletsTest(2,3,0,5,2));
-        test.afficheNote(3, 0);
-        test.afficheNote(3, 1);
-        test.afficheNote(5, 1);
-        test.afficheNote(5, 2);
+        Scanner scanner = new Scanner(System.in);
+        while (useRule(test,scanner)) {}
+        scanner.close();
     }
 }
