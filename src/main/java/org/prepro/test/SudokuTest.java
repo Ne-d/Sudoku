@@ -340,4 +340,19 @@ public class SudokuTest {
         grid.print();
         System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
     }
+
+    @Test
+    public void testAllRules() {
+        Grid g = testGrid2();
+
+        g.print();
+
+        System.out.println("Application des règles.");
+        g.allRules();
+
+        g.print();
+
+        System.out.println("La grille est " + (g.isValid() ? "valide" : "invalide") + ".");
+
+    }
 }
