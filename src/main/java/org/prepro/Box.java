@@ -34,9 +34,12 @@ public class Box {
     /**
      * Removes a note from this box
      * @param note The note to be removed
+     * @return True if the note has been deleted
      */
-    public void deleteNote(int note){
+    public boolean deleteNote(int note){
+        boolean alreadyPresent = !isNotePresent(note);
         this.notes = this.notes & ~(int)Math.pow(2, note - 1);
+        return alreadyPresent;
     }
     /**
      * delete all note
