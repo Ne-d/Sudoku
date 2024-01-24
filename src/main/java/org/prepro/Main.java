@@ -1,7 +1,5 @@
 package org.prepro;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
