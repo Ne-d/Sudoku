@@ -579,15 +579,20 @@ public class Grid {
         }
     }
     // TODO: Make a generic version with all the rules
+
     public void allRules(){
-        for(int k = 1; k < 4; k++){
+        for(int k = 2; k <= 3; k++) {
             for (int x = 0; x < 9; x++) {
                 for (int y = 0; y < 9; y++) {
-                    boolean k_uplet = false;
+                    boolean continueColumn;
+                    boolean continueRow;
+                    boolean continueBlock;
                     do{
                         rulesOneTwoThreeVerification();
-                        k_uplet = k_upletsTest(k, x, y, x, y);
-                    }while(k_uplet);   
+                        continueColumn = k_upletsTest(k, x, 0, x, 8);
+                        continueRow = k_upletsTest(k, 0, y, 8, y);
+                        continueBlock = k_upletsTest(k, (x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
+                    } while(continueColumn && continueRow && continueBlock);
                 }
             }
         }
