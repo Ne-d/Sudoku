@@ -342,7 +342,7 @@ public class SudokuTest {
     }
 
     @Test
-    public void testAllRules() {
+    public void allRulesSanityCheck() {
         Grid g = testGrid2();
 
         g.print();
@@ -352,7 +352,10 @@ public class SudokuTest {
 
         g.print();
 
-        System.out.println("La grille est " + (g.isValid() ? "valide" : "invalide") + ".");
+        boolean valid = g.isValid();
 
+        System.out.println("La grille est " + (valid ? "valide" : "invalide") + ".");
+
+        Assertions.assertTrue(valid);
     }
 }
