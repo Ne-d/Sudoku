@@ -64,7 +64,7 @@ public class Main {
                         case "block":
                             int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
                             int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
+                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(2, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
                             break;
                     }
                     //grid.print();
@@ -86,7 +86,7 @@ public class Main {
                         case "block":
                             int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
                             int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
+                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(3, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
                             break;
                     }
                     //grid.print();
