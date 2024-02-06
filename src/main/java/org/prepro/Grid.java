@@ -3,13 +3,13 @@ package org.prepro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Grid {
     private final Box[][] board;
     public final int SIZE; // Number of columns and line
     public final int SQRTSIZE; //Number for a block
     private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
-
 
     /**
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
@@ -334,6 +334,17 @@ public class Grid {
     }
 
     /**
+     * Determines if the given note is present in a box
+     * @param note The note to check
+     * @param x The x coordinate (column) to look in
+     * @param y The y coordinate (line) to look in
+     * @return Whether the
+     */
+    private boolean isNotePresent(int note, int x, int y) {
+        return board[x][y].isNotePresent(note);
+    }
+
+    /**
      * Adds a note to the chosen box
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
@@ -411,7 +422,7 @@ public class Grid {
      * @param note the note will looking for
      * @return the number of note found
      */
-    private int isNotePresent(int startX, int startY, int endX, int endY, int note) {
+    private int getNbNote(int startX, int startY, int endX, int endY, int note) {
         int found = 0;
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
@@ -489,6 +500,7 @@ public class Grid {
         }
         {return false;}
     }
+
     /**
      * @param k size of the k uplet
      * @param startX X coordinate of the beginning of the rectangle.
@@ -551,7 +563,7 @@ public class Grid {
      * @return if the grid has been modified
      */
     private boolean ruleElevenTwelve(int startX, int startY, int endX, int endY, int note){
-        int nbFound = isNotePresent(startX+1, startY, endX, endY, note);
+        int nbFound = getNbNote(startX+1, startY, endX, endY, note);
         if (nbFound > 3){return false;}
 
         boolean gridModified = false;
@@ -560,6 +572,86 @@ public class Grid {
             this.deleteNotes(0, i, this.SIZE, i, note); //delete all note in the row
         }
         return gridModified;
+    }
+
+    /**
+     * Determines the starting X coordinate of a block
+     * @param numBlock The number of the block, starting at 1
+     * @return The X starting coordinate of the block
+     */
+    int blockStartX(int numBlock) {
+        int num = numBlock - 1; // True number of the block starting at 0
+        int column = num % SQRTSIZE; // Block column
+        return column * SQRTSIZE; // Cell column
+    }
+
+    /**
+     * Determines the ending X coordinate of a block
+     * @param numBlock The number of the block, starting at 1
+     * @return The X starting coordinate of the block
+     */
+    int blockEndX(int numBlock) {
+        return blockStartX(numBlock) + SQRTSIZE;
+    }
+
+    /**
+     * Determines the starting Y coordinate of a block
+     * @param numBlock The number of the block, starting at 1
+     * @return The Y starting coordinate of the block
+     */
+    int blockStartY(int numBlock) {
+        int num = numBlock - 1; // True number of the block starting at 0
+        int line = num / SQRTSIZE; // Block column
+        return line * SQRTSIZE; // Cell column
+    }
+
+    /**
+     * Determines the ending Y coordinate of a block
+     * @param numBlock The number of the block, starting at 1
+     * @return The Y starting coordinate of the block
+     */
+    int blockEndY(int numBlock) {
+        return blockStartY(numBlock) + SQRTSIZE;
+    }
+
+    /**
+     * Determines if there is a pointing k-uplet in the chosen block
+     * @param k The amount of members in the k-uplet
+     * @param note The note to look for in k-uplets
+     * @param block The block to search in
+     * @return Whether the block contains a pointing k-uplet
+     */
+    // TODO: MAKE THE FUNCTION TO DELETE THE NOTES GIVEN BY THE "PAIRE POINTANTE".
+    public Optional<LineOrColumn> pointante(int k, int note, int block) {
+        int nbFound = 0;
+        List<int[]> coords = new ArrayList<>();
+
+        // For every box in the block, stopping if we found more notes than k.
+        for(int x = blockStartX(block); x < blockEndX(block) && nbFound > k; x++) {
+            for (int y = blockStartY(block); y < blockEndY(block) && nbFound > k; y++) {
+                if(isNotePresent(note, x, y)) {
+                    nbFound++;
+                    coords.add(new int[]{x, y});
+                }
+            }
+        }
+
+        // If there are not exactly k boxes found, then we don't have a pointing k-uplet.
+        if(coords.size() != k) { return Optional.empty(); }
+
+        // For each coordinate in the list, check if they are on the same line or column
+        boolean sameLineSoFar = true;
+        boolean sameColumnSoFar = true;
+        for(int i = 0; i < coords.size() && (sameLineSoFar || sameColumnSoFar); i++) {
+            if(coords.get(i)[0] != coords.get(i + 1)[0]) {
+                sameColumnSoFar = false;
+            }
+            if(coords.get(i)[1] != coords.get(i + 1)[1]) {
+                sameLineSoFar = false;
+            }
+        }
+        // TODO: Return the correct value.
+        return Optional.empty();
     }
     
     /**
