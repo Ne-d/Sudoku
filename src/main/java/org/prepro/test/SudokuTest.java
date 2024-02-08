@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.prepro.Grid;
 
 import org.junit.jupiter.api.Test;
+import org.prepro.LineOrColumn;
+
+import java.util.List;
+import java.util.Optional;
 
 public class SudokuTest {
 
@@ -358,4 +362,139 @@ public class SudokuTest {
 
         Assertions.assertTrue(valid);
     }
+
+    private Grid GenerateBoxReductionGrid() {
+        Grid g = new Grid();
+
+        // Grille: Sudoku Extrême n°74 p.69
+        g.addValue(0, 0, 3);
+        g.addValue(3, 0, 5);
+        g.addValue(5, 0, 8);
+        g.addValue(7, 0, 2);
+
+        g.addValue(0, 1, 8);
+        g.addValue(2, 1, 2);
+        g.addValue(3, 1, 9);
+        g.addValue(5, 1, 3);
+        g.addValue(7, 1, 7);
+
+        g.addValue(2, 2, 5);
+        g.addValue(3, 2, 2);
+        g.addValue(5, 2, 4);
+        g.addValue(6, 2, 3);
+        g.addValue(7, 2, 8);
+        g.addValue(8, 2, 1);
+
+        g.addValue(0, 3, 4);
+        g.addValue(1, 3, 8);
+        g.addValue(2, 3, 3);
+        g.addValue(3, 3, 1);
+        g.addValue(4, 3, 5);
+        g.addValue(5, 3, 9);
+        g.addValue(6, 3, 7);
+        g.addValue(7, 3, 6);
+        g.addValue(8, 3, 2);
+
+        g.addValue(1, 4, 2);
+        g.addValue(3, 4, 3);
+        g.addValue(4, 4, 8);
+        g.addValue(5, 4, 6);
+        g.addValue(7, 4, 4);
+
+        g.addValue(0, 5, 5);
+        g.addValue(1, 5, 6);
+        g.addValue(2, 5, 9);
+        g.addValue(6, 5, 8);
+        g.addValue(7, 5, 1);
+        g.addValue(8, 5, 3);
+
+        g.addValue(1, 6, 3);
+        g.addValue(5, 6, 1);
+        g.addValue(6, 6, 4);
+        g.addValue(7, 6, 5);
+        g.addValue(8, 6, 8);
+
+        g.addValue(1, 7, 5);
+        g.addValue(2, 7, 4);
+        g.addValue(3, 7, 8);
+        g.addValue(4, 7, 3);
+        g.addValue(6, 7, 1);
+        g.addValue(7, 7, 9);
+        g.addValue(8, 7, 6);
+
+        g.addValue(2, 8, 8);
+        g.addValue(5, 8, 5);
+        g.addValue(6, 8, 2);
+        g.addValue(7, 8, 3);
+        g.addValue(8, 8, 7);
+
+        return g;
+    }
+
+    @Test
+    public void testBox2ReductionColumn() {
+        Grid g = GenerateBoxReductionGrid();
+        g.print();
+
+        Optional<List<int[]>> coordsOpt = g.boxReduction(2, 7, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 1), 1);
+
+        List<int[]> coords;
+
+        if(coordsOpt.isPresent()) {
+            coords = coordsOpt.get();
+        }
+        else {
+            Assertions.fail();
+            return;
+        }
+
+        Assertions.assertArrayEquals(coords.get(0), new int[]{1, 0});
+        Assertions.assertArrayEquals(coords.get(1), new int[]{1, 2});
+
+        for (int[] c : coords) {
+            System.out.println(c[0] + ", " + c[1]);
+        }
+
+    }
+
+    @Test
+    public void testBox2ReductionColumnImpossible() {
+        Grid g = GenerateBoxReductionGrid();
+        g.print();
+
+        System.out.println("Trying to do a box-2 reduction on a note that is not applicable (also present outside the block).");
+
+        Optional<List<int[]>> coordsOpt = g.boxReduction(2, 1, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 1), 1);
+
+        Assertions.assertFalse(coordsOpt.isPresent());
+    }
+
+    @Test
+    public  void testBox3ReductionColumn() {
+        Grid g = testGrid();
+        g.print();
+        g.printWithNotes();
+
+        Optional<List<int[]>> coordsOpt = g.boxReduction(3, 6, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 4), 8);
+        List<int[]> coords;
+
+        if(coordsOpt.isPresent()) {
+            coords = coordsOpt.get();
+        }
+        else {
+            Assertions.fail();
+            return;
+        }
+
+        Assertions.assertArrayEquals(coords.get(0), new int[]{4, 6});
+        Assertions.assertArrayEquals(coords.get(1), new int[]{4, 7});
+        Assertions.assertArrayEquals(coords.get(2), new int[]{4, 8});
+
+        for (int[] c : coords) {
+            System.out.println(c[0] + ", " + c[1]);
+        }
+    }
+
+    // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
+    // TODO: Tester les box-réductions sur les lignes.
 }

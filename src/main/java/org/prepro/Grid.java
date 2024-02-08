@@ -4,6 +4,7 @@ package org.prepro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.prepro.LineOrColumn.LineOrColumnEnum;
 
 public class Grid {
     private final Box[][] board;
@@ -653,54 +654,74 @@ public class Grid {
         }
         // TODO: Return the correct value.
         return Optional.empty();
+
+    /**
+     * Find which block a box is in
+     * @param x The x coordinate of the block
+     * @param y The y coordinate of the block
+     * @return The block that contains the chosen box
+     */
+    public int findBlock(int x, int y) {
+        int res = (y / SQRTSIZE) * SQRTSIZE + (x / SQRTSIZE);
+        return res + 1;
     }
 
-    public boolean box_reduction(int k, int note, int lc){
+    /**
+     * Find if a box is in the given block
+     * @param x The x coordinate of the block to check
+     * @param y The y coordinate of the block to check
+     * @param block The block to check for
+     * @return Whether the boc is in the chosen block
+     */
+    public boolean isInBlock(int x, int y, int block) {
+        return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
+    }
+
+    public Optional<List<int[]>> boxReduction(int k, int note, LineOrColumn lc, int block) {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
 
         // For every box in the row or column, stopping if we found more notes than k.
-        if lc = ligne {
+        if(lc.e == LineOrColumnEnum.Line) { // If we are looking in a row
             for (int x = 0; x < SIZE && nbFound <= k; x++) {
-                if (isNotePresent(note, x, n_ligne)) {
+                if (isNotePresent(note, x, lc.number)) {
                     nbFound++;
-                    coords.add(new int[]{x, n_ligne});
+                    coords.add(new int[]{x, lc.number});
                 }
             }
         }
-        else{
+        else { // If we are looking in a column
             for (int y = 0; y < SIZE && nbFound <= k; y++) {
-                if (isNotePresent(note, n_column, y)) {
+                if (isNotePresent(note, lc.number, y)) {
                     nbFound++;
-                    coords.add(new int[]{n_column, y});
+                    coords.add(new int[]{lc.number, y});
                 }
             }
         }
 
+        // If there are not exactly k coordinates found, we can't use box-k reduction
         if(coords.size() != k) { return Optional.empty(); }
 
-        boolean sameBlockSoFar = true;
-
-        //Verify if it's in the same block
-        if lc = ligne {
-            for(int i = 0; i < coords.size() && sameBlockSoFar; i++) {
-                if (coords.get(i)[0] != coords.get(i + 1)[0]) {
-                    sameBlockSoFar = false;
+        if(lc.e == LineOrColumnEnum.Line) { // If we are looking in a row
+            for(int i = 0; i < coords.size(); i++) {
+                if (!isInBlock(coords.get(i)[0], lc.number, block)) { // If the coordinate is not in the block
+                    return Optional.empty();
                 }
             }
         }
-        else{
-            for(int i = 0; i < coords.size() && sameBlockSoFar; i++) {
-                if (coords.get(i)[1] != coords.get(i + 1)[1]) {
-                    sameBlockSoFar = false;
+        else { // If we are looking in a column
+            for(int i = 0; i < coords.size(); i++) {
+                if (!isInBlock(lc.number, coords.get(i)[1], block)) {  // If the coordinate is not in the block
+                    return Optional.empty();
                 }
             }
         }
 
-        // TODO: Return the correct value.
-        return Optional.empty();
+        // Return the list of coordinates in the k-tuple
+        return Optional.of(coords);
     }
-    
+
+
     /**
      * Do the verification of the three first rules of Sudoku with a print in the console
      */
