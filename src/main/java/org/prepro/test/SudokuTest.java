@@ -2,9 +2,10 @@ package org.prepro.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.prepro.Grid;
+import org.prepro.RowOrColumn.RowOrColumnEnum;
 
 import org.junit.jupiter.api.Test;
-import org.prepro.LineOrColumn;
+import org.prepro.RowOrColumn;
 
 import java.util.List;
 import java.util.Optional;
@@ -436,7 +437,7 @@ public class SudokuTest {
         Grid g = GenerateBoxReductionGrid();
         g.print();
 
-        Optional<List<int[]>> coordsOpt = g.boxReduction(2, 7, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 1), 1);
+        Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
 
         List<int[]> coords;
 
@@ -455,6 +456,12 @@ public class SudokuTest {
             System.out.println(c[0] + ", " + c[1]);
         }
 
+        g.solveBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
+        Assertions.assertFalse(g.isNotePresent(7, 0, 2));
+        Assertions.assertFalse(g.isNotePresent(7, 2, 0));
+
+        g.printWithNotes();
+
     }
 
     @Test
@@ -464,18 +471,18 @@ public class SudokuTest {
 
         System.out.println("Trying to do a box-2 reduction on a note that is not applicable (also present outside the block).");
 
-        Optional<List<int[]>> coordsOpt = g.boxReduction(2, 1, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 1), 1);
+        Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
 
         Assertions.assertFalse(coordsOpt.isPresent());
     }
 
     @Test
-    public  void testBox3ReductionColumn() {
+    public void testBox3ReductionColumn() {
         Grid g = testGrid();
         g.print();
         g.printWithNotes();
 
-        Optional<List<int[]>> coordsOpt = g.boxReduction(3, 6, new LineOrColumn(LineOrColumn.LineOrColumnEnum.Column, 4), 8);
+        Optional<List<int[]>> coordsOpt = g.findBoxReduction(3, 6, new RowOrColumn(RowOrColumnEnum.Column, 4), 8);
         List<int[]> coords;
 
         if(coordsOpt.isPresent()) {
@@ -489,6 +496,199 @@ public class SudokuTest {
         Assertions.assertArrayEquals(coords.get(0), new int[]{4, 6});
         Assertions.assertArrayEquals(coords.get(1), new int[]{4, 7});
         Assertions.assertArrayEquals(coords.get(2), new int[]{4, 8});
+
+        g.solveBoxReduction(3, 6, new RowOrColumn(RowOrColumnEnum.Column, 4), 8);
+
+        Assertions.assertFalse(g.isNotePresent(6, 3, 6));
+        Assertions.assertFalse(g.isNotePresent(6, 3, 7));
+
+        for (int[] c : coords) {
+            System.out.println(c[0] + ", " + c[1]);
+        }
+    }
+
+    private Grid generatePointingPairGrid() {
+        Grid g = new Grid();
+
+        g.addValue(0, 0, 2);
+        g.addValue(1, 0, 3);
+        g.addValue(2, 0, 4);
+        g.addValue(6, 0, 6);
+        g.addValue(7, 0, 9);
+        g.addValue(8, 0, 8);
+
+        g.addValue(0, 1, 9);
+        g.addValue(1, 1, 6);
+        g.addValue(2, 1, 8);
+        g.addValue(3, 1, 2);
+        g.addValue(4, 1, 3);
+        g.addValue(5, 1, 4);
+        g.addValue(8, 1, 1);
+
+        g.addValue(0, 2, 5);
+        g.addValue(1, 2, 7);
+        g.addValue(2, 2, 1);
+        g.addValue(3, 2, 6);
+        g.addValue(4, 2, 8);
+        g.addValue(5, 2, 9);
+        g.addValue(8, 2, 4);
+
+        g.addValue(0, 3, 7);
+        g.addValue(1, 3, 1);
+        g.addValue(2, 3, 9);
+        g.addValue(7, 3, 6);
+
+
+        g.addValue(6, 4, 9);
+        g.addValue(7, 4, 4);
+
+        g.addValue(1, 5, 4);
+        g.addValue(2, 5, 2);
+        g.addValue(4, 5, 9);
+        g.addValue(6, 5, 1);
+        g.addValue(7, 5, 8);
+
+        g.addValue(0, 6, 1);
+        g.addValue(1, 6, 2);
+        g.addValue(2, 6, 6);
+
+        g.addValue(4, 7, 2);
+        g.addValue(5, 7, 5);
+        g.addValue(6, 7, 4);
+        g.addValue(8, 7, 6);
+
+        g.addValue(0, 8, 4);
+        g.addValue(4, 8, 6);
+        g.addValue(5, 8, 3);
+        g.addValue(6, 8, 8);
+
+        return g;
+    }
+
+    public Grid generatePointingTripletGrid() {
+        Grid g = new Grid();
+
+        g.addValue(2, 0, 9);
+        g.addValue(4, 0, 7);
+
+        g.addValue(1, 3, 8);
+        g.addValue(3, 1, 4);
+
+        g.addValue(2, 2, 3);
+        g.addValue(7, 2, 2);
+        g.addValue(8, 2, 8);
+
+
+        g.addValue(0, 3, 1);
+        g.addValue(6, 3, 6);
+        g.addValue(7, 3, 7);
+
+        g.addValue(1, 4, 2);
+        g.addValue(4, 4, 1);
+        g.addValue(5, 4, 3);
+        g.addValue(7, 4, 4);
+
+        g.addValue(1, 5, 4);
+        g.addValue(5, 5, 7);
+        g.addValue(6, 5, 8);
+
+
+        g.addValue(0, 6, 6);
+        g.addValue(4, 6, 3);
+
+        g.addValue(1, 7, 1);
+
+        g.addValue(6, 8, 2);
+        g.addValue(7, 8, 8);
+        g.addValue(8, 8, 4);
+
+        return g;
+    }
+
+    @Test
+    public void testPointingPairRow() {
+        Grid g = generatePointingPairGrid();
+        g.print();
+
+        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 5, new RowOrColumn(RowOrColumnEnum.Row, 4), 4);
+        List<int[]> coords;
+
+        if(coordsOpt.isPresent()) {
+            coords = coordsOpt.get();
+        }
+        else {
+            Assertions.fail();
+            return;
+        }
+
+        Assertions.assertArrayEquals(coords.get(0), new int[]{1, 4});
+        Assertions.assertArrayEquals(coords.get(1), new int[]{2, 4});
+
+        g.solvePointingKTuple(2, 5, new RowOrColumn(RowOrColumnEnum.Row, 4), 4);
+        g.printWithNotes();
+
+        Assertions.assertFalse(g.isNotePresent(5, 3, 4));
+        Assertions.assertFalse(g.isNotePresent(5, 4, 4));
+        Assertions.assertFalse(g.isNotePresent(5, 8, 4));
+
+        for (int[] c : coords) {
+            System.out.println(c[0] + ", " + c[1]);
+        }
+    }
+
+    @Test
+    public void testPointingPairColumn() {
+        Grid g = generatePointingPairGrid();
+        g.print();
+
+        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 3), 8);
+        List<int[]> coords;
+
+        if(coordsOpt.isPresent()) {
+            coords = coordsOpt.get();
+        }
+        else {
+            Assertions.fail();
+            return;
+        }
+
+        Assertions.assertArrayEquals(coords.get(0), new int[]{3, 7});
+        Assertions.assertArrayEquals(coords.get(1), new int[]{3, 8});
+
+        g.solvePointingKTuple(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 3), 8);
+
+        Assertions.assertFalse(g.isNotePresent(1, 3, 0));
+        Assertions.assertFalse(g.isNotePresent(1, 3, 4));
+
+        for (int[] c : coords) {
+            System.out.println(c[0] + ", " + c[1]);
+        }
+    }
+
+    @Test
+    public void testPointingTripletRow() {
+        Grid g = generatePointingTripletGrid();
+        g.print();
+
+        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(3, 1, new RowOrColumn(RowOrColumnEnum.Row, 6), 9);
+        List<int[]> coords;
+
+        if(coordsOpt.isPresent()) {
+            coords = coordsOpt.get();
+        }
+        else {
+            Assertions.fail();
+            return;
+        }
+
+        Assertions.assertArrayEquals(coords.get(0), new int[]{6, 6});
+        Assertions.assertArrayEquals(coords.get(1), new int[]{7, 6});
+        Assertions.assertArrayEquals(coords.get(2), new int[]{8, 6});
+
+        g.solvePointingKTuple(3, 1, new RowOrColumn(RowOrColumnEnum.Row, 6), 9);
+
+        Assertions.assertFalse(g.isNotePresent(1, 3, 6));
+        Assertions.assertFalse(g.isNotePresent(1, 5, 6));
 
         for (int[] c : coords) {
             System.out.println(c[0] + ", " + c[1]);

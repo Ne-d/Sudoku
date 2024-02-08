@@ -4,7 +4,7 @@ package org.prepro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.prepro.LineOrColumn.LineOrColumnEnum;
+import org.prepro.RowOrColumn.RowOrColumnEnum;
 
 public class Grid {
     private final Box[][] board;
@@ -341,7 +341,7 @@ public class Grid {
      * @param y The y coordinate (line) to look in
      * @return Whether the
      */
-    private boolean isNotePresent(int note, int x, int y) {
+    public boolean isNotePresent(int note, int x, int y) {
         return board[x][y].isNotePresent(note);
     }
 
@@ -616,21 +616,21 @@ public class Grid {
     }
 
     /**
-     * Determines if there is a pointing k-uplet in the chosen block
+     * Find if there is a pointing k-tuple in the block and give the line or column it is on, if it exists.
      * @param k The amount of members in the k-uplet
      * @param note The note to look for in k-uplets
      * @param block The block to search in
-     * @return Whether the block contains a pointing k-uplet
+     * @return If there is a pointing k-tuple, return whether it is on a line, or a column, and the number of that line or column. Else, return Optional.empty()
      */
     // TODO: MAKE THE FUNCTION TO DELETE THE NOTES GIVEN BY THE "PAIRE POINTANTE".
     // Supprimer les notes sur la ligne ou colonnes si pas dans le block testé
-    public Optional<LineOrColumn> pointante(int k, int note, int block) {
+    public Optional<List<int[]>> findPointingKTuple(int k, int note, RowOrColumn lc, int block) {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
 
         // For every box in the block, stopping if we found more notes than k.
-        for(int x = blockStartX(block); x < blockEndX(block) && nbFound > k; x++) {
-            for (int y = blockStartY(block); y < blockEndY(block) && nbFound > k; y++) {
+        for(int x = blockStartX(block); x < blockEndX(block) && nbFound <= k; x++) {
+            for (int y = blockStartY(block); y < blockEndY(block) && nbFound <= k; y++) {
                 if(isNotePresent(note, x, y)) {
                     nbFound++;
                     coords.add(new int[]{x, y});
@@ -642,18 +642,48 @@ public class Grid {
         if(coords.size() != k) { return Optional.empty(); }
 
         // For each coordinate in the list, check if they are on the same line or column
-        boolean sameLineSoFar = true;
-        boolean sameColumnSoFar = true;
-        for(int i = 0; i < coords.size() && (sameLineSoFar || sameColumnSoFar); i++) {
-            if(coords.get(i)[0] != coords.get(i + 1)[0]) {
-                sameColumnSoFar = false;
-            }
-            if(coords.get(i)[1] != coords.get(i + 1)[1]) {
-                sameLineSoFar = false;
+        if(lc.e == RowOrColumnEnum.Row) {
+            for (int[] c : coords) {
+                if(c[1] != lc.number) {
+                    return Optional.empty();
+                }
             }
         }
-        // TODO: Return the correct value.
-        return Optional.empty();
+        else {
+            for (int[] c : coords) {
+                if(c[0] != lc.number) {
+                    return Optional.empty();
+                }
+            }
+        }
+
+        return Optional.of(coords);
+    }
+
+    public boolean solvePointingKTuple(int k, int note, RowOrColumn lc, int block) {
+        Optional<List<int[]>> coordsOptional = findPointingKTuple(k, note, lc, block);
+
+        if(coordsOptional.isEmpty()){
+            return false;
+        }
+
+        if(lc.e == RowOrColumnEnum.Row) {
+            for(int x = 0; x < this.SIZE; x++) {
+                if(!isInBlock(x, lc.number, block)) {
+                    deleteNote(x, lc.number, note);
+                }
+            }
+        }
+        else {
+            for(int y = 0; y < this.SIZE; y++) {
+                if(!isInBlock(lc.number, y, block)) {
+                    deleteNote(lc.number, y, note);
+                }
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Find which block a box is in
@@ -677,12 +707,12 @@ public class Grid {
         return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
     }
 
-    public Optional<List<int[]>> boxReduction(int k, int note, LineOrColumn lc, int block) {
+    public Optional<List<int[]>> findBoxReduction(int k, int note, RowOrColumn lc, int block) {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
 
         // For every box in the row or column, stopping if we found more notes than k.
-        if(lc.e == LineOrColumnEnum.Line) { // If we are looking in a row
+        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
             for (int x = 0; x < SIZE && nbFound <= k; x++) {
                 if (isNotePresent(note, x, lc.number)) {
                     nbFound++;
@@ -702,7 +732,7 @@ public class Grid {
         // If there are not exactly k coordinates found, we can't use box-k reduction
         if(coords.size() != k) { return Optional.empty(); }
 
-        if(lc.e == LineOrColumnEnum.Line) { // If we are looking in a row
+        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
             for(int i = 0; i < coords.size(); i++) {
                 if (!isInBlock(coords.get(i)[0], lc.number, block)) { // If the coordinate is not in the block
                     return Optional.empty();
@@ -719,6 +749,35 @@ public class Grid {
 
         // Return the list of coordinates in the k-tuple
         return Optional.of(coords);
+    }
+
+    public boolean solveBoxReduction(int k, int note, RowOrColumn lc, int block) {
+        Optional<List<int[]>> coordsOptional = findBoxReduction(k, note, lc, block);
+
+        if(coordsOptional.isEmpty()) {
+            return false;
+        }
+
+        if(lc.e == RowOrColumnEnum.Row) {
+            for(int x = blockStartX(block); x < blockEndX(block); x++) {
+                for (int y = blockStartY(block); y < blockEndY(block); y++) {
+                    if(y != lc.number) {
+                        deleteNote(x, y, note);
+                    }
+                }
+            }
+        }
+        else {
+            for(int x = blockStartX(block); x < blockEndX(block); x++) {
+                for (int y = blockStartY(block); y < blockEndY(block); y++) {
+                    if(x != lc.number) {
+                        deleteNote(x, y, note);
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
 
@@ -749,7 +808,7 @@ public class Grid {
                     boolean continueColumn;
                     boolean continueRow;
                     boolean continueBlock;
-                    do{
+                    do {
                         rulesOneTwoThreeVerification();
                         continueColumn = k_upletsTest(k, x, 0, x, 8);
                         continueRow = k_upletsTest(k, 0, y, 8, y);
