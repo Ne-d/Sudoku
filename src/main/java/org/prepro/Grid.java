@@ -801,7 +801,7 @@ public class Grid {
     }
     // TODO: Make a generic version with all the rules
 
-    public void allRules(){
+    public void rulesFiveToTen(){
         for(int k = 2; k <= 3; k++) {
             for (int x = 0; x < 9; x++) {
                 for (int y = 0; y < 9; y++) {
@@ -809,7 +809,6 @@ public class Grid {
                     boolean continueRow;
                     boolean continueBlock;
                     do {
-                        rulesOneTwoThreeVerification();
                         continueColumn = k_upletsTest(k, x, 0, x, 8);
                         continueRow = k_upletsTest(k, 0, y, 8, y);
                         continueBlock = k_upletsTest(k, (x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
@@ -819,4 +818,35 @@ public class Grid {
         }
     }
 
+    public void rulesElevenTwelve(){
+        for(int k = 2; k <= 3; k++) {
+            for (int notes = 1; notes < SIZE; notes++) {
+                for (int block = 1; block < SIZE; block++) {
+                    for (int nblc = 0; nblc < SIZE; nblc++) {
+
+                        boolean continueColumn;
+                        boolean continueRow;
+
+                        RowOrColumn lcnumber = new RowOrColumn(RowOrColumnEnum.Row, nblc);
+
+                        do {
+                            continueRow = solvePointingKTuple(k, notes, lcnumber, block);
+                        } while (continueRow);
+
+                        lcnumber = new RowOrColumn(RowOrColumnEnum.Column, nblc);
+                        do {
+                            continueColumn = solveBoxReduction(k, notes, lcnumber, block);
+                        } while (continueColumn);
+
+                    }
+                }
+            }
+        }
+    }
+
+    public void allRules(){
+        rulesOneTwoThreeVerification();
+        rulesFiveToTen();
+        rulesElevenTwelve();
+    }
 }

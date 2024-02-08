@@ -252,5 +252,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         while (useRule(test,scanner)) {}
         scanner.close();
+
     }
 }
