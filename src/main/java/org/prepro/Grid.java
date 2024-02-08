@@ -470,12 +470,12 @@ public class Grid {
      * @param endX X coordinate of the end of the rectangle.
      * @return if the grid has been changed
      */
-    public boolean k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX){
+    public boolean k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX) {
         boolean gridModif = false;
         int k = pK_uplet.length;
         int largeur = endX - startX +1;
 
-        int x,y;
+        int x, y;
         for (int i = 0; i < this.SIZE; i++){
             x = i % largeur + startX;
             y = i / largeur + startY;
@@ -495,6 +495,7 @@ public class Grid {
         }
         return gridModif;
     }
+
     public boolean verifIsPresent(int[] tab, int val){
         for(int i = 0; i< tab.length; i++){
             if(tab[i] == val){return true;}
@@ -831,9 +832,13 @@ public class Grid {
                     boolean continueBlock;
 
                     do {
-                        continueColumn = k_upletsTest(k, x, 0, x, 8);
-                        continueRow = k_upletsTest(k, 0, y, 8, y);
-                        continueBlock = k_upletsTest(k, (x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
+                        continueColumn = k_upletsTest(k, x, 0, x, this.SIZE - 1);
+                        continueRow = k_upletsTest(k, 0, y, this.SIZE - 1, y);
+                        continueBlock = k_upletsTest(k,
+                                (x / 3) * 3,
+                                (y / 3) * 3,
+                                (1 + x / 3) * 3 - 1,
+                                (1 + y / 3) * 3 - 1);
 
                         if(continueRow || continueColumn || continueBlock) {
                             hasChanged = true;
@@ -895,9 +900,15 @@ public class Grid {
         boolean elevenTwelve;
 
         do {
-            oneToThree = rulesOneTwoThree();
-            fiveToTen = rulesFiveToTen();
+            do {
+                do {
+                    oneToThree = rulesOneTwoThree();
+                } while(oneToThree);
+
+                fiveToTen = rulesFiveToTen();
+            } while(fiveToTen);
+
             elevenTwelve = rulesElevenTwelve();
-        } while(oneToThree && fiveToTen && elevenTwelve);
+        } while(elevenTwelve);
     }
 }

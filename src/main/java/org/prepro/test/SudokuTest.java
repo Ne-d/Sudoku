@@ -364,7 +364,7 @@ public class SudokuTest {
         Assertions.assertTrue(valid);
     }
 
-    private Grid GenerateBoxReductionGrid() {
+    private Grid generateBoxReductionGrid() {
         Grid g = new Grid();
 
         // Grille: Sudoku Extrême n°74 p.69
@@ -434,7 +434,7 @@ public class SudokuTest {
 
     @Test
     public void testBox2ReductionColumn() {
-        Grid g = GenerateBoxReductionGrid();
+        Grid g = generateBoxReductionGrid();
         g.print();
 
         Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
@@ -466,7 +466,7 @@ public class SudokuTest {
 
     @Test
     public void testBox2ReductionColumnImpossible() {
-        Grid g = GenerateBoxReductionGrid();
+        Grid g = generateBoxReductionGrid();
         g.print();
 
         System.out.println("Trying to do a box-2 reduction on a note that is not applicable (also present outside the block).");
@@ -693,6 +693,49 @@ public class SudokuTest {
         for (int[] c : coords) {
             System.out.println(c[0] + ", " + c[1]);
         }
+    }
+
+    @Test
+    public void allRulesTest() {
+        Grid g = new Grid();
+
+        g.addValue(1, 0, 5);
+        g.addValue(4, 0, 1);
+        g.addValue(7, 0, 4);
+
+        g.addValue(0, 1, 2);
+        g.addValue(7, 1, 3);
+
+        g.addValue(1, 2, 6);
+        g.addValue(5, 2, 9);
+        g.addValue(6, 2, 1);
+        g.addValue(8, 2, 2);
+
+        g.addValue(0, 3, 7);
+        g.addValue(4, 3, 5);
+        g.addValue(6, 3, 6);
+        g.addValue(8, 3, 1);
+
+        g.addValue(2, 4, 5);
+        g.addValue(5, 4, 3);
+
+        g.addValue(6, 5, 4);
+
+        g.addValue(1, 6, 9);
+        g.addValue(3, 6, 8);
+
+        g.addValue(0, 7, 6);
+        g.addValue(4, 7, 3);
+        g.addValue(6, 7, 5);
+        g.addValue(8, 7, 7);
+
+        g.addValue(7, 8, 2);
+
+        g.print();
+        g.allRules();
+        g.print();
+        g.printWithNotes();
+        System.out.println("La grille est " + (g.isValid() ? "valide." : "invalide."));
     }
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
