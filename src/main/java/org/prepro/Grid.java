@@ -622,6 +622,7 @@ public class Grid {
      * @return Whether the block contains a pointing k-uplet
      */
     // TODO: MAKE THE FUNCTION TO DELETE THE NOTES GIVEN BY THE "PAIRE POINTANTE".
+    // Supprimer les notes sur la ligne ou colonnes si pas dans le block testé
     public Optional<LineOrColumn> pointante(int k, int note, int block) {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
@@ -650,6 +651,52 @@ public class Grid {
                 sameLineSoFar = false;
             }
         }
+        // TODO: Return the correct value.
+        return Optional.empty();
+    }
+
+    public boolean box_reduction(int k, int note, int lc){
+        int nbFound = 0;
+        List<int[]> coords = new ArrayList<>();
+
+        // For every box in the row or column, stopping if we found more notes than k.
+        if lc = ligne {
+            for (int x = 0; x < SIZE && nbFound <= k; x++) {
+                if (isNotePresent(note, x, n_ligne)) {
+                    nbFound++;
+                    coords.add(new int[]{x, n_ligne});
+                }
+            }
+        }
+        else{
+            for (int y = 0; y < SIZE && nbFound <= k; y++) {
+                if (isNotePresent(note, n_column, y)) {
+                    nbFound++;
+                    coords.add(new int[]{n_column, y});
+                }
+            }
+        }
+
+        if(coords.size() != k) { return Optional.empty(); }
+
+        boolean sameBlockSoFar = true;
+
+        //Verify if it's in the same block
+        if lc = ligne {
+            for(int i = 0; i < coords.size() && sameBlockSoFar; i++) {
+                if (coords.get(i)[0] != coords.get(i + 1)[0]) {
+                    sameBlockSoFar = false;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < coords.size() && sameBlockSoFar; i++) {
+                if (coords.get(i)[1] != coords.get(i + 1)[1]) {
+                    sameBlockSoFar = false;
+                }
+            }
+        }
+
         // TODO: Return the correct value.
         return Optional.empty();
     }
