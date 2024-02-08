@@ -340,7 +340,7 @@ public class SudokuTest {
         System.out.println();
         grid.print();
         System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
-        grid.rulesOneTwoThreeVerification();
+        grid.rulesOneTwoThree();
         System.out.println();
         grid.print();
         System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");

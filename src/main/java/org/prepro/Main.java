@@ -22,7 +22,7 @@ public class Main {
                     grid.print();
                     break;
                 case "elementaire":
-                    grid.rulesOneTwoThreeVerification();
+                    grid.rulesOneTwoThree();
                     grid.print();
                     grid.printWithNotes();
                     break;
@@ -105,7 +105,6 @@ public class Main {
         return true;
     }
     public static void main(String[] args) {
-        /*
         Grid grid1 = new Grid();
         grid1.addValue(0, 0, 7); //line 1
         grid1.addValue(1, 0, 2);
@@ -187,8 +186,15 @@ public class Main {
         grid2.addValue(1, 8, 6); // line 9
         grid2.addValue(8, 8, 9);
 
+        grid2.print();
 
-        
+        System.out.println(grid2.isValid());
+        grid2.allRules();
+        grid2.print();
+        System.out.println(grid2.isValid());
+
+
+        /*
         grid1.print();
         System.out.println("La grille est " + (grid1.isValid() ? "valide." : "invalide."));
         grid1.afficheNote(0, 1);
@@ -212,6 +218,7 @@ public class Main {
         System.out.println(grid2.isValid() ? "La grille est valide." : "La grille est invalide.");
         */
 
+        /*
         //test k_uplet
         Grid test = new Grid();
         test.addValue(2, 0, 2);
@@ -252,6 +259,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         while (useRule(test,scanner)) {}
         scanner.close();
+        */
 
     }
 }

@@ -306,8 +306,8 @@ public class Grid {
      * @param yPos Y coordinate of the chosen box
      * @param note The note to remove
      */
-    public void deleteNote(int xPos, int yPos, int note) {
-        this.board[xPos][yPos].deleteNote(note);
+    public boolean deleteNote(int xPos, int yPos, int note) {
+        return this.board[xPos][yPos].deleteNote(note);
     }
 
     /**
@@ -545,10 +545,8 @@ public class Grid {
                         }
                     }
                 }
-
             }
             if(nbfound == k*comb.size()) {
-                System.out.print("nbfound = " + nbfound + " k _uplet "); for(int val : tupples.get(i) ){System.out.print(val);} System.out.println(); // affichage
                 return k_uplet_delNotes(pos, tupples.get(i), startX, startY, endX);
             }
         }
@@ -667,22 +665,30 @@ public class Grid {
             return false;
         }
 
+        boolean hasChanged = false;
+
         if(lc.e == RowOrColumnEnum.Row) {
             for(int x = 0; x < this.SIZE; x++) {
                 if(!isInBlock(x, lc.number, block)) {
-                    deleteNote(x, lc.number, note);
-                }
-            }
-        }
-        else {
-            for(int y = 0; y < this.SIZE; y++) {
-                if(!isInBlock(lc.number, y, block)) {
-                    deleteNote(lc.number, y, note);
+                    if(deleteNote(x, lc.number, note))
+                    {
+                        hasChanged = true;
+                    }
                 }
             }
         }
 
-        return true;
+        else {
+            for(int y = 0; y < this.SIZE; y++) {
+                if(!isInBlock(lc.number, y, block)) {
+                    if(deleteNote(lc.number, y, note)) {
+                        hasChanged = true;
+                    }
+                }
+            }
+        }
+
+        return hasChanged;
     }
 
     /**
@@ -758,11 +764,15 @@ public class Grid {
             return false;
         }
 
+        boolean hasChanged = false;
+
         if(lc.e == RowOrColumnEnum.Row) {
             for(int x = blockStartX(block); x < blockEndX(block); x++) {
                 for (int y = blockStartY(block); y < blockEndY(block); y++) {
                     if(y != lc.number) {
-                        deleteNote(x, y, note);
+                        if(deleteNote(x, y, note)) {
+                            hasChanged = true;
+                        }
                     }
                 }
             }
@@ -771,22 +781,26 @@ public class Grid {
             for(int x = blockStartX(block); x < blockEndX(block); x++) {
                 for (int y = blockStartY(block); y < blockEndY(block); y++) {
                     if(x != lc.number) {
-                        deleteNote(x, y, note);
+                        if(deleteNote(x, y, note)) {
+                            hasChanged = true;
+                        }
                     }
                 }
             }
         }
 
-        return true;
+        return hasChanged;
     }
 
 
     /**
-     * Do the verification of the three first rules of Sudoku with a print in the console
+     * Solve the grid using the first three rules
      */
-    public void rulesOneTwoThreeVerification() {
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
+    public boolean rulesOneTwoThree() {
+        boolean hasChanged = false;
+
+        for (int x = 0; x < this.SIZE; x++) {
+            for (int y = 0; y < this.SIZE; y++) {
                 boolean continueColumn;
                 boolean continueRow;
                 boolean continueBlock;
@@ -794,59 +808,96 @@ public class Grid {
                     continueColumn = this.simplerule(x, 0, x, 8);
                     continueRow = this.simplerule(0, y, 8, y);
                     continueBlock = this.simplerule((x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
-                }
-                while (continueColumn && continueRow && continueBlock);
+                    // TODO: On exécute la règle pour les blocs à chaque case donc 9 fois pour chaque bloc, faut changer ça je suppose
+
+                    if(continueColumn || continueRow || continueBlock) {
+                        hasChanged = true;
+                    }
+                } while (continueColumn && continueRow && continueBlock);
             }
         }
-    }
-    // TODO: Make a generic version with all the rules
 
-    public void rulesFiveToTen(){
+        return hasChanged;
+    }
+
+    public boolean rulesFiveToTen() {
+        boolean hasChanged = false;
+
         for(int k = 2; k <= 3; k++) {
-            for (int x = 0; x < 9; x++) {
-                for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < this.SIZE; x++) {
+                for (int y = 0; y < this.SIZE; y++) {
                     boolean continueColumn;
                     boolean continueRow;
                     boolean continueBlock;
+
                     do {
                         continueColumn = k_upletsTest(k, x, 0, x, 8);
                         continueRow = k_upletsTest(k, 0, y, 8, y);
                         continueBlock = k_upletsTest(k, (x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
+
+                        if(continueRow || continueColumn || continueBlock) {
+                            hasChanged = true;
+                        }
                     } while(continueColumn && continueRow && continueBlock);
                 }
             }
         }
+
+        return hasChanged;
     }
 
-    public void rulesElevenTwelve(){
+    public boolean rulesElevenTwelve(){
+        boolean hasChanged = false;
+
         for(int k = 2; k <= 3; k++) {
-            for (int notes = 1; notes < SIZE; notes++) {
-                for (int block = 1; block < SIZE; block++) {
-                    for (int nblc = 0; nblc < SIZE; nblc++) {
-
-                        boolean continueColumn;
-                        boolean continueRow;
-
-                        RowOrColumn lcnumber = new RowOrColumn(RowOrColumnEnum.Row, nblc);
+            for (int notes = 1; notes <= this.SIZE; notes++) {
+                for (int block = 1; block <= this.SIZE; block++) {
+                    for (int nblc = 0; nblc < this.SIZE; nblc++) {
+                        boolean continuePointingPairRow;
+                        boolean continuePointingPairColumn;
+                        boolean continueBoxReductionRow;
+                        boolean continueBoxReductionColumn;
 
                         do {
-                            continueRow = solvePointingKTuple(k, notes, lcnumber, block);
-                        } while (continueRow);
+                            // Solve pointing pair on a row
+                            RowOrColumn rowOrColumn = new RowOrColumn(RowOrColumnEnum.Row, nblc);
+                            continuePointingPairRow = solvePointingKTuple(k, notes, rowOrColumn, block);
 
-                        lcnumber = new RowOrColumn(RowOrColumnEnum.Column, nblc);
-                        do {
-                            continueColumn = solveBoxReduction(k, notes, lcnumber, block);
-                        } while (continueColumn);
+                            // Solve pointing pair on a column
+                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Column, nblc);
+                            continuePointingPairColumn = solvePointingKTuple(k, notes, rowOrColumn, block);
 
+                            // Solve box reduction on a row
+                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Row, nblc);
+                            continueBoxReductionRow = solveBoxReduction(k, notes, rowOrColumn, block);
+
+                            // Solve box reduction on a column
+                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Column, nblc);
+                            continueBoxReductionColumn = solveBoxReduction(k, notes, rowOrColumn, block);
+
+                            if(continuePointingPairRow || continuePointingPairColumn ||
+                                    continueBoxReductionRow || continueBoxReductionColumn) {
+                                hasChanged = true;
+                            }
+                        } while(continuePointingPairRow && continuePointingPairColumn &&
+                                continueBoxReductionRow && continueBoxReductionColumn);
                     }
                 }
             }
         }
+
+        return hasChanged;
     }
 
     public void allRules(){
-        rulesOneTwoThreeVerification();
-        rulesFiveToTen();
-        rulesElevenTwelve();
+        boolean oneToThree;
+        boolean fiveToTen;
+        boolean elevenTwelve;
+
+        do {
+            oneToThree = rulesOneTwoThree();
+            fiveToTen = rulesFiveToTen();
+            elevenTwelve = rulesElevenTwelve();
+        } while(oneToThree && fiveToTen && elevenTwelve);
     }
 }
