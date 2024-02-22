@@ -1,4 +1,4 @@
-package org.prepro;
+package org.prepro.model;
 
 public class RowOrColumn {
     public enum RowOrColumnEnum {

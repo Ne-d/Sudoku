@@ -1,5 +1,7 @@
 package org.prepro;
 
+import org.prepro.model.Grid;
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 

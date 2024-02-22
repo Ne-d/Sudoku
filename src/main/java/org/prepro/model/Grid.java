@@ -1,10 +1,10 @@
-package org.prepro;
+package org.prepro.model;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.prepro.RowOrColumn.RowOrColumnEnum;
+import org.prepro.model.RowOrColumn.RowOrColumnEnum;
 
 public class Grid {
     private final Box[][] board;

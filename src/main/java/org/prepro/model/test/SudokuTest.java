@@ -1,11 +1,11 @@
-package org.prepro.test;
+package org.prepro.model.test;
 
 import org.junit.jupiter.api.Assertions;
-import org.prepro.Grid;
-import org.prepro.RowOrColumn.RowOrColumnEnum;
+import org.prepro.model.Grid;
+import org.prepro.model.RowOrColumn.RowOrColumnEnum;
 
 import org.junit.jupiter.api.Test;
-import org.prepro.RowOrColumn;
+import org.prepro.model.RowOrColumn;
 
 import java.util.List;
 import java.util.Optional;
