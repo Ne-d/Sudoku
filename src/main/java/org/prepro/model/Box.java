@@ -36,6 +36,7 @@ public class Box {
      * @param note The note to be removed
      * @return True if the note has been deleted
      */
+
     public boolean deleteNote(int note){
         boolean alreadyPresent = isNotePresent(note);
         this.notes = this.notes & ~(int)Math.pow(2, note - 1);
@@ -56,14 +57,17 @@ public class Box {
         for(int i = 1; i < this.SIZE; i++){
 
             boolean delete = true;
-            for (int j = 0; j < notes.length; j++){
-                
-                if(notes[j] == i){delete = false;}
+            for (int note : notes) {
+                if (note == i) {
+                    delete = false;
+                    break;
+                }
             }
             if(delete){if(deleteNote(i)){modif = true;}}
         }
         return modif;
     }
+
     /**
      * Adds a note to this box
      * @param note The note to be added

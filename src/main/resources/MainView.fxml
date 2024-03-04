@@ -3,23 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.BorderPane"
-         fx:id="root"
+<?import org.prepro.view.GridView?>
+<fx:root type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          fx:controller="org.prepro.controller.MainViewController">
-    <top>
-        <ToolBar>
+
+    <ToolBar AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
             <Button>New</Button>
             <Button>Open</Button>
             <Separator/>
             <Button>Solve</Button>
             <Button>Reset</Button>
-        </ToolBar>
-    </top>
+    </ToolBar>
 
-    <center>
-
-    </center>
+    <GridView AnchorPane.topAnchor="100"
+              AnchorPane.bottomAnchor="100"
+              AnchorPane.leftAnchor="100"
+              AnchorPane.rightAnchor="100"/>
 
 </fx:root>
