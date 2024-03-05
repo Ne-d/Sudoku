@@ -38,6 +38,10 @@ public class Grid {
         return this.board[xPos][yPos].getVal();
     }
 
+    public Notes getNotes(int xPos, int yPos) {
+        return this.board[xPos][yPos].getNotes();
+    }
+
 
     /**
      * @return Returns true if the box at the given coordinates is empty, false if it has a value.
@@ -330,6 +334,9 @@ public class Grid {
 	    for (int x = startX; x <= endX; x++) {
 	        for (int y = startY; y <= endY; y++) {
 	        	this.deleteNote(x, y, val);
+                if(board[x][y].getNbNote() == 1) {
+                    //board[x][y].setVal(board[x][y].getNotes().getUniqueNote());
+                }
 	        }
 	    }
     }

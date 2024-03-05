@@ -6,13 +6,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
 import static java.lang.Math.sqrt;
 
 public class GridView extends GridPane {
-    private final int SIZE = 9;
-    private final int SQRTSIZE = (int) sqrt(this.SIZE);
+    private final int SIZE;
+    private final int SQRTSIZE;
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
@@ -23,32 +24,93 @@ public class GridView extends GridPane {
                 new CornerRadii(0),
                 new BorderWidths(2),
                 new Insets(0))));
+
         this.setHgap(2);
         this.setVgap(2);
 
-        final int TOTAL_SIZE = this.SIZE + (SQRTSIZE - 1);
-        for(int x = 0; x < TOTAL_SIZE; x++) {
-            for(int y = 0; y < TOTAL_SIZE; y++) {
+        Grid grid = testGrid();
+        //grid.rulesOneTwoThree();
+
+        grid.print();
+        grid.printWithNotes();
+
+        this.SIZE = grid.SIZE;
+        this.SQRTSIZE = grid.SQRTSIZE;
+
+        // Size of the visual grid including separators (2 separators for a 9x9 grid).
+        final int TOTAL_SIZE = /*this.SIZE + (SQRTSIZE - 1);*/ SIZE;
+        int gridX = 0;
+        int gridY = 0;
+
+        for(int y = 0; y < TOTAL_SIZE; y++) {
+            for(int x = 0; x < TOTAL_SIZE; x++) {
+
+                /*
                 if(x % (SQRTSIZE + 1) == SQRTSIZE && x != 0) {
                     this.add(new Separator(Orientation.VERTICAL), x, y);
                 }
+
                 else if(y % (SQRTSIZE + 1) == SQRTSIZE && y != 0) {
                     this.add(new Separator(Orientation.HORIZONTAL), x , y);
                 }
-                else {
-                    Notes notes = new Notes();
-                    notes.delete(1);
-                    notes.delete(2);
-                    notes.delete(3);
-                    notes.delete(4);
-                    notes.delete(5);
-                    notes.delete(6);
-                    notes.delete(7);
-                    notes.delete(9);
+                */
 
-                    this.add(new CellView(notes, 5, 9), x, y);
-                }
+
+                Notes notes = grid.getNotes(x, y);
+                int value = grid.getVal(x, y);
+
+                this.add(new CellView(notes, value, this.SIZE), x, y);
             }
         }
+    }
+
+    public Grid testGrid() {
+        Grid grid1 = new Grid();
+        grid1.addValue(0, 0, 7); //line 1
+        grid1.addValue(1, 0, 2);
+        grid1.addValue(2, 0, 6);
+        grid1.addValue(4, 0, 1);
+        grid1.addValue(5, 0, 8);
+        grid1.addValue(6, 0, 3);
+        grid1.addValue(7, 0, 4);
+
+        grid1.addValue(1, 1, 9); // line 2
+        grid1.addValue(4, 1, 5);
+        grid1.addValue(5, 1, 2);
+
+        grid1.addValue(0, 2, 5); //line 3
+        grid1.addValue(2, 2, 4);
+        grid1.addValue(4, 2, 3);
+        grid1.addValue(5, 2, 6);
+        grid1.addValue(6, 2, 9);
+        grid1.addValue(7, 2, 8);
+        grid1.addValue(8, 2, 2);
+
+        grid1.addValue(0, 3, 6); // line 4
+        grid1.addValue(3, 3, 3);
+        grid1.addValue(7, 3, 2);
+        grid1.addValue(8, 3, 1);
+
+        grid1.addValue(1, 4, 7); // line 5
+        grid1.addValue(5, 4, 4);
+
+        grid1.addValue(3, 5, 6); // line 6
+        grid1.addValue(5, 5, 9);
+        grid1.addValue(6, 5, 4);
+        grid1.addValue(7, 5, 5);
+
+        grid1.addValue(1, 6, 3); // line 7
+        grid1.addValue(2, 6, 7);
+        grid1.addValue(7, 6, 9);
+        grid1.addValue(8, 6, 4);
+
+        grid1.addValue(0, 7, 4); // line 8
+        grid1.addValue(2, 7, 1);
+        grid1.addValue(5, 7, 3);
+
+        grid1.addValue(3, 8, 2); // line 9
+        grid1.addValue(6, 8, 1);
+
+        return grid1;
     }
 }

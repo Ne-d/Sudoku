@@ -9,7 +9,7 @@ public class CellView extends StackPane {
     private final int SIZE;
     private ValueCellView valueView;
     private NotesCellView notesView;
-
+    private int value;
     private final Notes notes;
 
     public CellView(Notes notes, int value, int size) {
@@ -30,31 +30,28 @@ public class CellView extends StackPane {
     }
 
     private void setupValue(int value) {
+        this.value = value;
         this.valueView = new ValueCellView(value);
     }
 
     private void showValue() {
-        System.out.println("Showing value.");
         this.valueView.setVisible(true);
         this.notesView.setVisible(false);
     }
 
     private void showNotes() {
-        System.out.println("Showing notes.");
         this.valueView.setVisible(false);
         this.notesView.setVisible(true);
     }
 
     public void update() {
-        System.out.println("Number of notes: " + notes.getNumber());
         if(notes.getNumber() == 1) {
-            try {
-                int newValue = this.notes.getUniqueNote();
-                valueView.setValue(newValue);
-            }
-            catch (Notes.MultipleNotesException e) {
-                e.printStackTrace();
-            }
+            int newValue = this.notes.getUniqueNote();
+            valueView.setValue(newValue);
+            showValue();
+        }
+        if(notes.getNumber() == 0) {
+            valueView.setValue(this.value);
             showValue();
         }
         else {

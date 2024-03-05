@@ -42,7 +42,7 @@ public class Notes {
     /**
      * Prints the content of the notes
      */
-    public void afficheNote() {
+    public void print() {
         for (int i = 0; i < this.SIZE; i++) {
             if (((this.tab >> i) & 1) == 1) {
                 System.out.print(i + 1 + " ");
@@ -63,7 +63,35 @@ public class Notes {
         return alreadyPresent;
     }
 
-    public int getUniqueNote() throws MultipleNotesException {
+    /**
+     * Delete all the notes
+     */
+    public void deleteAll(){
+        this.tab = 0;
+    }
+
+    /**
+     * Delete all notes except the note present in the argument
+     * @param notes An array of the notes to keep, all the others will be deleted.
+     */
+    public boolean deleteAllExcept(int []notes){
+        boolean modif = false;
+
+        for(int i = 1; i < this.SIZE; i++){
+            boolean delete = true;
+
+            for (int note : notes) {
+                if (note == i) {
+                    delete = false;
+                    break;
+                }
+            }
+            if(delete){if(delete(i)){modif = true;}}
+        }
+        return modif;
+    }
+
+    public int getUniqueNote() {
         if (this.getNumber() == 1) {
             for (int i = 0; i < SIZE; i++) {
                 if (isPresent(i)) {
@@ -72,7 +100,11 @@ public class Notes {
             }
         }
 
-        throw new MultipleNotesException();
+        if(this.getNumber() == 0)
+            return 0;
+
+        else
+            return -1;
     }
 
     public static class MultipleNotesException extends Exception {}
