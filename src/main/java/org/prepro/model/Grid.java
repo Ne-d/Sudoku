@@ -309,6 +309,7 @@ public class Grid {
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      * @param note The note to remove
+     * @return True if the grid has changed (the note was removed), otherwise false (the note was not there).
      */
     public boolean deleteNote(int xPos, int yPos, int note) {
         return this.board[xPos][yPos].deleteNote(note);
@@ -447,9 +448,16 @@ public class Grid {
         }
         return found;
     }
-    
-    
-    
+
+
+    /**
+     * Finds all the combinations (k-tupples) of k numbers in a list from 1 to size.
+     * @param size The max value of the numbers.
+     * @param len The amount of numbers to take.
+     * @param startPosition The minimum value of the numbers.
+     * @param result The tuple currently being built by the function.
+     * @param resultList The list of tuples to be returned.
+     */
     static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
         if(len == 0) {
             resultList.add(result.clone());
@@ -460,7 +468,13 @@ public class Grid {
             combinations_aux(size, len - 1, i + 1, result, resultList);
         }
     }
-    
+
+    /**
+     * Finds all the combinations (k-tupples) of k numbers in a list from 1 to size.
+     * @param size The max value of the numbers.
+     * @param k The amount of numbers to take.
+     * @return A list of tuples with k elements from 1 to size.
+     */
     static List<int[]> combinations(int size, int k) {
         List<int[]> res = new ArrayList<>();
         
@@ -808,25 +822,29 @@ public class Grid {
         return hasChanged;
     }
 
-
     /**
-     * Find Xwing in row
-     * @param note The note to look for in tuplets
-     * @param lc The row to look for in tuplets
-     * @return The row that contains the Xwing
+     * Finds if the given Row or Column could be in an X-Wing (has the candidate note exactly twice).
+     * @param note The note to look for
+     * @param lc Whether we are looking in a Row or a Column
+     * @return If there are exactly two candidates in the row or column, return their coordinates. Else return Empty.
      */
-
-    public Optional<List<int[]>> findXwing(int note, RowOrColumn lc){
+    public Optional<int[][]> xWingGetCoordinates(int note, RowOrColumn lc) {
         int nbFound = 0;
 
-        List<int[]> coords = new ArrayList<>();
+        int[][] coords = new int[2][2];
 
         //For every row or column in the grid, stopping if we found more notes than 2
         if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
             for (int x = 0; x < SIZE && nbFound <= 2; x++) {
                 if (isNotePresent(note, x, lc.number)) {
                     nbFound++;
-                    coords.add(new int[]{x, lc.number});
+
+                    if(nbFound < 2) {
+                        coords[nbFound] = new int[]{x, lc.number};
+                    }
+                    else {
+                        return Optional.empty();
+                    }
                 }
             }
         }
@@ -834,65 +852,128 @@ public class Grid {
             for (int y = 0; y < SIZE && nbFound <= 2; y++) {
                 if (isNotePresent(note, lc.number, y)) {
                     nbFound++;
-                    coords.add(new int[]{lc.number, y});
+
+                    if(nbFound < 2) {
+                        coords[nbFound] = new int[]{lc.number, y};
+                    }
+                    else {
+                        return Optional.empty();
+                    }
                 }
             }
         }
-
-        // If there are not exactly k coordinates found, we can't use X-wing
-        if(coords.size() != 2) { return Optional.empty(); }
 
         // Return the list of coordinates in the k-tuple
         return Optional.of(coords);
     }
 
     /**
-     * Solve X-wing
-     * @param note The note to look for in the tuple
-     * @param lc1 The Row or Column to search in
-     * @param lc2 The Row or Column to search in
-     * @return The row that contains the Xwing
+     * Finds if the rows or columns suitable for an X-Wing have their candidates aligned.
+     * @param lce Whether we are looking in rows or columns.
+     * @param first The first row or column's list of coordinates.
+     * @param second The second row or column's list of coordinates.
+     * @return True if the candidates are aligned, false otherwise.
      */
-    /*
-    public boolean solveXwing(int k, int note, RowOrColumn lc1, RowOrColumn lc2, int block) {
-        Optional<List<int[]>> coordsOptional1 = findXwing(note, lc1);
-        Optional<List<int[]>> coordsOptional2 = findXwing(note, lc2);
+    public boolean xWingAreRowsOrColumnsAligned(RowOrColumnEnum lce, int[][] first, int[][] second) {
+        if(lce == RowOrColumnEnum.Row) { // If we are looking in a Row
+            boolean sameXSoFar = true;
+            for(int i = 0; i < 2 && sameXSoFar; i++) {
+                // Check if the X coordinate of the candidates are aligned.
+                sameXSoFar = (first[i][0] == second[i][0]);
+            }
 
-        if(coordsOptional1.isEmpty() || coordsOptional1.isEmpty()) {
-            return false;
+            return sameXSoFar;
+        }
+        else { // If we are looking in a Column
+            boolean sameYSoFar = true;
+            for(int i = 0; i < 2 && sameYSoFar; i++) {
+                // Check if the X coordinate of the candidates are aligned.
+                sameYSoFar = (first[i][1] == second[i][1]);
+            }
+
+            //noinspection SuspiciousNameCombination
+            return sameYSoFar;
+        }
+    }
+
+
+    /**
+     * Checks if the given rows or columns contain an X-Wing.
+     * @param note The note to look for.
+     * @param lc1 The first row or column to check.
+     * @param lc2 The second row or column to check.
+     * @return The coordinates of the X-Wing's candidates (the corners of the X-Wing).
+     */
+
+    public Optional<int[][]> checkXWing(int note, RowOrColumn lc1, RowOrColumn lc2) {
+        // Find a row or column that could be in an X-Wing.
+        Optional<int[][]> first = xWingGetCoordinates(note, lc1);
+
+        // If we haven't found a suitable row or column, return early.
+        if(first.isEmpty()) {
+            return Optional.empty();
         }
 
+        // Find another suitable row or column.
+        Optional<int[][]> second = xWingGetCoordinates(note, lc2);
+
+        // If we haven't found a second suitable row or column, return early.
+        if(second.isEmpty()) {
+            return Optional.empty();
+        }
+        else {
+            // Check that the candidates in both rows or columns are properly aligned for an X-Wing.
+            boolean candidatesAligned = xWingAreRowsOrColumnsAligned(lc1.e, first.get(), second.get());
+            if(!candidatesAligned) { return Optional.empty(); }
+
+            // Make a list of all the coordinates of the X-Wing to return.
+            int[][] coordinates = new int[2][2];
+            for(int i = 0; i < 2; i++) {
+                coordinates[i] = first.get()[i];
+                coordinates[i] = second.get()[i];
+            }
+
+            return Optional.of(coordinates);
+        }
+    }
+
+    /**
+     * Solve X-wing
+     * @param note The note to look for in the tuple
+     * @param lce Whether we are looking in rows or columns
+     * @return Whether the grid has been changed by solving the X-Wing.
+     */
+    public boolean solveXwing(int note, RowOrColumnEnum lce, int[][] coordinates) {
         boolean hasChanged = false;
 
-        if(lc1.e == RowOrColumnEnum.Row && lc2.e == RowOrColumnEnum.Row) {
-            for(int x = blockStartX(block); x < blockEndX(block); x++) {
-                for (int y = blockStartY(block); y < blockEndY(block); y++) {
-                    if(y != lc.number) {
-                        if(deleteNote(x, y, note)) {
-                            hasChanged = true;
-                        }
-                    }
+        int x1 = coordinates[0][0];
+        int x2 = coordinates[1][0];
+
+        int y1 = coordinates[0][1];
+        int y2 = coordinates[1][1];
+
+        if(lce == RowOrColumnEnum.Row) { // If we are working in a row
+            // Delete all candidates in the columns, except the ones in the X-Wing.
+            for(int i = 0; i < this.SIZE; i++) {
+                if(i != y1 && i != y2) {
+                    // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
+                    hasChanged |= deleteNote(x1, i, note);
+                    hasChanged |= deleteNote(x2, i, note);
                 }
             }
         }
-        else {
-            for(int x = blockStartX(block); x < blockEndX(block); x++) {
-                for (int y = blockStartY(block); y < blockEndY(block); y++) {
-                    if(x != lc.number) {
-                        if(deleteNote(x, y, note)) {
-                            hasChanged = true;
-                        }
-                    }
+        else { // If we are working in a column
+            // Delete all candidates in the row, except the ones in the X-Wing.
+            for(int i = 0; i < this.SIZE; i++) {
+                if(i != x1 && i != x2) {
+                    hasChanged |= deleteNote(i, y1, note);
+                    hasChanged |= deleteNote(i, y2, note);
                 }
             }
         }
 
         return hasChanged;
-    }*/
-
-
-
-
+    }
 
     /**
      * Solve the grid using the first three rules
@@ -986,6 +1067,52 @@ public class Grid {
                             }
                         } while(continuePointingPairRow && continuePointingPairColumn &&
                                 continueBoxReductionRow && continueBoxReductionColumn);
+                    }
+                }
+            }
+        }
+
+        return hasChanged;
+    }
+
+    /**
+     * Try to solve an X-Wing
+     * @return True if the grid has changed (an X-Wing has been found and solved), otherwise false.
+     */
+    public boolean ruleThirteen() {
+        boolean hasChanged = false;
+
+        for (int note = 1; note <= this.SIZE && !hasChanged; note++) {
+            List<int[]> combinations = combinations(9, 2);
+
+            // Try to solve an X-Wing in any row.
+            for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
+                RowOrColumn row1 = new RowOrColumn(RowOrColumnEnum.Row, combinations.get(combIndex)[0] - 1);
+                RowOrColumn row2 = new RowOrColumn(RowOrColumnEnum.Row, combinations.get(combIndex)[1] - 1);
+
+                Optional<int[][]> coords = checkXWing(note, row1, row2);
+
+                if(coords.isPresent()) {
+                    hasChanged = solveXwing(note, RowOrColumnEnum.Row, coords.get());
+
+                    if(hasChanged) {
+                        break;
+                    }
+                }
+            }
+
+            // Try to solve an X-Wing in any column
+            for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
+                RowOrColumn column1 = new RowOrColumn(RowOrColumnEnum.Column, combinations.get(combIndex)[0] - 1);
+                RowOrColumn column2 = new RowOrColumn(RowOrColumnEnum.Column, combinations.get(combIndex)[1] - 1);
+
+                Optional<int[][]> coords = checkXWing(note, column1, column2);
+
+                if(coords.isPresent()) {
+                    hasChanged = solveXwing(note, RowOrColumnEnum.Column, coords.get());
+
+                    if(hasChanged) {
+                        break;
                     }
                 }
             }

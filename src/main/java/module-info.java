@@ -8,6 +8,9 @@ module org.prepro {
 
     exports org.prepro.model;
 
+    opens org.prepro.model.test to org.junit.platform.commons;
+    exports org.prepro.model.test;
+
     opens org.prepro.controller to javafx.fxml;
     exports org.prepro.controller;
 

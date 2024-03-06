@@ -1,15 +1,11 @@
 package org.prepro.view;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
-
-import static java.lang.Math.sqrt;
 
 public class GridView extends GridPane {
     private final int SIZE;
@@ -29,7 +25,6 @@ public class GridView extends GridPane {
         this.setVgap(2);
 
         Grid grid = testGrid();
-        //grid.rulesOneTwoThree();
 
         grid.print();
         grid.printWithNotes();

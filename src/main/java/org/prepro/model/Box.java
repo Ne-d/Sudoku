@@ -33,7 +33,7 @@ public class Box {
     /**
      * Removes a note from this box
      * @param note The note to be removed
-     * @return True if the note has been deleted
+     * @return True if the note has been deleted, false if it was not there.
      */
 
     public boolean deleteNote(int note){

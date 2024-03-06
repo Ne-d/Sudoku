@@ -9,6 +9,7 @@ public class RowOrColumn {
     RowOrColumnEnum e;
     int number;
 
+
     /**
      * Create a new RowOrColumn
      * @param e The enum to chose whether this represents a row or a column
