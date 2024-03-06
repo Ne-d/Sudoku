@@ -765,6 +765,14 @@ public class Grid {
         return Optional.of(coords);
     }
 
+    /**
+     * Solve BoxReduction
+     * @param k The k amount of members in the k-uplet
+     * @param note The note to look for in thetuple
+     * @param lc The Row or Column to search in
+     * @param block The block to search in
+     * @return The row that contains the Xwing
+     */
     public boolean solveBoxReduction(int k, int note, RowOrColumn lc, int block) {
         Optional<List<int[]>> coordsOptional = findBoxReduction(k, note, lc, block);
 
@@ -799,6 +807,91 @@ public class Grid {
 
         return hasChanged;
     }
+
+
+    /**
+     * Find Xwing in row
+     * @param note The note to look for in tuplets
+     * @param lc The row to look for in tuplets
+     * @return The row that contains the Xwing
+     */
+
+    public Optional<List<int[]>> findXwing(int note, RowOrColumn lc){
+        int nbFound = 0;
+
+        List<int[]> coords = new ArrayList<>();
+
+        //For every row or column in the grid, stopping if we found more notes than 2
+        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
+            for (int x = 0; x < SIZE && nbFound <= 2; x++) {
+                if (isNotePresent(note, x, lc.number)) {
+                    nbFound++;
+                    coords.add(new int[]{x, lc.number});
+                }
+            }
+        }
+        else { // If we are looking in a column
+            for (int y = 0; y < SIZE && nbFound <= 2; y++) {
+                if (isNotePresent(note, lc.number, y)) {
+                    nbFound++;
+                    coords.add(new int[]{lc.number, y});
+                }
+            }
+        }
+
+        // If there are not exactly k coordinates found, we can't use X-wing
+        if(coords.size() != 2) { return Optional.empty(); }
+
+        // Return the list of coordinates in the k-tuple
+        return Optional.of(coords);
+    }
+
+    /**
+     * Solve X-wing
+     * @param note The note to look for in the tuple
+     * @param lc1 The Row or Column to search in
+     * @param lc2 The Row or Column to search in
+     * @return The row that contains the Xwing
+     */
+    /*
+    public boolean solveXwing(int k, int note, RowOrColumn lc1, RowOrColumn lc2, int block) {
+        Optional<List<int[]>> coordsOptional1 = findXwing(note, lc1);
+        Optional<List<int[]>> coordsOptional2 = findXwing(note, lc2);
+
+        if(coordsOptional1.isEmpty() || coordsOptional1.isEmpty()) {
+            return false;
+        }
+
+        boolean hasChanged = false;
+
+        if(lc1.e == RowOrColumnEnum.Row && lc2.e == RowOrColumnEnum.Row) {
+            for(int x = blockStartX(block); x < blockEndX(block); x++) {
+                for (int y = blockStartY(block); y < blockEndY(block); y++) {
+                    if(y != lc.number) {
+                        if(deleteNote(x, y, note)) {
+                            hasChanged = true;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for(int x = blockStartX(block); x < blockEndX(block); x++) {
+                for (int y = blockStartY(block); y < blockEndY(block); y++) {
+                    if(x != lc.number) {
+                        if(deleteNote(x, y, note)) {
+                            hasChanged = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return hasChanged;
+    }*/
+
+
+
 
 
     /**
