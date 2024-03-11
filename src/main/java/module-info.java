@@ -6,6 +6,7 @@ module org.prepro {
     exports org.prepro;
 
     exports org.prepro.model;
+    exports org.prepro.model.solver;
 
     opens org.prepro.controller to javafx.fxml;
     exports org.prepro.controller;

@@ -15,40 +15,8 @@ public class SudokuTest {
      * Test the 6th rule with an example
      */
     @Test
-    public void testPair(){
-        Grid test = new Grid();
-        test.addValue(2, 0, 2);
-        test.addValue(4, 0, 8);
-        test.addValue(5, 0, 5);
-        test.addValue(8, 0, 4);
-
-        test.addValue(4, 1, 3);
-        test.addValue(7, 1, 6);
-
-        test.addValue(2, 2, 4);
-        test.addValue(3, 2, 2);
-        test.addValue(4, 2, 1);
-        test.addValue(7, 2, 3);
-
-
-        test.addValue(7, 3, 5);
-        test.addValue(8, 3, 2);
-
-        test.addValue(6, 4, 3);
-        test.addValue(7, 4, 1);
-
-        test.addValue(0, 5, 9);
-
-        test.addValue(0, 6, 8);
-        test.addValue(5, 6, 6);
-
-        test.addValue(0, 7, 2);
-        test.addValue(1, 7, 5);
-        test.addValue(3, 7, 4);
-        test.addValue(8, 7, 8);
-
-        test.addValue(5, 8, 1);
-        test.addValue(6, 8, 6);
+    public void testPair() {
+        Grid test = TestGrids.pair();
 
         test.print();
         test.afficheNote(3, 0);
@@ -56,55 +24,12 @@ public class SudokuTest {
         test.afficheNote(5, 1);
         test.afficheNote(5, 2);
 
-        Assertions.assertTrue(test.k_upletsTest(2,3,0,5,2));
+        Assertions.assertTrue(test.k_upletsTest(2, 3, 0, 5, 2));
     }
 
     @Test
     public void testPair2() {
-        Grid test = new Grid();
-        test.addValue(0, 0, 8);
-        test.addValue(1, 0, 4);
-        test.addValue(3, 0, 2);
-        test.addValue(7, 0, 9);
-        test.addValue(8, 0, 1);
-
-        test.addValue(3, 1, 1);
-        test.addValue(4, 1, 6);
-        test.addValue(5, 1, 9);
-        test.addValue(6, 1, 4);
-        test.addValue(8, 1, 8);
-
-        test.addValue(0, 2, 1);
-        test.addValue(2, 2, 9);
-        test.addValue(3, 2, 4);
-        test.addValue(7, 2, 5);
-        test.addValue(8, 2, 7);
-
-        test.addValue(0, 3, 7);
-        test.addValue(1, 3, 1);
-        test.addValue(2, 3, 8);
-        test.addValue(3, 3, 3);
-        test.addValue(4, 3, 2);
-        test.addValue(5, 3, 4);
-        test.addValue(7, 3, 6);
-
-        test.addValue(2, 4, 2);
-        test.addValue(5, 4, 6);
-
-        test.addValue(2, 6, 1);
-        test.addValue(3, 6, 6);
-        test.addValue(4, 6, 9);
-        test.addValue(7, 6, 8);
-
-        test.addValue(1, 7, 9);
-        test.addValue(3, 7, 8);
-        test.addValue(6, 7, 1);
-
-        test.addValue(0, 8, 5);
-        test.addValue(1, 8, 8);
-        test.addValue(3, 8, 7);
-        test.addValue(4, 8, 4);
-        test.addValue(5, 8, 1);
+        Grid test = TestGrids.pair2();
 
         test.print();
         test.afficheNote(0, 1);
@@ -112,131 +37,40 @@ public class SudokuTest {
         test.afficheNote(2, 1);
         test.afficheNote(7, 1);
 
-        Assertions.assertTrue(test.k_upletsTest(2,0,1,8,1));
+        Assertions.assertTrue(test.k_upletsTest(2, 0, 1, 8, 1));
     }
 
     /**
      * Test the 7th rule with an example
      */
     @Test
-    public void testTriplet(){
-        Grid test = new Grid();
-        test.addValue(0, 0, 3);
-        test.addValue(1, 0, 7);
-        test.addValue(7, 0, 9);
-
-        test.addValue(0, 1, 9);
-        test.addValue(4, 1, 7);
-
-        test.addValue(3, 2, 4);
-        test.addValue(4, 2, 2);
-        test.addValue(8, 2, 6);
-
-        test.addValue(2, 3, 1);
-        test.addValue(4, 3, 8);
-        test.addValue(5, 3, 4);
-        test.addValue(6, 3, 2);
-
-
-
-        test.addValue(0, 5, 8);
-        test.addValue(3, 5, 6);
-        test.addValue(7, 5, 5);
-
-        test.addValue(2, 6, 6);
-        test.addValue(5, 6, 2);
-        test.addValue(7, 6, 1);
-
-        test.addValue(7, 7, 3);
-        test.addValue(8, 7, 9);
-
-        test.addValue(1, 8, 5);
-        test.addValue(6, 8, 4);
+    public void testTriplet() {
+        Grid test = TestGrids.triplets();
 
         test.print();
-        Assertions.assertTrue(test.k_upletsTest(3,0,0,2,2));
+        Assertions.assertTrue(test.k_upletsTest(3, 0, 0, 2, 2));
     }
 
     /**
      * Test the 9th rule with an example
      */
     @Test
-    public void testHiddenPair(){
-        Grid test = new Grid();
-
-        test.addValue(2, 0, 9);
-        test.addValue(4, 0, 3);
-        test.addValue(5, 0, 2);
-
-        test.addValue(3, 1, 7);
-
-        test.addValue(0, 2, 1);
-        test.addValue(1, 2, 6);
-        test.addValue(2, 2, 2);
-
-        test.addValue(1, 3, 1);
-        test.addValue(4, 3, 2);
-        test.addValue(6, 3, 5);
-        test.addValue(7, 3, 6);
-
-        test.addValue(3, 4, 9);
-
-        test.addValue(1, 5, 5);
-        test.addValue(6, 5, 1);
-        test.addValue(8, 5, 7);
-
-        test.addValue(6, 6, 4);
-        test.addValue(8, 6, 3);
-
-        test.addValue(1, 7, 2);
-        test.addValue(2, 7, 6);
-        test.addValue(5, 7, 9);
-
-        test.addValue(2, 8, 5);
-        test.addValue(3, 8, 8);
-        test.addValue(4, 8, 7);
+    public void testHiddenPair() {
+        Grid test = TestGrids.hiddenPair();
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO A REVOIR ! -JM
+        System.out.println(test.k_upletsTest(2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
      * Test the 10th rule with an example
      */
     @Test
-    public void testHiddenTriplet(){
-        Grid test = new Grid();
-
-        test.addValue(2, 0, 8);
-        test.addValue(5, 0, 7);
-
-        test.addValue(1, 1, 4);
-        test.addValue(2, 1, 2);
-        test.addValue(5, 1, 5);
-
-
-
-        test.addValue(2, 2, 3);
-        test.addValue(5, 2, 6);
-        test.addValue(6, 2, 8);
-        test.addValue(8, 2, 1);
-
-        test.addValue(8, 4, 6);
-
-        test.addValue(0, 5, 9);
-
-        test.addValue(1, 6, 8);
-        test.addValue(3, 6, 1);
-        test.addValue(4, 6, 3);
-        test.addValue(6, 6, 4);
-        test.addValue(7, 6, 7);
-
-        test.addValue(4, 7, 9);
-
-        test.addValue(1, 8, 1);
+    public void testHiddenTriplet() {
+        Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        System.out.println(test.k_upletsTest(2,0,0,2,2)); //TODO A REVOIR ! -JM
+        System.out.println(test.k_upletsTest(2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -272,87 +106,18 @@ public class SudokuTest {
         Assertions.assertTrue(valid);
     }
 
-    private Grid generateBoxReductionGrid() {
-        Grid g = new Grid();
-
-        // Grille: Sudoku Extrême n°74 p.69
-        g.addValue(0, 0, 3);
-        g.addValue(3, 0, 5);
-        g.addValue(5, 0, 8);
-        g.addValue(7, 0, 2);
-
-        g.addValue(0, 1, 8);
-        g.addValue(2, 1, 2);
-        g.addValue(3, 1, 9);
-        g.addValue(5, 1, 3);
-        g.addValue(7, 1, 7);
-
-        g.addValue(2, 2, 5);
-        g.addValue(3, 2, 2);
-        g.addValue(5, 2, 4);
-        g.addValue(6, 2, 3);
-        g.addValue(7, 2, 8);
-        g.addValue(8, 2, 1);
-
-        g.addValue(0, 3, 4);
-        g.addValue(1, 3, 8);
-        g.addValue(2, 3, 3);
-        g.addValue(3, 3, 1);
-        g.addValue(4, 3, 5);
-        g.addValue(5, 3, 9);
-        g.addValue(6, 3, 7);
-        g.addValue(7, 3, 6);
-        g.addValue(8, 3, 2);
-
-        g.addValue(1, 4, 2);
-        g.addValue(3, 4, 3);
-        g.addValue(4, 4, 8);
-        g.addValue(5, 4, 6);
-        g.addValue(7, 4, 4);
-
-        g.addValue(0, 5, 5);
-        g.addValue(1, 5, 6);
-        g.addValue(2, 5, 9);
-        g.addValue(6, 5, 8);
-        g.addValue(7, 5, 1);
-        g.addValue(8, 5, 3);
-
-        g.addValue(1, 6, 3);
-        g.addValue(5, 6, 1);
-        g.addValue(6, 6, 4);
-        g.addValue(7, 6, 5);
-        g.addValue(8, 6, 8);
-
-        g.addValue(1, 7, 5);
-        g.addValue(2, 7, 4);
-        g.addValue(3, 7, 8);
-        g.addValue(4, 7, 3);
-        g.addValue(6, 7, 1);
-        g.addValue(7, 7, 9);
-        g.addValue(8, 7, 6);
-
-        g.addValue(2, 8, 8);
-        g.addValue(5, 8, 5);
-        g.addValue(6, 8, 2);
-        g.addValue(7, 8, 3);
-        g.addValue(8, 8, 7);
-
-        return g;
-    }
-
     @Test
     public void testBox2ReductionColumn() {
-        Grid g = generateBoxReductionGrid();
+        Grid g = TestGrids.boxReductionGrid();
         g.print();
 
         Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
 
         List<int[]> coords;
 
-        if(coordsOpt.isPresent()) {
+        if (coordsOpt.isPresent()) {
             coords = coordsOpt.get();
-        }
-        else {
+        } else {
             Assertions.fail();
             return;
         }
@@ -374,7 +139,7 @@ public class SudokuTest {
 
     @Test
     public void testBox2ReductionColumnImpossible() {
-        Grid g = generateBoxReductionGrid();
+        Grid g = TestGrids.boxReductionGrid();
         g.print();
 
         System.out.println("Trying to do a box-2 reduction on a note that is not applicable (also present outside the block).");
@@ -393,10 +158,9 @@ public class SudokuTest {
         Optional<List<int[]>> coordsOpt = g.findBoxReduction(3, 6, new RowOrColumn(RowOrColumnEnum.Column, 4), 8);
         List<int[]> coords;
 
-        if(coordsOpt.isPresent()) {
+        if (coordsOpt.isPresent()) {
             coords = coordsOpt.get();
-        }
-        else {
+        } else {
             Assertions.fail();
             return;
         }
@@ -415,116 +179,17 @@ public class SudokuTest {
         }
     }
 
-    private Grid generatePointingPairGrid() {
-        Grid g = new Grid();
-
-        g.addValue(0, 0, 2);
-        g.addValue(1, 0, 3);
-        g.addValue(2, 0, 4);
-        g.addValue(6, 0, 6);
-        g.addValue(7, 0, 9);
-        g.addValue(8, 0, 8);
-
-        g.addValue(0, 1, 9);
-        g.addValue(1, 1, 6);
-        g.addValue(2, 1, 8);
-        g.addValue(3, 1, 2);
-        g.addValue(4, 1, 3);
-        g.addValue(5, 1, 4);
-        g.addValue(8, 1, 1);
-
-        g.addValue(0, 2, 5);
-        g.addValue(1, 2, 7);
-        g.addValue(2, 2, 1);
-        g.addValue(3, 2, 6);
-        g.addValue(4, 2, 8);
-        g.addValue(5, 2, 9);
-        g.addValue(8, 2, 4);
-
-        g.addValue(0, 3, 7);
-        g.addValue(1, 3, 1);
-        g.addValue(2, 3, 9);
-        g.addValue(7, 3, 6);
-
-
-        g.addValue(6, 4, 9);
-        g.addValue(7, 4, 4);
-
-        g.addValue(1, 5, 4);
-        g.addValue(2, 5, 2);
-        g.addValue(4, 5, 9);
-        g.addValue(6, 5, 1);
-        g.addValue(7, 5, 8);
-
-        g.addValue(0, 6, 1);
-        g.addValue(1, 6, 2);
-        g.addValue(2, 6, 6);
-
-        g.addValue(4, 7, 2);
-        g.addValue(5, 7, 5);
-        g.addValue(6, 7, 4);
-        g.addValue(8, 7, 6);
-
-        g.addValue(0, 8, 4);
-        g.addValue(4, 8, 6);
-        g.addValue(5, 8, 3);
-        g.addValue(6, 8, 8);
-
-        return g;
-    }
-
-    public Grid generatePointingTripletGrid() {
-        Grid g = new Grid();
-
-        g.addValue(2, 0, 9);
-        g.addValue(4, 0, 7);
-
-        g.addValue(1, 3, 8);
-        g.addValue(3, 1, 4);
-
-        g.addValue(2, 2, 3);
-        g.addValue(7, 2, 2);
-        g.addValue(8, 2, 8);
-
-
-        g.addValue(0, 3, 1);
-        g.addValue(6, 3, 6);
-        g.addValue(7, 3, 7);
-
-        g.addValue(1, 4, 2);
-        g.addValue(4, 4, 1);
-        g.addValue(5, 4, 3);
-        g.addValue(7, 4, 4);
-
-        g.addValue(1, 5, 4);
-        g.addValue(5, 5, 7);
-        g.addValue(6, 5, 8);
-
-
-        g.addValue(0, 6, 6);
-        g.addValue(4, 6, 3);
-
-        g.addValue(1, 7, 1);
-
-        g.addValue(6, 8, 2);
-        g.addValue(7, 8, 8);
-        g.addValue(8, 8, 4);
-
-        return g;
-    }
-
     @Test
     public void testPointingPairRow() {
-        Grid g = generatePointingPairGrid();
+        Grid g = TestGrids.pointingPairGrid();
         g.print();
 
         Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 5, new RowOrColumn(RowOrColumnEnum.Row, 4), 4);
         List<int[]> coords;
 
-        if(coordsOpt.isPresent()) {
+        if (coordsOpt.isPresent()) {
             coords = coordsOpt.get();
-        }
-        else {
+        } else {
             Assertions.fail();
             return;
         }
@@ -546,16 +211,15 @@ public class SudokuTest {
 
     @Test
     public void testPointingPairColumn() {
-        Grid g = generatePointingPairGrid();
+        Grid g = TestGrids.pointingPairGrid();
         g.print();
 
         Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 3), 8);
         List<int[]> coords;
 
-        if(coordsOpt.isPresent()) {
+        if (coordsOpt.isPresent()) {
             coords = coordsOpt.get();
-        }
-        else {
+        } else {
             Assertions.fail();
             return;
         }
@@ -575,16 +239,15 @@ public class SudokuTest {
 
     @Test
     public void testPointingTripletRow() {
-        Grid g = generatePointingTripletGrid();
+        Grid g = TestGrids.pointingTripletGrid();
         g.print();
 
         Optional<List<int[]>> coordsOpt = g.findPointingKTuple(3, 1, new RowOrColumn(RowOrColumnEnum.Row, 6), 9);
         List<int[]> coords;
 
-        if(coordsOpt.isPresent()) {
+        if (coordsOpt.isPresent()) {
             coords = coordsOpt.get();
-        }
-        else {
+        } else {
             Assertions.fail();
             return;
         }
@@ -604,40 +267,21 @@ public class SudokuTest {
     }
 
     @Test
+    public void testXWingRow() {
+        Grid g = TestGrids.xWing();
+        g.print();
+        g.printWithNotes();
+
+        System.out.print("Solving X-Wing ... ");
+        g.ruleThirteen();
+        System.out.println("done");
+
+        g.printWithNotes();
+    }
+
+    @Test
     public void allRulesTest() {
-        Grid g = new Grid();
-
-        g.addValue(1, 0, 5);
-        g.addValue(4, 0, 1);
-        g.addValue(7, 0, 4);
-
-        g.addValue(0, 1, 2);
-        g.addValue(7, 1, 3);
-
-        g.addValue(1, 2, 6);
-        g.addValue(5, 2, 9);
-        g.addValue(6, 2, 1);
-        g.addValue(8, 2, 2);
-
-        g.addValue(0, 3, 7);
-        g.addValue(4, 3, 5);
-        g.addValue(6, 3, 6);
-        g.addValue(8, 3, 1);
-
-        g.addValue(2, 4, 5);
-        g.addValue(5, 4, 3);
-
-        g.addValue(6, 5, 4);
-
-        g.addValue(1, 6, 9);
-        g.addValue(3, 6, 8);
-
-        g.addValue(0, 7, 6);
-        g.addValue(4, 7, 3);
-        g.addValue(6, 7, 5);
-        g.addValue(8, 7, 7);
-
-        g.addValue(7, 8, 2);
+        Grid g = TestGrids.allRules();
 
         g.print();
         g.allRules();
@@ -648,85 +292,4 @@ public class SudokuTest {
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
     // TODO: Tester les box-réductions sur les lignes.
-
-    public Grid xWingGrid() {
-        Grid g = new Grid();
-
-        g.addValue(2, 0, 3);
-        g.addValue(3, 0, 8);
-        g.addValue(6, 0, 5);
-        g.addValue(7, 0, 1);
-
-        g.addValue(2, 1, 8);
-        g.addValue(3, 1, 7);
-        g.addValue(6, 1, 9);
-        g.addValue(7, 1, 3);
-
-
-        g.addValue(0, 2, 1);
-        g.addValue(3, 2, 3);
-        g.addValue(5, 2, 5);
-        g.addValue(6, 2, 7);
-        g.addValue(7, 2, 2);
-        g.addValue(8, 2, 8);
-
-        g.addValue(3, 3, 2);
-        g.addValue(6, 3, 8);
-        g.addValue(7, 3, 4);
-        g.addValue(8, 3, 9);
-
-        g.addValue(0, 4, 8);
-        g.addValue(2, 4, 1);
-        g.addValue(3, 4, 9);
-        g.addValue(5, 4, 6);
-        g.addValue(6, 4, 2);
-        g.addValue(7, 4, 5);
-        g.addValue(8, 4, 7);
-
-        g.addValue(3, 5, 5);
-        g.addValue(6, 5, 1);
-        g.addValue(7, 5, 6);
-        g.addValue(8, 5, 3);
-
-        g.addValue(0, 6, 9);
-        g.addValue(1, 6, 6);
-        g.addValue(2, 6, 4);
-        g.addValue(3, 6, 1);
-        g.addValue(4, 6, 2);
-        g.addValue(5, 6, 7);
-        g.addValue(6, 6, 3);
-        g.addValue(7, 6, 8);
-        g.addValue(8, 6, 5);
-
-        g.addValue(0, 7, 3);
-        g.addValue(1, 7, 8);
-        g.addValue(2, 7, 2);
-        g.addValue(3, 7, 6);
-        g.addValue(4, 7, 5);
-        g.addValue(5, 7, 9);
-        g.addValue(6, 7, 4);
-        g.addValue(7, 7, 7);
-        g.addValue(8, 7, 1);
-
-        g.addValue(1, 8, 1);
-        g.addValue(3, 8, 4);
-        g.addValue(6, 8, 6);
-        g.addValue(7, 8, 9);
-        g.addValue(8, 8, 2);
-
-        return g;
-    }
-
-    @Test
-    public void testXWingRow() {
-        Grid g = xWingGrid();
-        g.print();
-        g.printWithNotes();
-
-        System.out.print("Solving X-Wing ... ");
-        g.ruleThirteen();
-        System.out.println("done");
-
-        g.printWithNotes();
-    }
 }
