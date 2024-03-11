@@ -2,9 +2,11 @@ package org.prepro.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.prepro.model.RowOrColumn.RowOrColumnEnum;
+import org.prepro.model.solver.RulesOneToThree;
 
 public class Grid {
     private final Box[][] board;
@@ -370,7 +372,7 @@ public class Grid {
      * @param endY Y coordinate of the end of the rectangle.
      * @return if the grid has been modified
      */
-    private boolean isNotePresentOnce(int startX, int startY, int endX, int endY, int[] nbNotesRec) {
+    public boolean isNotePresentOnce(int startX, int startY, int endX, int endY, int[] nbNotesRec) {
         for (int oc = 0; oc < this.SIZE; oc++) { //parcours du tableau des notes du block
 
             if (nbNotesRec[oc] == 1) { // regarde si une note est présente qu'une seule fois dans le rectangle
@@ -391,6 +393,12 @@ public class Grid {
         }
         return false;
     }
+
+    public int getNbNotes(int x, int y) {
+        return this.board[x][y].getNbNote();
+    }
+
+
     /**
      * complete a rectangle with some simple rule. WARNING the rectangle must be a row or a column or a square
      * @param startX X coordinate of the beginning of the rectangle.
@@ -399,7 +407,7 @@ public class Grid {
      * @param endY Y coordinate of the end of the rectangle.
      * @return if the grid has been modified
      */
-    public boolean simplerule(int startX, int startY, int endX, int endY) {
+    /*public boolean simplerule(int startX, int startY, int endX, int endY) {
         int[] nbNotesRec = new int[this.SIZE];
         int nbNotes;
         int j;
@@ -422,6 +430,7 @@ public class Grid {
         }
         return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
     }
+    */
 
     /**
      * @param startX X coordinate of the beginning of the rectangle.
@@ -835,26 +844,23 @@ public class Grid {
 
         //For every row or column in the grid, stopping if we found more notes than 2
         if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
-            for (int x = 0; x < SIZE && nbFound <= 2; x++) {
+            for (int x = 0; x < SIZE; x++) {
                 if (isNotePresent(note, x, lc.number)) {
-                    nbFound++;
-
-                    if(nbFound < 2) {
-                        coords[nbFound] = new int[]{x, lc.number};
-                    }
-                    else {
+                    if (nbFound < 2) {
+                        nbFound++;
+                        coords[nbFound - 1] = new int[]{x, lc.number};
+                    } else {
                         return Optional.empty();
                     }
                 }
             }
         }
         else { // If we are looking in a column
-            for (int y = 0; y < SIZE && nbFound <= 2; y++) {
+            for (int y = 0; y < SIZE; y++) {
                 if (isNotePresent(note, lc.number, y)) {
-                    nbFound++;
-
                     if(nbFound < 2) {
-                        coords[nbFound] = new int[]{lc.number, y};
+                        nbFound++;
+                        coords[nbFound - 1] = new int[]{lc.number, y};
                     }
                     else {
                         return Optional.empty();
@@ -877,22 +883,27 @@ public class Grid {
     public boolean xWingAreRowsOrColumnsAligned(RowOrColumnEnum lce, int[][] first, int[][] second) {
         if(lce == RowOrColumnEnum.Row) { // If we are looking in a Row
             boolean sameXSoFar = true;
-            for(int i = 0; i < 2 && sameXSoFar; i++) {
+            boolean differentYSoFar = true;
+            for(int i = 0; i < 2 && sameXSoFar && differentYSoFar; i++) {
                 // Check if the X coordinate of the candidates are aligned.
                 sameXSoFar = (first[i][0] == second[i][0]);
+                // Check if the Y coordinates of the candidates are different (not on the same row)
+                differentYSoFar = (first[i][1] != second[i][1]);
             }
 
-            return sameXSoFar;
+            return sameXSoFar && differentYSoFar;
         }
         else { // If we are looking in a Column
             boolean sameYSoFar = true;
-            for(int i = 0; i < 2 && sameYSoFar; i++) {
+            boolean differentXSoFar = true;
+            for(int i = 0; i < 2 && sameYSoFar && differentXSoFar; i++) {
                 // Check if the X coordinate of the candidates are aligned.
                 sameYSoFar = (first[i][1] == second[i][1]);
+                // Check if the X coordinates of the candidates are different (not on the same row)
+                differentXSoFar = (first[i][0] != second[i][0]);
             }
 
-            //noinspection SuspiciousNameCombination
-            return sameYSoFar;
+            return sameYSoFar && differentXSoFar;
         }
     }
 
@@ -928,10 +939,10 @@ public class Grid {
 
             // Make a list of all the coordinates of the X-Wing to return.
             int[][] coordinates = new int[2][2];
-            for(int i = 0; i < 2; i++) {
-                coordinates[i] = first.get()[i];
-                coordinates[i] = second.get()[i];
-            }
+            coordinates[0] = first.get()[0];
+            coordinates[1] = second.get()[1];
+
+            System.out.println("xWingGetCoordinates - note : " + note + ", coordinates : " + Arrays.deepToString(coordinates));
 
             return Optional.of(coordinates);
         }
@@ -978,7 +989,7 @@ public class Grid {
     /**
      * Solve the grid using the first three rules
      */
-    public boolean rulesOneTwoThree() {
+    /*public boolean rulesOneTwoThree() {
         boolean hasChanged = false;
 
         for (int x = 0; x < this.SIZE; x++) {
@@ -1001,6 +1012,7 @@ public class Grid {
 
         return hasChanged;
     }
+    */
 
     public boolean rulesFiveToTen() {
         boolean hasChanged = false;
@@ -1093,6 +1105,7 @@ public class Grid {
                 Optional<int[][]> coords = checkXWing(note, row1, row2);
 
                 if(coords.isPresent()) {
+                    System.out.println("Found X-Wing in rows for note " + note + " at coords " + Arrays.deepToString(coords.get()));
                     hasChanged = solveXwing(note, RowOrColumnEnum.Row, coords.get());
 
                     if(hasChanged) {
@@ -1109,6 +1122,7 @@ public class Grid {
                 Optional<int[][]> coords = checkXWing(note, column1, column2);
 
                 if(coords.isPresent()) {
+                    System.out.println("Found X-Wing in columns for note " + note + " at coords " + Arrays.deepToString(coords.get()));
                     hasChanged = solveXwing(note, RowOrColumnEnum.Column, coords.get());
 
                     if(hasChanged) {
@@ -1118,6 +1132,8 @@ public class Grid {
             }
         }
 
+        System.out.println("hasChanged = " + (hasChanged ? "true" : "false"));
+        System.out.println();
         return hasChanged;
     }
 
@@ -1129,7 +1145,7 @@ public class Grid {
         do {
             do {
                 do {
-                    oneToThree = rulesOneTwoThree();
+                    oneToThree = RulesOneToThree.solve(this);
                 } while(oneToThree);
 
                 fiveToTen = rulesFiveToTen();

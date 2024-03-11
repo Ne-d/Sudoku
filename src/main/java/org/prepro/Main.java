@@ -1,8 +1,11 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
+import org.prepro.model.RowOrColumn;
+import org.prepro.model.solver.RulesOneToThree;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -24,7 +27,7 @@ public class Main {
                     grid.print();
                     break;
                 case "elementaire":
-                    grid.rulesOneTwoThree();
+                    RulesOneToThree.solve(grid);
                     grid.print();
                     grid.printWithNotes();
                     break;
@@ -280,7 +283,7 @@ public class Main {
 
         g.addValue(0, 2, 1);
         g.addValue(3, 2, 3);
-        g.addValue(5, 2, 4);
+        g.addValue(5, 2, 5);
         g.addValue(6, 2, 7);
         g.addValue(7, 2, 2);
         g.addValue(8, 2, 8);
@@ -329,14 +332,9 @@ public class Main {
         g.addValue(7, 8, 9);
         g.addValue(8, 8, 2);
 
-        // Test X-Wing
         g.print();
         g.printWithNotes();
 
-        // TODO: On a oublié nbFound pour vérifier que la ligne ne contient pas d'autres candidats.
-
-        System.out.print("Solving X-Wing ... ");
-        g.ruleThirteen();
         System.out.println("done");
 
         g.printWithNotes();
