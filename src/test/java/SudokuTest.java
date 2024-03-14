@@ -3,9 +3,7 @@ import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Grid;
 import org.prepro.model.RowOrColumn;
 import org.prepro.model.RowOrColumn.RowOrColumnType;
-import org.prepro.model.solver.RulesElevenTwelve;
-import org.prepro.model.solver.RulesFiveToTen;
-import org.prepro.model.solver.RulesOneToThree;
+import org.prepro.model.solver.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +94,7 @@ public class SudokuTest {
         g.print();
 
         System.out.println("Application des règles.");
-        g.allRules();
+        Solver.solve(g);
 
         g.print();
 
@@ -274,7 +272,7 @@ public class SudokuTest {
         g.printWithNotes();
 
         System.out.print("Solving X-Wing ... ");
-        g.ruleThirteen();
+        RuleThirteen.solve(g);
         System.out.println("done");
 
         g.printWithNotes();
@@ -285,7 +283,7 @@ public class SudokuTest {
         Grid g = TestGrids.allRules();
 
         g.print();
-        g.allRules();
+        Solver.solve(g);
         g.print();
         g.printWithNotes();
         System.out.println("La grille est " + (g.isValid() ? "valide." : "invalide."));

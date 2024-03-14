@@ -54,8 +54,8 @@ public class RulesFiveToTen {
      */
     public static boolean k_upletsTest(Grid g, int k, int startX, int startY, int endX, int endY) {
 
-        List<int[]> tupples = Solver.combinations(g.SIZE, k);
-        for (int[] tupple : tupples) {
+        List<int[]> tuples = Solver.combinations(g.SIZE, k);
+        for (int[] tuple : tuples) {
             boolean[][] tab = new boolean[k][g.SIZE];
             boolean hidden = true;
             for (int j = 0; j < k; j++) { //Tous les membres du k-uplet
@@ -63,14 +63,14 @@ public class RulesFiveToTen {
 
                 for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
                     for (int x = startX; x <= endX; x++) {
-                        tab[j][numcase] = g.isNotePresent(tupple[j], x, y);
+                        tab[j][numcase] = g.isNotePresent(tuple[j], x, y);
                         hidden = !tab[j][numcase] || g.getNbNotes(x, y) != k || !hidden;
                         numcase++;
                     }
                 }
             }
 
-            int nbfound = 0; // notes sur les memes
+            int nbFound = 0; // notes sur les memes
             int[] pos = new int[k];
             int ajouter = 0;
             int largeur = endX - startX + 1;
@@ -85,13 +85,13 @@ public class RulesFiveToTen {
                                 pos[ajouter] = t;
                                 ajouter++;
                             }
-                            nbfound++;
+                            nbFound++;
                         }
                     }
                 }
             }
-            if (nbfound == k * comb.size()) {
-                return k_uplet_delNotes(g, pos, tupple, startX, startY, endX);
+            if (nbFound == k * comb.size()) {
+                return k_uplet_delNotes(g, pos, tuple, startX, startY, endX);
             }
         }
         return false;

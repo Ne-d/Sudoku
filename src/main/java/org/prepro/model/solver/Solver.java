@@ -1,9 +1,34 @@
 package org.prepro.model.solver;
 
+import org.prepro.model.Grid;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solver {
+    public static void solve(Grid g) {
+        boolean oneToThree;
+        boolean fiveToTen;
+        boolean elevenTwelve;
+        boolean thirteen;
+
+        do {
+            do {
+                do {
+                    do {
+                        oneToThree = RulesOneToThree.solve(g);
+                    } while (oneToThree);
+
+                    fiveToTen = RulesFiveToTen.solve(g);
+                } while (fiveToTen);
+
+                elevenTwelve = RulesElevenTwelve.solve(g);
+            } while (elevenTwelve);
+
+            thirteen = RuleThirteen.solve(g);
+        } while (thirteen);
+    }
+
     /**
      * Finds all the combinations (k-tuples) of k numbers in a list from 1 to size.
      *

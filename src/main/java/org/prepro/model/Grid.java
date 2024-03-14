@@ -1,21 +1,10 @@
 package org.prepro.model;
 
 
-import org.prepro.model.RowOrColumn.RowOrColumnType;
-import org.prepro.model.solver.RulesElevenTwelve;
-import org.prepro.model.solver.RulesFiveToTen;
-import org.prepro.model.solver.RulesOneToThree;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 public class Grid {
     private final Box[][] board;
     public final int SIZE; // Number of columns and line
     public final int SQRTSIZE; //Number for a block
-    private final int DIFFICULTY; // Number of boxes to be given a value when generating a grid.
 
     /**
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
@@ -24,7 +13,6 @@ public class Grid {
 
         this.SIZE = 9;
         this.SQRTSIZE = ((int) Math.sqrt(SIZE));
-        this.DIFFICULTY = 17;
         this.board = new Box[SIZE][SIZE];
 
         // Initialize all boxes.
@@ -82,33 +70,6 @@ public class Grid {
         this.deleteAllNote(xPos, yPos);
 
         return true;
-    }
-
-
-    /**
-     * Sets the value val to the box of given coordinates.
-     *
-     * @param xPos The x coordinate of the chosen box.
-     * @param yPos The y coordinate of the chosen box.
-     * @param val  The value to put in the chosen box.
-     */
-    public void replaceValue(int xPos, int yPos, int val) {
-        this.board[xPos][yPos].setVal(val);
-    }
-
-
-    /**
-     * Removes the value of the box at the given coordinates.
-     *
-     * @return Returns true if the box has been modified (had a value before). Returns false if the box has not been modified (already had no value).
-     */
-    public boolean removeValue(int xPos, int yPos) {
-        if (!isBoxEmpty(xPos, yPos)) {
-            this.board[xPos][yPos].setVal(0);
-            return true;
-        } else {
-            return false;
-        }
     }
 
 
@@ -195,39 +156,6 @@ public class Grid {
         return canceled;
     }
 
-
-    /**
-     * Fills boxes with a value. The number of boxes filled is equal to DIFFICULTY.
-     */
-    private void generateNumber() {
-        int posX = 0;
-        int posY = 0;
-        int val;
-        boolean foundValid;
-
-        for (int i = 0; i < this.DIFFICULTY; i++) {
-            foundValid = false;
-            while (!foundValid) { // While a correct value has not yet been found
-                // Find random coordinates
-                if (foundValid) {
-                    replaceValue(posX, posY, 0);
-                }
-                posX = (int) (Math.random() * (this.SIZE));
-                posY = (int) (Math.random() * (this.SIZE));
-                //Find random value
-                val = (int) (Math.random() * (this.SIZE + 1));
-
-                addValue(posX, posY, val);
-
-                foundValid = validVal(posX, posY);
-
-                this.print();
-            }
-            System.out.println(i + " " + this.getVal(posX, posY) + "(" + posX + "," + posY + ") ");
-        }
-    }
-
-
     /**
      * Prints nbDash number of dashes
      *
@@ -313,22 +241,6 @@ public class Grid {
     }
 
     /**
-     * @return true if the value's position are possible else return false
-     */
-    public boolean validVal(int xPos, int yPos) {
-        if (!isRowValid(xPos + 1)) {
-            return false;
-        }
-
-        if (!isColumnValid(yPos + 1)) {
-            return false;
-        }
-
-        return isBlockValid(xPos / this.SQRTSIZE, yPos / this.SQRTSIZE);
-    }
-
-
-    /**
      * Prints the notes of the chosen box
      *
      * @param xPos X coordinate of the chosen box
@@ -392,17 +304,6 @@ public class Grid {
     }
 
     /**
-     * Adds a note to the chosen box
-     *
-     * @param xPos X coordinate of the chosen box
-     * @param yPos Y coordinate of the chosen box
-     * @param note The note to add
-     */
-    public void addNote(int xPos, int yPos, int note) {
-        this.board[xPos][yPos].addNote(note);
-    }
-
-    /**
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
      * @param endX   X coordinate of the end of the rectangle.
@@ -435,66 +336,6 @@ public class Grid {
         return this.board[x][y].getNbNote();
     }
 
-    /**
-     * Finds the number of notes in a rectangle.
-     *
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX   X coordinate of the end of the rectangle.
-     * @param endY   Y coordinate of the end of the rectangle.
-     * @return The number of notes found
-     */
-    private int getNbNote(int startX, int startY, int endX, int endY) {
-        int found = 0;
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-
-                for (int i = 1; i <= 9; i++) { //cherche la note
-
-                    if (board[x][y].isNotePresent(i)) {
-                        found++;
-                    }
-                }
-            }
-        }
-        return found;
-    }
-
-
-    /**
-     * Finds all the combinations (k-tuples) of k numbers in a list from 1 to size.
-     *
-     * @param size          The max value of the numbers.
-     * @param len           The amount of numbers to take.
-     * @param startPosition The minimum value of the numbers.
-     * @param result        The tuple currently being built by the function.
-     * @param resultList    The list of tuples to be returned.
-     */
-    static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
-        if (len == 0) {
-            resultList.add(result.clone());
-            return;
-        }
-        for (int i = startPosition; i <= size + 1 - len; i++) {
-            result[result.length - len] = i;
-            combinations_aux(size, len - 1, i + 1, result, resultList);
-        }
-    }
-
-    /**
-     * Finds all the combinations (k-tuples) of k numbers in a list from 1 to size.
-     *
-     * @param size The max value of the numbers.
-     * @param k    The amount of numbers to take.
-     * @return A list of tuples with k elements from 1 to size.
-     */
-    static List<int[]> combinations(int size, int k) {
-        List<int[]> res = new ArrayList<>();
-
-        combinations_aux(size, k, 1, new int[k], res);
-
-        return res;
-    }
 
     /**
      * Determines the starting X coordinate of a block
@@ -562,230 +403,5 @@ public class Grid {
      */
     public boolean isInBlock(int x, int y, int block) {
         return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
-    }
-
-    /**
-     * Finds if the given Row or Column could be in an X-Wing (has the candidate note exactly twice).
-     *
-     * @param note The note to look for
-     * @param lc   Whether we are looking in a Row or a Column
-     * @return If there are exactly two candidates in the row or column, return their coordinates. Else return Empty.
-     */
-    public Optional<int[][]> xWingGetCoordinates(int note, RowOrColumn lc) {
-        int nbFound = 0;
-
-        int[][] coords = new int[2][2];
-
-        //For every row or column in the grid, stopping if we found more notes than 2
-        if (lc.type == RowOrColumnType.Row) { // If we are looking in a row
-            for (int x = 0; x < SIZE; x++) {
-                if (isNotePresent(note, x, lc.number)) {
-                    if (nbFound < 2) {
-                        nbFound++;
-                        coords[nbFound - 1] = new int[]{x, lc.number};
-                    } else {
-                        return Optional.empty();
-                    }
-                }
-            }
-        } else { // If we are looking in a column
-            for (int y = 0; y < SIZE; y++) {
-                if (isNotePresent(note, lc.number, y)) {
-                    if (nbFound < 2) {
-                        nbFound++;
-                        coords[nbFound - 1] = new int[]{lc.number, y};
-                    } else {
-                        return Optional.empty();
-                    }
-                }
-            }
-        }
-
-        // Return the list of coordinates in the k-tuple
-        return Optional.of(coords);
-    }
-
-    /**
-     * Finds if the rows or columns suitable for an X-Wing have their candidates aligned.
-     *
-     * @param lce    Whether we are looking in rows or columns.
-     * @param first  The first row or column's list of coordinates.
-     * @param second The second row or column's list of coordinates.
-     * @return True if the candidates are aligned, false otherwise.
-     */
-    public boolean xWingAreRowsOrColumnsAligned(RowOrColumnType lce, int[][] first, int[][] second) {
-        if (lce == RowOrColumnType.Row) { // If we are looking in a Row
-            boolean sameXSoFar = true;
-            boolean differentYSoFar = true;
-            for (int i = 0; i < 2 && sameXSoFar && differentYSoFar; i++) {
-                // Check if the X coordinate of the candidates are aligned.
-                sameXSoFar = (first[i][0] == second[i][0]);
-                // Check if the Y coordinates of the candidates are different (not on the same row)
-                differentYSoFar = (first[i][1] != second[i][1]);
-            }
-
-            return sameXSoFar && differentYSoFar;
-        } else { // If we are looking in a Column
-            boolean sameYSoFar = true;
-            boolean differentXSoFar = true;
-            for (int i = 0; i < 2 && sameYSoFar && differentXSoFar; i++) {
-                // Check if the X coordinate of the candidates are aligned.
-                sameYSoFar = (first[i][1] == second[i][1]);
-                // Check if the X coordinates of the candidates are different (not on the same row)
-                differentXSoFar = (first[i][0] != second[i][0]);
-            }
-
-            return sameYSoFar && differentXSoFar;
-        }
-    }
-
-
-    /**
-     * Checks if the given rows or columns contain an X-Wing.
-     *
-     * @param note The note to look for.
-     * @param lc1  The first row or column to check.
-     * @param lc2  The second row or column to check.
-     * @return The coordinates of the X-Wing's candidates (the corners of the X-Wing).
-     */
-
-    public Optional<int[][]> checkXWing(int note, RowOrColumn lc1, RowOrColumn lc2) {
-        // Find a row or column that could be in an X-Wing.
-        Optional<int[][]> first = xWingGetCoordinates(note, lc1);
-
-        // If we haven't found a suitable row or column, return early.
-        if (first.isEmpty()) {
-            return Optional.empty();
-        }
-
-        // Find another suitable row or column.
-        Optional<int[][]> second = xWingGetCoordinates(note, lc2);
-
-        // If we haven't found a second suitable row or column, return early.
-        if (second.isEmpty()) {
-            return Optional.empty();
-        } else {
-            // Check that the candidates in both rows or columns are properly aligned for an X-Wing.
-            boolean candidatesAligned = xWingAreRowsOrColumnsAligned(lc1.type, first.get(), second.get());
-            if (!candidatesAligned) {
-                return Optional.empty();
-            }
-
-            // Make a list of all the coordinates of the X-Wing to return.
-            int[][] coordinates = new int[2][2];
-            coordinates[0] = first.get()[0];
-            coordinates[1] = second.get()[1];
-
-            System.out.println("xWingGetCoordinates - note : " + note + ", coordinates : " + Arrays.deepToString(coordinates));
-
-            return Optional.of(coordinates);
-        }
-    }
-
-    /**
-     * Solve X-wing
-     *
-     * @param note The note to look for in the tuple
-     * @param lce  Whether we are looking in rows or columns
-     * @return Whether the grid has been changed by solving the X-Wing.
-     */
-    public boolean solveXWing(int note, RowOrColumnType lce, int[][] coordinates) {
-        boolean hasChanged = false;
-
-        int x1 = coordinates[0][0];
-        int x2 = coordinates[1][0];
-
-        int y1 = coordinates[0][1];
-        int y2 = coordinates[1][1];
-
-        if (lce == RowOrColumnType.Row) { // If we are working in a row
-            // Delete all candidates in the columns, except the ones in the X-Wing.
-            for (int i = 0; i < this.SIZE; i++) {
-                if (i != y1 && i != y2) {
-                    // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
-                    hasChanged |= deleteNote(x1, i, note);
-                    hasChanged |= deleteNote(x2, i, note);
-                }
-            }
-        } else { // If we are working in a column
-            // Delete all candidates in the row, except the ones in the X-Wing.
-            for (int i = 0; i < this.SIZE; i++) {
-                if (i != x1 && i != x2) {
-                    hasChanged |= deleteNote(i, y1, note);
-                    hasChanged |= deleteNote(i, y2, note);
-                }
-            }
-        }
-
-        return hasChanged;
-    }
-
-    /**
-     * Try to solve an X-Wing
-     *
-     * @return True if the grid has changed (an X-Wing has been found and solved), otherwise false.
-     */
-    public boolean ruleThirteen() {
-        boolean hasChanged = false;
-
-        for (int note = 1; note <= this.SIZE && !hasChanged; note++) {
-            List<int[]> combinations = combinations(9, 2);
-
-            // Try to solve an X-Wing in any row.
-            for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
-                RowOrColumn row1 = new RowOrColumn(RowOrColumnType.Row, combinations.get(combIndex)[0] - 1);
-                RowOrColumn row2 = new RowOrColumn(RowOrColumnType.Row, combinations.get(combIndex)[1] - 1);
-
-                Optional<int[][]> coords = checkXWing(note, row1, row2);
-
-                if (coords.isPresent()) {
-                    System.out.println("Found X-Wing in rows for note " + note + " at coords " + Arrays.deepToString(coords.get()));
-                    hasChanged = solveXWing(note, RowOrColumnType.Row, coords.get());
-
-                    if (hasChanged) {
-                        break;
-                    }
-                }
-            }
-
-            // Try to solve an X-Wing in any column
-            for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
-                RowOrColumn column1 = new RowOrColumn(RowOrColumnType.Column, combinations.get(combIndex)[0] - 1);
-                RowOrColumn column2 = new RowOrColumn(RowOrColumnType.Column, combinations.get(combIndex)[1] - 1);
-
-                Optional<int[][]> coords = checkXWing(note, column1, column2);
-
-                if (coords.isPresent()) {
-                    System.out.println("Found X-Wing in columns for note " + note + " at coords " + Arrays.deepToString(coords.get()));
-                    hasChanged = solveXWing(note, RowOrColumnType.Column, coords.get());
-
-                    if (hasChanged) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        System.out.println("hasChanged = " + (hasChanged ? "true" : "false"));
-        System.out.println();
-        return hasChanged;
-    }
-
-    public void allRules() {
-        boolean oneToThree;
-        boolean fiveToTen;
-        boolean elevenTwelve;
-
-        do {
-            do {
-                do {
-                    oneToThree = RulesOneToThree.solve(this);
-                } while (oneToThree);
-
-                fiveToTen = RulesFiveToTen.solve(this);
-            } while (fiveToTen);
-
-            elevenTwelve = RulesElevenTwelve.solve(this);
-        } while (elevenTwelve);
     }
 }

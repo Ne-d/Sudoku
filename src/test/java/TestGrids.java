@@ -99,7 +99,7 @@ public class TestGrids {
     /**
      * Test the 6th rule with an example
      */
-    public static Grid pair(){
+    public static Grid pair() {
         Grid test = new Grid();
         test.addValue(2, 0, 2);
         test.addValue(4, 0, 8);
@@ -206,7 +206,6 @@ public class TestGrids {
         test.addValue(6, 3, 2);
 
 
-
         test.addValue(0, 5, 8);
         test.addValue(3, 5, 6);
         test.addValue(7, 5, 5);
@@ -298,7 +297,7 @@ public class TestGrids {
     public static Grid boxReductionGrid() {
         Grid g = new Grid();
 
-        // Grille: Sudoku Extrême n°74 p.69
+        // Grille : Sudoku Extrême n°74 p.69
         g.addValue(0, 0, 3);
         g.addValue(3, 0, 5);
         g.addValue(5, 0, 8);

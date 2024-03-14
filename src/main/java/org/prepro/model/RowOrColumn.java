@@ -6,8 +6,8 @@ public class RowOrColumn {
         Column
     }
 
-    public RowOrColumnType type;
-    public int number;
+    public final RowOrColumnType type;
+    public final int number;
 
 
     /**
