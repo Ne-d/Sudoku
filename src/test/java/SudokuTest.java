@@ -1,9 +1,10 @@
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Grid;
-import org.prepro.model.RowOrColumn.RowOrColumnEnum;
-
 import org.prepro.model.RowOrColumn;
+import org.prepro.model.RowOrColumn.RowOrColumnType;
+import org.prepro.model.solver.RulesElevenTwelve;
+import org.prepro.model.solver.RulesFiveToTen;
 import org.prepro.model.solver.RulesOneToThree;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class SudokuTest {
         test.afficheNote(5, 1);
         test.afficheNote(5, 2);
 
-        Assertions.assertTrue(test.k_upletsTest(2, 3, 0, 5, 2));
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 3, 0, 5, 2));
     }
 
     @Test
@@ -37,7 +38,7 @@ public class SudokuTest {
         test.afficheNote(2, 1);
         test.afficheNote(7, 1);
 
-        Assertions.assertTrue(test.k_upletsTest(2, 0, 1, 8, 1));
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 1, 8, 1));
     }
 
     /**
@@ -48,7 +49,7 @@ public class SudokuTest {
         Grid test = TestGrids.triplets();
 
         test.print();
-        Assertions.assertTrue(test.k_upletsTest(3, 0, 0, 2, 2));
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2));
     }
 
     /**
@@ -59,7 +60,7 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenPair();
 
         test.print();
-        System.out.println(test.k_upletsTest(2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -70,7 +71,7 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        System.out.println(test.k_upletsTest(2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -111,7 +112,7 @@ public class SudokuTest {
         Grid g = TestGrids.boxReductionGrid();
         g.print();
 
-        Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findBoxReduction(g, 2, 7, new RowOrColumn(RowOrColumnType.Column, 1), 1);
 
         List<int[]> coords;
 
@@ -129,7 +130,7 @@ public class SudokuTest {
             System.out.println(c[0] + ", " + c[1]);
         }
 
-        g.solveBoxReduction(2, 7, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
+        RulesElevenTwelve.solveBoxReduction(g, 2, 7, new RowOrColumn(RowOrColumnType.Column, 1), 1);
         Assertions.assertFalse(g.isNotePresent(7, 0, 2));
         Assertions.assertFalse(g.isNotePresent(7, 2, 0));
 
@@ -144,7 +145,7 @@ public class SudokuTest {
 
         System.out.println("Trying to do a box-2 reduction on a note that is not applicable (also present outside the block).");
 
-        Optional<List<int[]>> coordsOpt = g.findBoxReduction(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 1), 1);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findBoxReduction(g, 2, 1, new RowOrColumn(RowOrColumnType.Column, 1), 1);
 
         Assertions.assertFalse(coordsOpt.isPresent());
     }
@@ -155,7 +156,7 @@ public class SudokuTest {
         g.print();
         g.printWithNotes();
 
-        Optional<List<int[]>> coordsOpt = g.findBoxReduction(3, 6, new RowOrColumn(RowOrColumnEnum.Column, 4), 8);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findBoxReduction(g, 3, 6, new RowOrColumn(RowOrColumnType.Column, 4), 8);
         List<int[]> coords;
 
         if (coordsOpt.isPresent()) {
@@ -169,7 +170,7 @@ public class SudokuTest {
         Assertions.assertArrayEquals(coords.get(1), new int[]{4, 7});
         Assertions.assertArrayEquals(coords.get(2), new int[]{4, 8});
 
-        g.solveBoxReduction(3, 6, new RowOrColumn(RowOrColumnEnum.Column, 4), 8);
+        RulesElevenTwelve.solveBoxReduction(g, 3, 6, new RowOrColumn(RowOrColumnType.Column, 4), 8);
 
         Assertions.assertFalse(g.isNotePresent(6, 3, 6));
         Assertions.assertFalse(g.isNotePresent(6, 3, 7));
@@ -184,7 +185,7 @@ public class SudokuTest {
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
-        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 5, new RowOrColumn(RowOrColumnEnum.Row, 4), 4);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findPointingKTuple(g, 2, 5, new RowOrColumn(RowOrColumnType.Row, 4), 4);
         List<int[]> coords;
 
         if (coordsOpt.isPresent()) {
@@ -197,7 +198,7 @@ public class SudokuTest {
         Assertions.assertArrayEquals(coords.get(0), new int[]{1, 4});
         Assertions.assertArrayEquals(coords.get(1), new int[]{2, 4});
 
-        g.solvePointingKTuple(2, 5, new RowOrColumn(RowOrColumnEnum.Row, 4), 4);
+        RulesElevenTwelve.solvePointingKTuple(g, 2, 5, new RowOrColumn(RowOrColumnType.Row, 4), 4);
         g.printWithNotes();
 
         Assertions.assertFalse(g.isNotePresent(5, 3, 4));
@@ -214,7 +215,7 @@ public class SudokuTest {
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
-        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 3), 8);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findPointingKTuple(g, 2, 1, new RowOrColumn(RowOrColumnType.Column, 3), 8);
         List<int[]> coords;
 
         if (coordsOpt.isPresent()) {
@@ -227,7 +228,7 @@ public class SudokuTest {
         Assertions.assertArrayEquals(coords.get(0), new int[]{3, 7});
         Assertions.assertArrayEquals(coords.get(1), new int[]{3, 8});
 
-        g.solvePointingKTuple(2, 1, new RowOrColumn(RowOrColumnEnum.Column, 3), 8);
+        RulesElevenTwelve.solvePointingKTuple(g, 2, 1, new RowOrColumn(RowOrColumnType.Column, 3), 8);
 
         Assertions.assertFalse(g.isNotePresent(1, 3, 0));
         Assertions.assertFalse(g.isNotePresent(1, 3, 4));
@@ -242,7 +243,7 @@ public class SudokuTest {
         Grid g = TestGrids.pointingTripletGrid();
         g.print();
 
-        Optional<List<int[]>> coordsOpt = g.findPointingKTuple(3, 1, new RowOrColumn(RowOrColumnEnum.Row, 6), 9);
+        Optional<List<int[]>> coordsOpt = RulesElevenTwelve.findPointingKTuple(g, 3, 1, new RowOrColumn(RowOrColumnType.Row, 6), 9);
         List<int[]> coords;
 
         if (coordsOpt.isPresent()) {
@@ -256,7 +257,7 @@ public class SudokuTest {
         Assertions.assertArrayEquals(coords.get(1), new int[]{7, 6});
         Assertions.assertArrayEquals(coords.get(2), new int[]{8, 6});
 
-        g.solvePointingKTuple(3, 1, new RowOrColumn(RowOrColumnEnum.Row, 6), 9);
+        RulesElevenTwelve.solvePointingKTuple(g, 3, 1, new RowOrColumn(RowOrColumnType.Row, 6), 9);
 
         Assertions.assertFalse(g.isNotePresent(1, 3, 6));
         Assertions.assertFalse(g.isNotePresent(1, 5, 6));

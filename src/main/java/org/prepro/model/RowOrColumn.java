@@ -1,22 +1,23 @@
 package org.prepro.model;
 
 public class RowOrColumn {
-    public enum RowOrColumnEnum {
+    public enum RowOrColumnType {
         Row,
         Column
     }
 
-    RowOrColumnEnum e;
-    int number;
+    public RowOrColumnType type;
+    public int number;
 
 
     /**
      * Create a new RowOrColumn
-     * @param e The enum to chose whether this represents a row or a column
-     * @param num The number of the row or column (starting at 0)
+     *
+     * @param type The enum to chose whether this represents a row or a column
+     * @param num  The number of the row or column (starting at 0)
      */
-    public RowOrColumn(RowOrColumnEnum e, int num) {
-        this.e = e;
+    public RowOrColumn(RowOrColumnType type, int num) {
+        this.type = type;
         this.number = num;
     }
 }

@@ -1,27 +1,28 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
-import org.prepro.model.RowOrColumn;
+import org.prepro.model.solver.RulesFiveToTen;
 import org.prepro.model.solver.RulesOneToThree;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
 
-    public static boolean useRule(Grid grid, Scanner scanner){
+    public static boolean useRule(Grid grid, Scanner scanner) {
         String command = "";
         String commandRecognized = "complete|elementaire|singleton|paire|triplet|QUIT"; //number of the recognize rule
         String commandRecognized2 = "block|ligne|colonne";
         String argv = "";
         int i = -1;
-        try{
-            
-            System.out.print( "put your command: " );
-            if (scanner.hasNext()) {command = scanner.next(commandRecognized);}           
-            
-            switch(command) {
+        try {
+
+            System.out.print("put your command: ");
+            if (scanner.hasNext()) {
+                command = scanner.next(commandRecognized);
+            }
+
+            switch (command) {
                 case "complete":
                     grid.allRules();
                     grid.print();
@@ -32,66 +33,78 @@ public class Main {
                     grid.printWithNotes();
                     break;
                 case "singleton":
-                    System.out.print( "put your command among "+ commandRecognized2+" : " );
-                    if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    if (scanner.hasNext()) {
+                        command = scanner.next(commandRecognized2);
+                    }
                     System.out.print("put the number: ");
-                    if(scanner.hasNext()){argv = scanner.next();}
+                    if (scanner.hasNext()) {
+                        argv = scanner.next();
+                    }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(1, 0, i, grid.SIZE-1, i));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(1, i, 0, i, grid.SIZE-1));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
-                            int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
-                            int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(1, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
+                            int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
+                            int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
                     grid.printWithNotes();
                     break;
                 case "paire":
-                    System.out.print( "put your command among "+ commandRecognized2+" : " );
-                    if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    if (scanner.hasNext()) {
+                        command = scanner.next(commandRecognized2);
+                    }
                     System.out.print("put the number: ");
-                    if(scanner.hasNext()){argv = scanner.next();}
+                    if (scanner.hasNext()) {
+                        argv = scanner.next();
+                    }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                        System.out.println("la grille a été modifié : "+ grid.k_upletsTest(2, 0, i, grid.SIZE-1, i));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(2, i, 0, i, grid.SIZE-1));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
-                            int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
-                            int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(2, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
+                            int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
+                            int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
                     grid.printWithNotes();
                     break;
                 case "triplet":
-                    System.out.print( "put your command among "+ commandRecognized2+" : " );
-                    if (scanner.hasNext()) {command = scanner.next(commandRecognized2);}
+                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    if (scanner.hasNext()) {
+                        command = scanner.next(commandRecognized2);
+                    }
                     System.out.print("put the number: ");
-                    if(scanner.hasNext()){argv = scanner.next();}
+                    if (scanner.hasNext()) {
+                        argv = scanner.next();
+                    }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(3, 0, i, grid.SIZE-1, i));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(3, i, 0, i, grid.SIZE-1));
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
-                            int x = (i%grid.SQRTSIZE)*grid.SQRTSIZE;
-                            int y = (i/grid.SQRTSIZE)*grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : "+ grid.k_upletsTest(3, x, y, x + grid.SQRTSIZE -1, y + grid.SQRTSIZE -1));
+                            int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
+                            int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
+                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
@@ -100,15 +113,15 @@ public class Main {
                 case "QUIT":
                     return false;
             }
-        }catch(NoSuchElementException e){
-            System.out.println("list of command : "+ commandRecognized);
-            if(scanner.hasNext())scanner.next(); //avoid infinity loop
-        }
-        catch(Exception e){
-            System.out.println("An error was occured : " + e+ "\n\t"+ e.getMessage());
+        } catch (NoSuchElementException e) {
+            System.out.println("list of command : " + commandRecognized);
+            if (scanner.hasNext()) scanner.next(); //avoid infinity loop
+        } catch (Exception e) {
+            System.out.println("An error was occured : " + e + "\n\t" + e.getMessage());
         }
         return true;
     }
+
     public static void main(String[] args) {
         /*
         Grid grid1 = new Grid();

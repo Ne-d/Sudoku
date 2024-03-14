@@ -1,12 +1,15 @@
 package org.prepro.model;
 
 
+import org.prepro.model.RowOrColumn.RowOrColumnType;
+import org.prepro.model.solver.RulesElevenTwelve;
+import org.prepro.model.solver.RulesFiveToTen;
+import org.prepro.model.solver.RulesOneToThree;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.prepro.model.RowOrColumn.RowOrColumnEnum;
-import org.prepro.model.solver.RulesOneToThree;
 
 public class Grid {
     private final Box[][] board;
@@ -20,18 +23,21 @@ public class Grid {
     public Grid() {
 
         this.SIZE = 9;
-        this.SQRTSIZE = ((int)Math.sqrt(SIZE));
+        this.SQRTSIZE = ((int) Math.sqrt(SIZE));
         this.DIFFICULTY = 17;
         this.board = new Box[SIZE][SIZE];
-        
+
         // Initialize all boxes.
-        for(int x = 0; x < SIZE; x++) {
-            for(int y = 0; y < SIZE; y++) {
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
                 this.board[x][y] = new Box(this.SIZE);
             }
         }
     }
 
+    public Box[][] getBoard() {
+        return this.board;
+    }
 
     /**
      * @return Returns the value of the box at the given coordinates
@@ -55,21 +61,24 @@ public class Grid {
 
     /**
      * Adds a value to the chosen box if it was empty.
+     *
      * @param val Adds a value to the box of given coordinates, only if the box had no value.
      * @return Returns true if the box has been modified (had no value before), false otherwise.
      */
     public boolean addValue(int xPos, int yPos, int val) {
-    	Box box = this.board[xPos][yPos];
-        if(box.getVal() != 0) {return false;}
+        Box box = this.board[xPos][yPos];
+        if (box.getVal() != 0) {
+            return false;
+        }
         box.setVal(val);
 
         // Delete all notes that become invalid once this new value is added to the grid
-        this.deleteNotes(xPos, 0, xPos, this.SIZE-1, val); //delete note column
-        this.deleteNotes(0, yPos, this.SIZE-1, yPos, val); //delete note line
-        this.deleteNotes((xPos/this.SQRTSIZE)*this.SQRTSIZE,
-                         (yPos/this.SQRTSIZE)*this.SQRTSIZE,
-                         (1 + xPos/this.SQRTSIZE)*this.SQRTSIZE -1,
-                         (1 + yPos/this.SQRTSIZE)*this.SQRTSIZE - 1, val); //delete note square
+        this.deleteNotes(xPos, 0, xPos, this.SIZE - 1, val); //delete note column
+        this.deleteNotes(0, yPos, this.SIZE - 1, yPos, val); //delete note line
+        this.deleteNotes((xPos / this.SQRTSIZE) * this.SQRTSIZE,
+                (yPos / this.SQRTSIZE) * this.SQRTSIZE,
+                (1 + xPos / this.SQRTSIZE) * this.SQRTSIZE - 1,
+                (1 + yPos / this.SQRTSIZE) * this.SQRTSIZE - 1, val); //delete note square
         this.deleteAllNote(xPos, yPos);
 
         return true;
@@ -78,9 +87,10 @@ public class Grid {
 
     /**
      * Sets the value val to the box of given coordinates.
+     *
      * @param xPos The x coordinate of the chosen box.
      * @param yPos The y coordinate of the chosen box.
-     * @param val The value to put in the chosen box.
+     * @param val  The value to put in the chosen box.
      */
     public void replaceValue(int xPos, int yPos, int val) {
         this.board[xPos][yPos].setVal(val);
@@ -89,14 +99,14 @@ public class Grid {
 
     /**
      * Removes the value of the box at the given coordinates.
+     *
      * @return Returns true if the box has been modified (had a value before). Returns false if the box has not been modified (already had no value).
      */
     public boolean removeValue(int xPos, int yPos) {
-        if(!isBoxEmpty(xPos, yPos)) {
+        if (!isBoxEmpty(xPos, yPos)) {
             this.board[xPos][yPos].setVal(0);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -104,6 +114,7 @@ public class Grid {
 
     /**
      * Determines if a rectangle is correct (has no duplicate values).
+     *
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
      * @param endX   X coordinate of the end of the rectangle.
@@ -122,8 +133,9 @@ public class Grid {
                 if (val != 0) {
                     if (presentNumbers[val - 1]) {
                         return false;
+                    } else {
+                        presentNumbers[val - 1] = true;
                     }
-                    else {presentNumbers[val -1] = true; }
                 }
 
             }
@@ -178,7 +190,7 @@ public class Grid {
             for (int j = 0; j < this.SQRTSIZE && canceled; j++) {
                 canceled = isBlockValid(i, j);
             }
-            
+
         }
         return canceled;
     }
@@ -193,16 +205,18 @@ public class Grid {
         int val;
         boolean foundValid;
 
-        for(int i = 0; i < this.DIFFICULTY; i++) {
+        for (int i = 0; i < this.DIFFICULTY; i++) {
             foundValid = false;
-            while(!foundValid) { // While a correct value has not yet been found
+            while (!foundValid) { // While a correct value has not yet been found
                 // Find random coordinates
-                if (foundValid) { replaceValue(posX, posY, 0); }
-                posX = (int)(Math.random() * (this.SIZE));
-                posY = (int)(Math.random() * (this.SIZE));
+                if (foundValid) {
+                    replaceValue(posX, posY, 0);
+                }
+                posX = (int) (Math.random() * (this.SIZE));
+                posY = (int) (Math.random() * (this.SIZE));
                 //Find random value
-                val = (int)(Math.random() * (this.SIZE + 1));
-                
+                val = (int) (Math.random() * (this.SIZE + 1));
+
                 addValue(posX, posY, val);
 
                 foundValid = validVal(posX, posY);
@@ -216,6 +230,7 @@ public class Grid {
 
     /**
      * Prints nbDash number of dashes
+     *
      * @param nbDash the amount of dashes to be printed
      */
     private void printLine(int nbDash) {
@@ -225,8 +240,10 @@ public class Grid {
         System.out.println("-");
 
     }
+
     /**
      * Prints nbEqual number of equals
+     *
      * @param nbEqual the amount of equals to be printed
      */
     private void printLineEqual(int nbEqual) {
@@ -242,12 +259,12 @@ public class Grid {
      * Prints out a graphical representation of the grid to standard output.
      */
     public void print() {
-        for(int y = 0; y < SIZE; y++) {
-            if(y % SQRTSIZE == 0) {
+        for (int y = 0; y < SIZE; y++) {
+            if (y % SQRTSIZE == 0) {
                 printLine(25);
             }
-            for(int x = 0; x < SIZE; x++) {
-                if(x % SQRTSIZE == 0) {
+            for (int x = 0; x < SIZE; x++) {
+                if (x % SQRTSIZE == 0) {
                     System.out.print("| ");
                 }
                 System.out.print(this.getVal(x, y) == 0 ? "  " : this.getVal(x, y) + " ");
@@ -257,28 +274,40 @@ public class Grid {
         }
         printLine(25);
     }
+
     /**
      * Prints out a graphical representation of the grid to standard output.
      */
     private void printWithNotes_aux(int y, int debut) {
-        int note=debut;
+        int note = debut;
         int x = -1;
-        for(int j = 0; j < SIZE*SQRTSIZE; j++){
-            if(j % SIZE == 0){System.out.print("|");}
-            if(j % SQRTSIZE == 0){System.out.print("| ");note = debut;x++;}
+        for (int j = 0; j < SIZE * SQRTSIZE; j++) {
+            if (j % SIZE == 0) {
+                System.out.print("|");
+            }
+            if (j % SQRTSIZE == 0) {
+                System.out.print("| ");
+                note = debut;
+                x++;
+            }
             System.out.print(!this.board[x][y].isNotePresent(note) ? "  " : note + " ");
             note++;
         }
     }
-    public void printWithNotes(){
-        int nbEqual = SIZE*SQRTSIZE*2+23;
-        for(int y = 0; y < SIZE; y++){
-            if (y % SQRTSIZE == 0){printLineEqual(nbEqual);}
-            for(int i = 1; i<SIZE;i = i+3){
+
+    public void printWithNotes() {
+        int nbEqual = SIZE * SQRTSIZE * 2 + 23;
+        for (int y = 0; y < SIZE; y++) {
+            if (y % SQRTSIZE == 0) {
+                printLineEqual(nbEqual);
+            }
+            for (int i = 1; i < SIZE; i = i + 3) {
                 printWithNotes_aux(y, i);
                 System.out.println("||");
             }
-            if ((y+1) % SQRTSIZE != 0){printLine(nbEqual);}
+            if ((y + 1) % SQRTSIZE != 0) {
+                printLine(nbEqual);
+            }
         }
         printLineEqual(nbEqual);
     }
@@ -287,9 +316,13 @@ public class Grid {
      * @return true if the value's position are possible else return false
      */
     public boolean validVal(int xPos, int yPos) {
-        if(!isRowValid(xPos + 1)) {return false;}
+        if (!isRowValid(xPos + 1)) {
+            return false;
+        }
 
-        if(!isColumnValid(yPos + 1)){return false;}
+        if (!isColumnValid(yPos + 1)) {
+            return false;
+        }
 
         return isBlockValid(xPos / this.SQRTSIZE, yPos / this.SQRTSIZE);
     }
@@ -297,6 +330,7 @@ public class Grid {
 
     /**
      * Prints the notes of the chosen box
+     *
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      */
@@ -308,6 +342,7 @@ public class Grid {
 
     /**
      * Deletes a note of the chosen box
+     *
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      * @param note The note to remove
@@ -319,36 +354,37 @@ public class Grid {
 
     /**
      * Deletes a note of the chosen box
+     *
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      */
-    public void deleteAllNote(int xPos, int yPos){
+    public void deleteAllNote(int xPos, int yPos) {
         this.board[xPos][yPos].deleteAllNote();
     }
+
     /**
      * delete all note in the field witch is equals to  val
+     *
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @param val value of the note witch is delete
+     * @param endX   X coordinate of the end of the rectangle.
+     * @param endY   Y coordinate of the end of the rectangle.
+     * @param val    value of the note witch is delete
      */
     private void deleteNotes(int startX, int startY, int endX, int endY, int val) {
-	    for (int x = startX; x <= endX; x++) {
-	        for (int y = startY; y <= endY; y++) {
-	        	this.deleteNote(x, y, val);
-                if(board[x][y].getNbNote() == 1) {
-                    //board[x][y].setVal(board[x][y].getNotes().getUniqueNote());
-                }
-	        }
-	    }
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                this.deleteNote(x, y, val);
+            }
+        }
     }
 
     /**
      * Determines if the given note is present in a box
+     *
      * @param note The note to check
-     * @param x The x coordinate (column) to look in
-     * @param y The y coordinate (line) to look in
+     * @param x    The x coordinate (column) to look in
+     * @param y    The y coordinate (line) to look in
      * @return Whether the
      */
     public boolean isNotePresent(int note, int x, int y) {
@@ -357,6 +393,7 @@ public class Grid {
 
     /**
      * Adds a note to the chosen box
+     *
      * @param xPos X coordinate of the chosen box
      * @param yPos Y coordinate of the chosen box
      * @param note The note to add
@@ -364,12 +401,12 @@ public class Grid {
     public void addNote(int xPos, int yPos, int note) {
         this.board[xPos][yPos].addNote(note);
     }
+
     /**
-     *
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
+     * @param endX   X coordinate of the end of the rectangle.
+     * @param endY   Y coordinate of the end of the rectangle.
      * @return if the grid has been modified
      */
     public boolean isNotePresentOnce(int startX, int startY, int endX, int endY, int[] nbNotesRec) {
@@ -382,7 +419,7 @@ public class Grid {
 
                         for (int i = 1; i <= 9; i++) { //cherche la note
 
-                            if (board[x][y].isNotePresent(i) && i==oc+1) {
+                            if (board[x][y].isNotePresent(i) && i == oc + 1) {
                                 this.addValue(x, y, i);
                                 return true;
                             }
@@ -398,218 +435,74 @@ public class Grid {
         return this.board[x][y].getNbNote();
     }
 
-
     /**
-     * complete a rectangle with some simple rule. WARNING the rectangle must be a row or a column or a square
+     * Finds the number of notes in a rectangle.
+     *
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @return if the grid has been modified
+     * @param endX   X coordinate of the end of the rectangle.
+     * @param endY   Y coordinate of the end of the rectangle.
+     * @return The number of notes found
      */
-    /*public boolean simplerule(int startX, int startY, int endX, int endY) {
-        int[] nbNotesRec = new int[this.SIZE];
-        int nbNotes;
-        int j;
-        
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-            	nbNotes = board[x][y].getNbNote();
-            	j=0;
-	            for(int i=1; i<=9 && j != nbNotes; i++) {
-	            	if( board[x][y].isNotePresent(i)) {
-                        nbNotesRec[i-1]++;
-	            		j++;
-                        if(nbNotes == 1){ 
-                        	this.addValue(x, y, i);
-                        	return true;
-                        }
-	            	}
-	            }
-            }
-        }
-        return isNotePresentOnce(startX,startY,endX,endY,nbNotesRec);
-    }
-    */
-
-    /**
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @param note the note will looking for
-     * @return the number of note found
-     */
-    private int getNbNote(int startX, int startY, int endX, int endY, int note) {
+    private int getNbNote(int startX, int startY, int endX, int endY) {
         int found = 0;
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
-                
+
                 for (int i = 1; i <= 9; i++) { //cherche la note
 
                     if (board[x][y].isNotePresent(i)) {
-                        found ++;
+                        found++;
                     }
-                    
                 }
             }
-            
         }
         return found;
     }
 
 
     /**
-     * Finds all the combinations (k-tupples) of k numbers in a list from 1 to size.
-     * @param size The max value of the numbers.
-     * @param len The amount of numbers to take.
+     * Finds all the combinations (k-tuples) of k numbers in a list from 1 to size.
+     *
+     * @param size          The max value of the numbers.
+     * @param len           The amount of numbers to take.
      * @param startPosition The minimum value of the numbers.
-     * @param result The tuple currently being built by the function.
-     * @param resultList The list of tuples to be returned.
+     * @param result        The tuple currently being built by the function.
+     * @param resultList    The list of tuples to be returned.
      */
     static void combinations_aux(int size, int len, int startPosition, int[] result, List<int[]> resultList) {
-        if(len == 0) {
+        if (len == 0) {
             resultList.add(result.clone());
             return;
         }
-        for(int i = startPosition; i <= size + 1 - len; i++) {
+        for (int i = startPosition; i <= size + 1 - len; i++) {
             result[result.length - len] = i;
             combinations_aux(size, len - 1, i + 1, result, resultList);
         }
     }
 
     /**
-     * Finds all the combinations (k-tupples) of k numbers in a list from 1 to size.
+     * Finds all the combinations (k-tuples) of k numbers in a list from 1 to size.
+     *
      * @param size The max value of the numbers.
-     * @param k The amount of numbers to take.
+     * @param k    The amount of numbers to take.
      * @return A list of tuples with k elements from 1 to size.
      */
     static List<int[]> combinations(int size, int k) {
         List<int[]> res = new ArrayList<>();
-        
+
         combinations_aux(size, k, 1, new int[k], res);
-        
+
         return res;
     }
 
     /**
-     * @param pK_uplet positions of the k_uplet found
-     * @param notes of the k_uplet
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @return if the grid has been changed
-     */
-    public boolean k_uplet_delNotes(int[] pK_uplet, int[] notes, int startX, int startY, int endX) {
-        boolean gridModif = false;
-        int k = pK_uplet.length;
-        int largeur = endX - startX +1;
-
-        int x, y;
-        for (int i = 0; i < this.SIZE; i++){
-            x = i % largeur + startX;
-            y = i / largeur + startY;
-
-            boolean delete = true;
-            for (int j = 0; j < k; j++){
-                if(pK_uplet[j] == i){
-                   delete = false;
-                   if(board[x][y].deleteAllNote(notes)){gridModif = true;}
-                }
-            }
-            if(delete){
-                for (int j = 0; j < k; j++){
-                    if(board[x][y].deleteNote(notes[j])){gridModif = true;}
-                }
-            }
-        }
-        return gridModif;
-    }
-
-    public boolean verifIsPresent(int[] tab, int val){
-        for(int i = 0; i< tab.length; i++){
-            if(tab[i] == val){return true;}
-        }
-        {return false;}
-    }
-
-    /**
-     * @param k size of the k uplet
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @return if a k_uplet as found
-     */
-    public boolean k_upletsTest(int k, int startX, int startY, int endX, int endY) {
-
-        List<int[]> tupples = combinations(this.SIZE, k);
-        for(int i = 0; i < tupples.size(); i++) {
-            boolean[][] tab = new boolean[k][this.SIZE];
-            boolean hidden = true; 
-            for(int j = 0; j < k; j++) { //Tous les membres du k-uplet
-                int numcase = 0;
-
-                for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
-                    for(int x = startX; x <= endX; x++) {
-                        tab[j][numcase] = board[x][y].isNotePresent(tupples.get(i)[j]);
-                        if(tab[j][numcase] && board[x][y].getNbNote() == k && hidden){hidden = false;}
-                        else{hidden = true;}
-                        numcase++;
-                    }
-                }
-            }
-
-            int nbfound = 0; // notes sur les memes
-            int[] pos = new int[k];
-            int ajouter = 0;
-            int largeur = endX - startX +1;
-            List<int[]> comb = combinations(k,2);
-
-            for (int t = 0; t < this.SIZE; t++ ) { // Pour chaque case de la zone
-                for(int w = 0; w < comb.size(); w++) { // Pour chaque combinaison entre les colonnes de tab
-                    
-                    if(tab[comb.get(w)[0] - 1][t] && tab[comb.get(w)[1] - 1][t]) { // Compare les valeurs pour chaque combinaison de colonnes
-                        if(hidden || board[(t % largeur) + startX][(t / largeur) + startY].getNbNote() == k){
-                            if(!verifIsPresent(pos, t) && ajouter != k){pos[ajouter] = t; ajouter++;}
-                            nbfound++;
-                        }
-                    }
-                }
-            }
-            if(nbfound == k*comb.size()) {
-                return k_uplet_delNotes(pos, tupples.get(i), startX, startY, endX);
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX X coordinate of the end of the rectangle.
-     * @param endY Y coordinate of the end of the rectangle.
-     * @param note the note will looking for
-     * @return if the grid has been modified
-     */
-    private boolean ruleElevenTwelve(int startX, int startY, int endX, int endY, int note){
-        int nbFound = getNbNote(startX+1, startY, endX, endY, note);
-        if (nbFound > 3){return false;}
-
-        boolean gridModified = false;
-        for(int i = startX; i < endX; i++){ 
-            this.deleteNotes(i, 0, i, this.SIZE, note); //delete all note in the column
-            this.deleteNotes(0, i, this.SIZE, i, note); //delete all note in the row
-        }
-        return gridModified;
-    }
-
-    /**
      * Determines the starting X coordinate of a block
+     *
      * @param numBlock The number of the block, starting at 1
      * @return The X starting coordinate of the block
      */
-    int blockStartX(int numBlock) {
+    public int blockStartX(int numBlock) {
         int num = numBlock - 1; // True number of the block starting at 0
         int column = num % SQRTSIZE; // Block column
         return column * SQRTSIZE; // Cell column
@@ -617,19 +510,21 @@ public class Grid {
 
     /**
      * Determines the ending X coordinate of a block
+     *
      * @param numBlock The number of the block, starting at 1
      * @return The X starting coordinate of the block
      */
-    int blockEndX(int numBlock) {
+    public int blockEndX(int numBlock) {
         return blockStartX(numBlock) + SQRTSIZE;
     }
 
     /**
      * Determines the starting Y coordinate of a block
+     *
      * @param numBlock The number of the block, starting at 1
      * @return The Y starting coordinate of the block
      */
-    int blockStartY(int numBlock) {
+    public int blockStartY(int numBlock) {
         int num = numBlock - 1; // True number of the block starting at 0
         int line = num / SQRTSIZE; // Block column
         return line * SQRTSIZE; // Cell column
@@ -637,93 +532,17 @@ public class Grid {
 
     /**
      * Determines the ending Y coordinate of a block
+     *
      * @param numBlock The number of the block, starting at 1
      * @return The Y starting coordinate of the block
      */
-    int blockEndY(int numBlock) {
+    public int blockEndY(int numBlock) {
         return blockStartY(numBlock) + SQRTSIZE;
     }
 
     /**
-     * Find if there is a pointing k-tuple in the block and give the line or column it is on, if it exists.
-     * @param k The amount of members in the k-uplet
-     * @param note The note to look for in k-uplets
-     * @param block The block to search in
-     * @return If there is a pointing k-tuple, return whether it is on a line, or a column, and the number of that line or column. Else, return Optional.empty()
-     */
-    // TODO: MAKE THE FUNCTION TO DELETE THE NOTES GIVEN BY THE "PAIRE POINTANTE".
-    // Supprimer les notes sur la ligne ou colonnes si pas dans le block testé
-    public Optional<List<int[]>> findPointingKTuple(int k, int note, RowOrColumn lc, int block) {
-        int nbFound = 0;
-        List<int[]> coords = new ArrayList<>();
-
-        // For every box in the block, stopping if we found more notes than k.
-        for(int x = blockStartX(block); x < blockEndX(block) && nbFound <= k; x++) {
-            for (int y = blockStartY(block); y < blockEndY(block) && nbFound <= k; y++) {
-                if(isNotePresent(note, x, y)) {
-                    nbFound++;
-                    coords.add(new int[]{x, y});
-                }
-            }
-        }
-
-        // If there are not exactly k boxes found, then we don't have a pointing k-uplet.
-        if(coords.size() != k) { return Optional.empty(); }
-
-        // For each coordinate in the list, check if they are on the same line or column
-        if(lc.e == RowOrColumnEnum.Row) {
-            for (int[] c : coords) {
-                if(c[1] != lc.number) {
-                    return Optional.empty();
-                }
-            }
-        }
-        else {
-            for (int[] c : coords) {
-                if(c[0] != lc.number) {
-                    return Optional.empty();
-                }
-            }
-        }
-
-        return Optional.of(coords);
-    }
-
-    public boolean solvePointingKTuple(int k, int note, RowOrColumn lc, int block) {
-        Optional<List<int[]>> coordsOptional = findPointingKTuple(k, note, lc, block);
-
-        if(coordsOptional.isEmpty()){
-            return false;
-        }
-
-        boolean hasChanged = false;
-
-        if(lc.e == RowOrColumnEnum.Row) {
-            for(int x = 0; x < this.SIZE; x++) {
-                if(!isInBlock(x, lc.number, block)) {
-                    if(deleteNote(x, lc.number, note))
-                    {
-                        hasChanged = true;
-                    }
-                }
-            }
-        }
-
-        else {
-            for(int y = 0; y < this.SIZE; y++) {
-                if(!isInBlock(lc.number, y, block)) {
-                    if(deleteNote(lc.number, y, note)) {
-                        hasChanged = true;
-                    }
-                }
-            }
-        }
-
-        return hasChanged;
-    }
-
-    /**
      * Find which block a box is in
+     *
      * @param x The x coordinate of the block
      * @param y The y coordinate of the block
      * @return The block that contains the chosen box
@@ -735,8 +554,9 @@ public class Grid {
 
     /**
      * Find if a box is in the given block
-     * @param x The x coordinate of the block to check
-     * @param y The y coordinate of the block to check
+     *
+     * @param x     The x coordinate of the block to check
+     * @param y     The y coordinate of the block to check
      * @param block The block to check for
      * @return Whether the boc is in the chosen block
      */
@@ -744,97 +564,11 @@ public class Grid {
         return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
     }
 
-    public Optional<List<int[]>> findBoxReduction(int k, int note, RowOrColumn lc, int block) {
-        int nbFound = 0;
-        List<int[]> coords = new ArrayList<>();
-
-        // For every box in the row or column, stopping if we found more notes than k.
-        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
-            for (int x = 0; x < SIZE && nbFound <= k; x++) {
-                if (isNotePresent(note, x, lc.number)) {
-                    nbFound++;
-                    coords.add(new int[]{x, lc.number});
-                }
-            }
-        }
-        else { // If we are looking in a column
-            for (int y = 0; y < SIZE && nbFound <= k; y++) {
-                if (isNotePresent(note, lc.number, y)) {
-                    nbFound++;
-                    coords.add(new int[]{lc.number, y});
-                }
-            }
-        }
-
-        // If there are not exactly k coordinates found, we can't use box-k reduction
-        if(coords.size() != k) { return Optional.empty(); }
-
-        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
-            for(int i = 0; i < coords.size(); i++) {
-                if (!isInBlock(coords.get(i)[0], lc.number, block)) { // If the coordinate is not in the block
-                    return Optional.empty();
-                }
-            }
-        }
-        else { // If we are looking in a column
-            for(int i = 0; i < coords.size(); i++) {
-                if (!isInBlock(lc.number, coords.get(i)[1], block)) {  // If the coordinate is not in the block
-                    return Optional.empty();
-                }
-            }
-        }
-
-        // Return the list of coordinates in the k-tuple
-        return Optional.of(coords);
-    }
-
-    /**
-     * Solve BoxReduction
-     * @param k The k amount of members in the k-uplet
-     * @param note The note to look for in thetuple
-     * @param lc The Row or Column to search in
-     * @param block The block to search in
-     * @return The row that contains the Xwing
-     */
-    public boolean solveBoxReduction(int k, int note, RowOrColumn lc, int block) {
-        Optional<List<int[]>> coordsOptional = findBoxReduction(k, note, lc, block);
-
-        if(coordsOptional.isEmpty()) {
-            return false;
-        }
-
-        boolean hasChanged = false;
-
-        if(lc.e == RowOrColumnEnum.Row) {
-            for(int x = blockStartX(block); x < blockEndX(block); x++) {
-                for (int y = blockStartY(block); y < blockEndY(block); y++) {
-                    if(y != lc.number) {
-                        if(deleteNote(x, y, note)) {
-                            hasChanged = true;
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            for(int x = blockStartX(block); x < blockEndX(block); x++) {
-                for (int y = blockStartY(block); y < blockEndY(block); y++) {
-                    if(x != lc.number) {
-                        if(deleteNote(x, y, note)) {
-                            hasChanged = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return hasChanged;
-    }
-
     /**
      * Finds if the given Row or Column could be in an X-Wing (has the candidate note exactly twice).
+     *
      * @param note The note to look for
-     * @param lc Whether we are looking in a Row or a Column
+     * @param lc   Whether we are looking in a Row or a Column
      * @return If there are exactly two candidates in the row or column, return their coordinates. Else return Empty.
      */
     public Optional<int[][]> xWingGetCoordinates(int note, RowOrColumn lc) {
@@ -843,7 +577,7 @@ public class Grid {
         int[][] coords = new int[2][2];
 
         //For every row or column in the grid, stopping if we found more notes than 2
-        if(lc.e == RowOrColumnEnum.Row) { // If we are looking in a row
+        if (lc.type == RowOrColumnType.Row) { // If we are looking in a row
             for (int x = 0; x < SIZE; x++) {
                 if (isNotePresent(note, x, lc.number)) {
                     if (nbFound < 2) {
@@ -854,15 +588,13 @@ public class Grid {
                     }
                 }
             }
-        }
-        else { // If we are looking in a column
+        } else { // If we are looking in a column
             for (int y = 0; y < SIZE; y++) {
                 if (isNotePresent(note, lc.number, y)) {
-                    if(nbFound < 2) {
+                    if (nbFound < 2) {
                         nbFound++;
                         coords[nbFound - 1] = new int[]{lc.number, y};
-                    }
-                    else {
+                    } else {
                         return Optional.empty();
                     }
                 }
@@ -875,16 +607,17 @@ public class Grid {
 
     /**
      * Finds if the rows or columns suitable for an X-Wing have their candidates aligned.
-     * @param lce Whether we are looking in rows or columns.
-     * @param first The first row or column's list of coordinates.
+     *
+     * @param lce    Whether we are looking in rows or columns.
+     * @param first  The first row or column's list of coordinates.
      * @param second The second row or column's list of coordinates.
      * @return True if the candidates are aligned, false otherwise.
      */
-    public boolean xWingAreRowsOrColumnsAligned(RowOrColumnEnum lce, int[][] first, int[][] second) {
-        if(lce == RowOrColumnEnum.Row) { // If we are looking in a Row
+    public boolean xWingAreRowsOrColumnsAligned(RowOrColumnType lce, int[][] first, int[][] second) {
+        if (lce == RowOrColumnType.Row) { // If we are looking in a Row
             boolean sameXSoFar = true;
             boolean differentYSoFar = true;
-            for(int i = 0; i < 2 && sameXSoFar && differentYSoFar; i++) {
+            for (int i = 0; i < 2 && sameXSoFar && differentYSoFar; i++) {
                 // Check if the X coordinate of the candidates are aligned.
                 sameXSoFar = (first[i][0] == second[i][0]);
                 // Check if the Y coordinates of the candidates are different (not on the same row)
@@ -892,11 +625,10 @@ public class Grid {
             }
 
             return sameXSoFar && differentYSoFar;
-        }
-        else { // If we are looking in a Column
+        } else { // If we are looking in a Column
             boolean sameYSoFar = true;
             boolean differentXSoFar = true;
-            for(int i = 0; i < 2 && sameYSoFar && differentXSoFar; i++) {
+            for (int i = 0; i < 2 && sameYSoFar && differentXSoFar; i++) {
                 // Check if the X coordinate of the candidates are aligned.
                 sameYSoFar = (first[i][1] == second[i][1]);
                 // Check if the X coordinates of the candidates are different (not on the same row)
@@ -910,9 +642,10 @@ public class Grid {
 
     /**
      * Checks if the given rows or columns contain an X-Wing.
+     *
      * @param note The note to look for.
-     * @param lc1 The first row or column to check.
-     * @param lc2 The second row or column to check.
+     * @param lc1  The first row or column to check.
+     * @param lc2  The second row or column to check.
      * @return The coordinates of the X-Wing's candidates (the corners of the X-Wing).
      */
 
@@ -921,7 +654,7 @@ public class Grid {
         Optional<int[][]> first = xWingGetCoordinates(note, lc1);
 
         // If we haven't found a suitable row or column, return early.
-        if(first.isEmpty()) {
+        if (first.isEmpty()) {
             return Optional.empty();
         }
 
@@ -929,13 +662,14 @@ public class Grid {
         Optional<int[][]> second = xWingGetCoordinates(note, lc2);
 
         // If we haven't found a second suitable row or column, return early.
-        if(second.isEmpty()) {
+        if (second.isEmpty()) {
             return Optional.empty();
-        }
-        else {
+        } else {
             // Check that the candidates in both rows or columns are properly aligned for an X-Wing.
-            boolean candidatesAligned = xWingAreRowsOrColumnsAligned(lc1.e, first.get(), second.get());
-            if(!candidatesAligned) { return Optional.empty(); }
+            boolean candidatesAligned = xWingAreRowsOrColumnsAligned(lc1.type, first.get(), second.get());
+            if (!candidatesAligned) {
+                return Optional.empty();
+            }
 
             // Make a list of all the coordinates of the X-Wing to return.
             int[][] coordinates = new int[2][2];
@@ -950,11 +684,12 @@ public class Grid {
 
     /**
      * Solve X-wing
+     *
      * @param note The note to look for in the tuple
-     * @param lce Whether we are looking in rows or columns
+     * @param lce  Whether we are looking in rows or columns
      * @return Whether the grid has been changed by solving the X-Wing.
      */
-    public boolean solveXwing(int note, RowOrColumnEnum lce, int[][] coordinates) {
+    public boolean solveXWing(int note, RowOrColumnType lce, int[][] coordinates) {
         boolean hasChanged = false;
 
         int x1 = coordinates[0][0];
@@ -963,20 +698,19 @@ public class Grid {
         int y1 = coordinates[0][1];
         int y2 = coordinates[1][1];
 
-        if(lce == RowOrColumnEnum.Row) { // If we are working in a row
+        if (lce == RowOrColumnType.Row) { // If we are working in a row
             // Delete all candidates in the columns, except the ones in the X-Wing.
-            for(int i = 0; i < this.SIZE; i++) {
-                if(i != y1 && i != y2) {
+            for (int i = 0; i < this.SIZE; i++) {
+                if (i != y1 && i != y2) {
                     // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
                     hasChanged |= deleteNote(x1, i, note);
                     hasChanged |= deleteNote(x2, i, note);
                 }
             }
-        }
-        else { // If we are working in a column
+        } else { // If we are working in a column
             // Delete all candidates in the row, except the ones in the X-Wing.
-            for(int i = 0; i < this.SIZE; i++) {
-                if(i != x1 && i != x2) {
+            for (int i = 0; i < this.SIZE; i++) {
+                if (i != x1 && i != x2) {
                     hasChanged |= deleteNote(i, y1, note);
                     hasChanged |= deleteNote(i, y2, note);
                 }
@@ -987,108 +721,8 @@ public class Grid {
     }
 
     /**
-     * Solve the grid using the first three rules
-     */
-    /*public boolean rulesOneTwoThree() {
-        boolean hasChanged = false;
-
-        for (int x = 0; x < this.SIZE; x++) {
-            for (int y = 0; y < this.SIZE; y++) {
-                boolean continueColumn;
-                boolean continueRow;
-                boolean continueBlock;
-                do {
-                    continueColumn = this.simplerule(x, 0, x, 8);
-                    continueRow = this.simplerule(0, y, 8, y);
-                    continueBlock = this.simplerule((x / 3) * 3, (y / 3) * 3, (1 + x / 3) * 3 - 1, (1 + y / 3) * 3 - 1);
-                    // TODO: On exécute la règle pour les blocs à chaque case donc 9 fois pour chaque bloc, faut changer ça je suppose
-
-                    if(continueColumn || continueRow || continueBlock) {
-                        hasChanged = true;
-                    }
-                } while (continueColumn && continueRow && continueBlock);
-            }
-        }
-
-        return hasChanged;
-    }
-    */
-
-    public boolean rulesFiveToTen() {
-        boolean hasChanged = false;
-
-        for(int k = 2; k <= 3; k++) {
-            for (int x = 0; x < this.SIZE; x++) {
-                for (int y = 0; y < this.SIZE; y++) {
-                    boolean continueColumn;
-                    boolean continueRow;
-                    boolean continueBlock;
-
-                    do {
-                        continueColumn = k_upletsTest(k, x, 0, x, this.SIZE - 1);
-                        continueRow = k_upletsTest(k, 0, y, this.SIZE - 1, y);
-                        continueBlock = k_upletsTest(k,
-                                (x / 3) * 3,
-                                (y / 3) * 3,
-                                (1 + x / 3) * 3 - 1,
-                                (1 + y / 3) * 3 - 1);
-
-                        if(continueRow || continueColumn || continueBlock) {
-                            hasChanged = true;
-                        }
-                    } while(continueColumn && continueRow && continueBlock);
-                }
-            }
-        }
-
-        return hasChanged;
-    }
-
-    public boolean rulesElevenTwelve(){
-        boolean hasChanged = false;
-
-        for(int k = 2; k <= 3; k++) {
-            for (int notes = 1; notes <= this.SIZE; notes++) {
-                for (int block = 1; block <= this.SIZE; block++) {
-                    for (int nblc = 0; nblc < this.SIZE; nblc++) {
-                        boolean continuePointingPairRow;
-                        boolean continuePointingPairColumn;
-                        boolean continueBoxReductionRow;
-                        boolean continueBoxReductionColumn;
-
-                        do {
-                            // Solve pointing pair on a row
-                            RowOrColumn rowOrColumn = new RowOrColumn(RowOrColumnEnum.Row, nblc);
-                            continuePointingPairRow = solvePointingKTuple(k, notes, rowOrColumn, block);
-
-                            // Solve pointing pair on a column
-                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Column, nblc);
-                            continuePointingPairColumn = solvePointingKTuple(k, notes, rowOrColumn, block);
-
-                            // Solve box reduction on a row
-                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Row, nblc);
-                            continueBoxReductionRow = solveBoxReduction(k, notes, rowOrColumn, block);
-
-                            // Solve box reduction on a column
-                            rowOrColumn = new RowOrColumn(RowOrColumnEnum.Column, nblc);
-                            continueBoxReductionColumn = solveBoxReduction(k, notes, rowOrColumn, block);
-
-                            if(continuePointingPairRow || continuePointingPairColumn ||
-                                    continueBoxReductionRow || continueBoxReductionColumn) {
-                                hasChanged = true;
-                            }
-                        } while(continuePointingPairRow && continuePointingPairColumn &&
-                                continueBoxReductionRow && continueBoxReductionColumn);
-                    }
-                }
-            }
-        }
-
-        return hasChanged;
-    }
-
-    /**
      * Try to solve an X-Wing
+     *
      * @return True if the grid has changed (an X-Wing has been found and solved), otherwise false.
      */
     public boolean ruleThirteen() {
@@ -1099,16 +733,16 @@ public class Grid {
 
             // Try to solve an X-Wing in any row.
             for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
-                RowOrColumn row1 = new RowOrColumn(RowOrColumnEnum.Row, combinations.get(combIndex)[0] - 1);
-                RowOrColumn row2 = new RowOrColumn(RowOrColumnEnum.Row, combinations.get(combIndex)[1] - 1);
+                RowOrColumn row1 = new RowOrColumn(RowOrColumnType.Row, combinations.get(combIndex)[0] - 1);
+                RowOrColumn row2 = new RowOrColumn(RowOrColumnType.Row, combinations.get(combIndex)[1] - 1);
 
                 Optional<int[][]> coords = checkXWing(note, row1, row2);
 
-                if(coords.isPresent()) {
+                if (coords.isPresent()) {
                     System.out.println("Found X-Wing in rows for note " + note + " at coords " + Arrays.deepToString(coords.get()));
-                    hasChanged = solveXwing(note, RowOrColumnEnum.Row, coords.get());
+                    hasChanged = solveXWing(note, RowOrColumnType.Row, coords.get());
 
-                    if(hasChanged) {
+                    if (hasChanged) {
                         break;
                     }
                 }
@@ -1116,16 +750,16 @@ public class Grid {
 
             // Try to solve an X-Wing in any column
             for (int combIndex = 0; combIndex < combinations.size() && !hasChanged; combIndex++) {
-                RowOrColumn column1 = new RowOrColumn(RowOrColumnEnum.Column, combinations.get(combIndex)[0] - 1);
-                RowOrColumn column2 = new RowOrColumn(RowOrColumnEnum.Column, combinations.get(combIndex)[1] - 1);
+                RowOrColumn column1 = new RowOrColumn(RowOrColumnType.Column, combinations.get(combIndex)[0] - 1);
+                RowOrColumn column2 = new RowOrColumn(RowOrColumnType.Column, combinations.get(combIndex)[1] - 1);
 
                 Optional<int[][]> coords = checkXWing(note, column1, column2);
 
-                if(coords.isPresent()) {
+                if (coords.isPresent()) {
                     System.out.println("Found X-Wing in columns for note " + note + " at coords " + Arrays.deepToString(coords.get()));
-                    hasChanged = solveXwing(note, RowOrColumnEnum.Column, coords.get());
+                    hasChanged = solveXWing(note, RowOrColumnType.Column, coords.get());
 
-                    if(hasChanged) {
+                    if (hasChanged) {
                         break;
                     }
                 }
@@ -1137,7 +771,7 @@ public class Grid {
         return hasChanged;
     }
 
-    public void allRules(){
+    public void allRules() {
         boolean oneToThree;
         boolean fiveToTen;
         boolean elevenTwelve;
@@ -1146,12 +780,12 @@ public class Grid {
             do {
                 do {
                     oneToThree = RulesOneToThree.solve(this);
-                } while(oneToThree);
+                } while (oneToThree);
 
-                fiveToTen = rulesFiveToTen();
-            } while(fiveToTen);
+                fiveToTen = RulesFiveToTen.solve(this);
+            } while (fiveToTen);
 
-            elevenTwelve = rulesElevenTwelve();
-        } while(elevenTwelve);
+            elevenTwelve = RulesElevenTwelve.solve(this);
+        } while (elevenTwelve);
     }
 }
