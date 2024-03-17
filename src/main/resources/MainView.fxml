@@ -2,36 +2,24 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import org.prepro.view.GridView?>
-<fx:root type="javafx.scene.layout.BorderPane"
+<fx:root type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          fx:controller="org.prepro.controller.MainViewController">
-    <top>
-        <ToolBar AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
-            <Button>New</Button>
-            <VBox>
-                <ComboBox fx:id="open" onAction="#openAction" promptText="open" />
-            </VBox>
-            <Separator/>
-            <Button onAction="#solveAction">Solve</Button>
-            <Button onAction="#resetAction">Reset</Button>
-            <Separator/>
-        </ToolBar>
-    </top>
-    <center>
-        <GridView AnchorPane.topAnchor="100"
-                  AnchorPane.bottomAnchor="100"
-                  AnchorPane.leftAnchor="100"
-                  AnchorPane.rightAnchor="100"
-                  fx:id="gridView"/>
-    </center>
-    <right>
-        <VBox>
-            <Region VBox.vgrow="ALWAYS"/>
-            <Label fx:id="gridValid" />
-            <Region VBox.vgrow="ALWAYS"/>
-        </VBox>
-    </right>
+
+    <ToolBar AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+        <Button>New</Button>
+        <Button>Open</Button>
+        <Separator/>
+        <Button>Solve</Button>
+        <Button>Reset</Button>
+    </ToolBar>
+
+    <GridView fx:id="grid"
+              AnchorPane.topAnchor="100"
+              AnchorPane.bottomAnchor="100"
+              AnchorPane.leftAnchor="100"
+              AnchorPane.rightAnchor="100"/>
+
 </fx:root>

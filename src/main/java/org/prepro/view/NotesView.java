@@ -7,14 +7,13 @@ import org.prepro.model.Notes;
 
 import static java.lang.Math.sqrt;
 
-public class NotesCellView extends GridPane {
+public class NotesView extends GridPane {
     private final int SIZE;
     private final int SQRTSIZE;
     private final Label[] labels;
-
     private final Notes notes;
 
-    public NotesCellView(Notes inNotes, int size) {
+    public NotesView(Notes inNotes, int size) {
         this.setAlignment(Pos.CENTER);
 
         this.SIZE = size;
@@ -24,14 +23,13 @@ public class NotesCellView extends GridPane {
 
         labels = new Label[this.SIZE];
 
-        for(int i = 0; i < this.SIZE; i++) {
+        for (int i = 0; i < this.SIZE; i++) {
             labels[i] = new Label("");
             labels[i].setPrefHeight(15);
             labels[i].setPrefWidth(15);
             labels[i].setAlignment(Pos.CENTER);
 
-
-            if(this.notes.isPresent(i + 1)) {
+            if (this.notes.isPresent(i + 1)) {
                 labels[i].setText(String.valueOf(i + 1));
             }
 
@@ -46,6 +44,10 @@ public class NotesCellView extends GridPane {
 
     public void addNote(int note) {
         this.notes.add(note);
-        this.labels[note - 1].setText(String.valueOf(note + 1));
+        this.labels[note - 1].setText(String.valueOf(note));
+    }
+
+    public Notes getNotes() {
+        return this.notes;
     }
 }
