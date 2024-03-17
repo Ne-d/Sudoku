@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Grid;
+import org.prepro.model.Notes;
 import org.prepro.model.RowOrColumn;
 import org.prepro.model.RowOrColumn.RowOrColumnType;
 import org.prepro.model.solver.*;
@@ -58,7 +59,7 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenPair();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -69,7 +70,7 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -79,12 +80,12 @@ public class SudokuTest {
     public void testingRulesOneToThree() {
         Grid grid = TestGrids.grid1();
         grid.print();
-        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
+        Assertions.assertTrue(grid.isValid());
 
-        RulesOneToThree.solve(grid);
+        Assertions.assertTrue(RulesOneToThree.solve(grid));
 
         grid.print();
-        System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
+        Assertions.assertTrue(grid.isValid());
     }
 
     //@Test
@@ -98,11 +99,7 @@ public class SudokuTest {
 
         g.print();
 
-        boolean valid = g.isValid();
-
-        System.out.println("La grille est " + (valid ? "valide" : "invalide") + ".");
-
-        Assertions.assertTrue(valid);
+        Assertions.assertTrue(g.isValid());
     }
 
     @Test
@@ -133,7 +130,6 @@ public class SudokuTest {
         Assertions.assertFalse(g.isNotePresent(7, 2, 0));
 
         g.printWithNotes();
-
     }
 
     @Test
@@ -272,8 +268,10 @@ public class SudokuTest {
         g.printWithNotes();
 
         System.out.print("Solving X-Wing ... ");
-        RuleThirteen.solve(g);
+        Assertions.assertTrue(RuleThirteen.solve(g));
         System.out.println("done");
+
+        Assertions.assertTrue(g.isValid());
 
         g.printWithNotes();
     }
@@ -286,8 +284,92 @@ public class SudokuTest {
         Solver.solve(g);
         g.print();
         g.printWithNotes();
-        System.out.println("La grille est " + (g.isValid() ? "valide." : "invalide."));
+        Assertions.assertTrue(g.isValid());
     }
+
+    @Test
+    public void testNotesGetNumber() {
+        Notes notes = new Notes(9);
+
+        Assertions.assertEquals(9, notes.getNumber());
+
+        notes.delete(1);
+        notes.delete(2);
+        notes.delete(3);
+        notes.delete(4);
+        notes.delete(5);
+        Assertions.assertEquals(4, notes.getNumber());
+
+        notes.delete(6);
+        notes.delete(7);
+        notes.delete(8);
+        Assertions.assertEquals(1, notes.getNumber());
+
+        notes.delete(9);
+        Assertions.assertEquals(0, notes.getNumber());
+    }
+
+    @Test
+    public void testUniqueNote9() {
+        Notes notes = new Notes(9);
+
+        Assertions.assertEquals(0, notes.getUniqueNote());
+
+        notes.delete(1);
+        notes.delete(2);
+        notes.delete(3);
+        notes.delete(4);
+        notes.delete(5);
+        notes.delete(6);
+        notes.delete(7);
+        notes.delete(8);
+        Assertions.assertEquals(9, notes.getUniqueNote());
+
+        notes.delete(9);
+        Assertions.assertEquals(0, notes.getUniqueNote());
+    }
+
+    @Test
+    public void testUniqueNote1() {
+        Notes notes = new Notes(9);
+
+        Assertions.assertEquals(0, notes.getUniqueNote());
+
+        notes.delete(2);
+        notes.delete(3);
+        notes.delete(4);
+        notes.delete(5);
+        notes.delete(6);
+        notes.delete(7);
+        notes.delete(8);
+        notes.delete(9);
+        Assertions.assertEquals(1, notes.getUniqueNote());
+
+        notes.delete(1);
+        Assertions.assertEquals(0, notes.getUniqueNote());
+    }
+
+    @Test
+    public void testUniqueNote5() {
+        Notes notes = new Notes(9);
+
+        Assertions.assertEquals(0, notes.getUniqueNote());
+
+        notes.delete(1);
+        notes.delete(2);
+        notes.delete(3);
+        notes.delete(4);
+
+        notes.delete(6);
+        notes.delete(7);
+        notes.delete(8);
+        notes.delete(9);
+        Assertions.assertEquals(5, notes.getUniqueNote());
+
+        notes.delete(5);
+        Assertions.assertEquals(0, notes.getUniqueNote());
+    }
+
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
     // TODO: Tester les box-réductions sur les lignes.
