@@ -196,7 +196,13 @@ public class RuleThirteen {
                 if (i != y1 && i != y2) {
                     // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
                     hasChanged |= g.deleteNote(x1, i, note);
+                    System.out.println();
+                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",x1,note);
+                    System.out.println();
                     hasChanged |= g.deleteNote(x2, i, note);
+                    System.out.println();
+                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",x2,note);
+                    System.out.println();
                 }
             }
         } else { // If we are working in a column
@@ -204,7 +210,13 @@ public class RuleThirteen {
             for (int i = 0; i < g.SIZE; i++) {
                 if (i != x1 && i != x2) {
                     hasChanged |= g.deleteNote(i, y1, note);
+                    System.out.println();
+                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",y1,note);
+                    System.out.println();
                     hasChanged |= g.deleteNote(i, y2, note);
+                    System.out.println();
+                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",y2,note);
+                    System.out.println();
                 }
             }
         }

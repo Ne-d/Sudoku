@@ -87,6 +87,9 @@ public class RulesElevenTwelve {
                 if (!g.isInBlock(x, rc.number, block)) {
                     if (g.deleteNote(x, rc.number, note)) {
                         hasChanged = true;
+                        System.out.println();
+                        System.out.printf("Apply Rule 11/12 with k = %d on row %d for the note %d",k,x,note);
+                        System.out.println();
                     }
                 }
             }
@@ -94,6 +97,9 @@ public class RulesElevenTwelve {
             for (int y = 0; y < g.SIZE; y++) {
                 if (!g.isInBlock(rc.number, y, block)) {
                     if (g.deleteNote(rc.number, y, note)) {
+                        System.out.println();
+                        System.out.printf("Apply Rule 11/12 with k = %d on column %d for the note %d",k,y,note);
+                        System.out.println();
                         hasChanged = true;
                     }
                 }
@@ -175,10 +181,16 @@ public class RulesElevenTwelve {
                 if (rc.type == Row && y != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
+                        System.out.println();
+                        System.out.printf("Apply Rule 11'/12' with k = %d on row %d for the note %d",k,y,note);
+                        System.out.println();
                     }
                 } else if (x != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
+                        System.out.println();
+                        System.out.printf("Apply Rule 11'/12' with k = %d on column %d for the note %d",k,y,note);
+                        System.out.println();
                     }
                 }
             }
