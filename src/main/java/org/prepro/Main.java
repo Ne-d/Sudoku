@@ -191,6 +191,9 @@ public class Main {
         g.print();
         g.printWithNotes();
 
+        Scanner sc = new Scanner(System.in);
+        while (useRule(g, sc)) {
+        }
         System.out.println("done");
 
         g.printWithNotes();

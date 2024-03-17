@@ -15,6 +15,17 @@ public class Box {
     }
 
     /**
+     * Create a new Box that is a copy of the given one.
+     *
+     * @param other The Box to copy.
+     */
+    public Box(Box other) {
+        this.val = other.val;
+        this.notes = new Notes(other.notes);
+        this.SIZE = other.SIZE;
+    }
+
+    /**
      * Get the value of this box
      *
      * @return The value of this box

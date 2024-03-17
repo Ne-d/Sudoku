@@ -3,10 +3,16 @@ package org.prepro.model;
 public class Notes {
     private int tab;
 
-    private final int SIZE = 9;
+    private final int SIZE;
 
     public Notes() {
         this.tab = 0x1FF;
+        this.SIZE = 9;
+    }
+
+    public Notes(Notes other) {
+        this.tab = other.tab;
+        this.SIZE = other.SIZE;
     }
 
     /**

@@ -11,13 +11,14 @@ import org.prepro.model.Notes;
 
 public class GridView extends GridPane {
     private Grid grid;
-    private final CellView[][] cellViews;
-    private CellView selectedCellView;
+    private Grid startingGrid;
+    private CellView[][] cellViews;
+    private int selectedColumn;
+    private int selectedRow;
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
 
-        //this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0))));
         this.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 new CornerRadii(0),
@@ -27,37 +28,24 @@ public class GridView extends GridPane {
         this.setHgap(2);
         this.setVgap(2);
 
-        this.grid = testGrid();
+        loadGrid(testGrid());
+    }
 
-        grid.print();
-        grid.printWithNotes();
+    public void loadGrid(Grid grid) {
+        this.grid = grid;
 
+        // We use the copy constructor to make a new grid that won't be a reference to the old one.
+        this.startingGrid = new Grid(grid);
 
-        // Size of the visual grid including separators (2 separators for a 9x9 grid).
-        final int TOTAL_SIZE = /*this.SIZE + (SQRTSIZE - 1);*/ grid.SIZE;
-        int gridX = 0;
-        int gridY = 0;
+        this.cellViews = new CellView[grid.SIZE][grid.SIZE];
 
-        cellViews = new CellView[grid.SIZE][grid.SIZE];
+        for (int y = 0; y < this.grid.SIZE; y++) {
+            for (int x = 0; x < this.grid.SIZE; x++) {
+                this.getChildren().remove(cellViews[x][y]);
+                Notes notes = this.grid.getNotes(x, y);
+                int value = this.grid.getVal(x, y);
 
-        for (int y = 0; y < TOTAL_SIZE; y++) {
-            for (int x = 0; x < TOTAL_SIZE; x++) {
-
-                /*
-                if(x % (SQRTSIZE + 1) == SQRTSIZE && x != 0) {
-                    this.add(new Separator(Orientation.VERTICAL), x, y);
-                }
-
-                else if(y % (SQRTSIZE + 1) == SQRTSIZE && y != 0) {
-                    this.add(new Separator(Orientation.HORIZONTAL), x , y);
-                }
-                */
-
-
-                Notes notes = grid.getNotes(x, y);
-                int value = grid.getVal(x, y);
-
-                CellView currentCellView = new CellView(notes, value, grid.SIZE, x, y, this);
+                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
                 this.add(currentCellView, x, y);
                 cellViews[x][y] = currentCellView;
             }
@@ -81,15 +69,34 @@ public class GridView extends GridPane {
             };
 
             if (pressedNumber > 0) {
-                NotesView notesView = this.selectedCellView.getNotesView();
+                CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
+                NotesView notesView = selectedCellView.getNotesView();
+
                 if (notesView.getNotes().isPresent(pressedNumber) && notesView.getNotes().getNumber() > 1) {
                     notesView.deleteNote(pressedNumber);
+                    this.grid.deleteNote(this.selectedColumn, this.selectedRow, pressedNumber);
                 } else {
                     notesView.addNote(pressedNumber);
+                    this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
                 }
+
                 selectedCellView.update();
             }
         });
+    }
+
+    public void update() {
+        for (int y = 0; y < this.grid.SIZE; y++) {
+            for (int x = 0; x < this.grid.SIZE; x++) {
+                Notes notes = this.grid.getNotes(x, y);
+                int value = this.grid.getVal(x, y);
+
+                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
+                this.add(currentCellView, x, y);
+                cellViews[x][y].setNotes(notes);
+                cellViews[x][y].setValue(value);
+            }
+        }
     }
 
     public Grid testGrid() {
@@ -142,7 +149,17 @@ public class GridView extends GridPane {
         return grid1;
     }
 
-    public void setSelectedCell(CellView cellView) {
-        this.selectedCellView = cellView;
+    public Grid getGrid() {
+        return this.grid;
+    }
+
+    public void resetToStartingGrid() {
+        this.loadGrid(startingGrid);
+        this.update();
+    }
+
+    public void setSelectedCell(int column, int row) {
+        this.selectedColumn = column;
+        this.selectedRow = row;
     }
 }
