@@ -28,7 +28,7 @@ public class GridView extends GridPane {
         this.setHgap(2);
         this.setVgap(2);
 
-        this.gridStart = selectGridExemple();
+        selectGridExemple();
         this.grid = this.getStartingGrid();
 
         this.actualize();
@@ -38,8 +38,8 @@ public class GridView extends GridPane {
      * actualize the gridView
      */
     public void actualize(){
-        this.grid.print();
-        this.grid.printWithNotes();
+//        this.grid.print();
+//        this.grid.printWithNotes();
 
         // Size of the visual grid including separators (2 separators for a 9x9 grid).
         final int TOTAL_SIZE = /*this.SIZE + (SQRTSIZE - 1);*/ this.grid.SIZE;
@@ -76,7 +76,10 @@ public class GridView extends GridPane {
         }
         return start;
     }
-    public GridExemple selectGridExemple(){
-        return GridExemple.grid1;
+    public void selectGridExemple( GridExemple grid){
+        this.gridStart = grid;
+    }
+    public void selectGridExemple(){
+        this.gridStart = GridExemple.grid1;
     }
 }

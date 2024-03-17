@@ -11,7 +11,9 @@
 
     <ToolBar AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
             <Button>New</Button>
-            <Button>Open</Button>
+            <VBox>
+                <ComboBox fx:id="open" onAction="#openAction" promptText="select your grid" />
+            </VBox>
             <Separator/>
             <Button onAction="#solveAction">Solve</Button>
             <Button onAction="#resetAction">Reset</Button>
