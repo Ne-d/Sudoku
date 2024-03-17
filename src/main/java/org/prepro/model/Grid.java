@@ -97,8 +97,11 @@ public class Grid {
                     } else {
                         presentNumbers[val - 1] = true;
                     }
+                }else{
+                    if (this.getNbNotes(x,y) < 1){
+                        return false;
+                    }
                 }
-
             }
         }
         return true;
