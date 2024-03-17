@@ -15,6 +15,11 @@ public class SudokuTest {
      */
     @Test
     public void testPair() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" --------------------Test Pair---------------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid test = TestGrids.pair();
 
         test.print();
@@ -28,15 +33,23 @@ public class SudokuTest {
 
     @Test
     public void testPair2() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" --------------------Test Pair2---------------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid test = TestGrids.pair2();
 
         test.print();
+        test.printWithNotes();
         test.afficheNote(0, 1);
         test.afficheNote(1, 1);
         test.afficheNote(2, 1);
         test.afficheNote(7, 1);
 
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 1, 8, 1));
+
+        test.printWithNotes();
     }
 
     /**
@@ -44,10 +57,17 @@ public class SudokuTest {
      */
     @Test
     public void testTriplet() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" --------------------Test Triplet-------------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid test = TestGrids.triplets();
 
         test.print();
+        test.printWithNotes();
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2));
+        test.printWithNotes();
     }
 
     /**
@@ -55,6 +75,11 @@ public class SudokuTest {
      */
     @Test
     public void testHiddenPair() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" ------------------Test Hidden Pair-----------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid test = TestGrids.hiddenPair();
 
         test.print();
@@ -66,6 +91,11 @@ public class SudokuTest {
      */
     @Test
     public void testHiddenTriplet() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" ----------------Test Hidden Triplet----------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
@@ -77,6 +107,11 @@ public class SudokuTest {
      */
     @Test
     public void testingRulesOneToThree() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test Rules One Two Three--------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid grid = TestGrids.grid1();
         grid.print();
         System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
@@ -89,6 +124,11 @@ public class SudokuTest {
 
     @Test
     public void allRulesSanityCheck() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test AllRules Sanity Check------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.grid2();
 
         g.print();
@@ -107,6 +147,11 @@ public class SudokuTest {
 
     @Test
     public void testBox2ReductionColumn() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test Box2Reduction Column-------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.boxReductionGrid();
         g.print();
 
@@ -138,6 +183,11 @@ public class SudokuTest {
 
     @Test
     public void testBox2ReductionColumnImpossible() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------Test Box2Reduction Column Impossible--------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.boxReductionGrid();
         g.print();
 
@@ -150,6 +200,11 @@ public class SudokuTest {
 
     @Test
     public void testBox3ReductionColumn() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test Box3Reduction Column-------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.grid1();
         g.print();
         g.printWithNotes();
@@ -180,6 +235,11 @@ public class SudokuTest {
 
     @Test
     public void testPointingPairRow() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" ---------------Test Pointing Pair Row--------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
@@ -210,6 +270,11 @@ public class SudokuTest {
 
     @Test
     public void testPointingPairColumn() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test Pointing Pair Column-------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
@@ -238,6 +303,11 @@ public class SudokuTest {
 
     @Test
     public void testPointingTripletRow() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------Test Pointing Triplet Row-------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.pointingTripletGrid();
         g.print();
 
@@ -267,19 +337,29 @@ public class SudokuTest {
 
     @Test
     public void testXWingRow() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" ------------------Test X-Wing Row------------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.xWing();
         g.print();
         g.printWithNotes();
 
-        System.out.print("Solving X-Wing ... ");
+        System.out.println("Solving X-Wing ... ");
         RuleThirteen.solve(g);
-        System.out.println("done");
+        System.out.println("...done");
 
         g.printWithNotes();
     }
 
     @Test
     public void allRulesTest() {
+        System.out.println("[---------------------------------------------------");
+        System.out.println(" -------------------Test AllRules-------------------");
+        System.out.println(" ---------------------------------------------------]");
+        System.out.println();
+
         Grid g = TestGrids.allRules();
 
         g.print();

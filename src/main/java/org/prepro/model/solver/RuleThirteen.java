@@ -202,7 +202,7 @@ public class RuleThirteen {
                     rc1 = x1;
                     hasChanged |= g.deleteNote(x2, i, note);
                     rc2 = x2;
-                    typeRC = "rows";
+                    typeRC = "columns";
                 }
             }
         } else { // If we are working in a column
@@ -213,7 +213,7 @@ public class RuleThirteen {
                     rc1 = y1;
                     hasChanged |= g.deleteNote(i, y2, note);
                     rc2 = y2;
-                    typeRC = "columns";
+                    typeRC = "rows";
                 }
             }
         }

@@ -131,7 +131,7 @@ public class RulesFiveToTen {
         int largeur = endX - startX + 1;
         int tmpCoordsX = -1;
         int tmpCoordsY = -1;
-        int tmpNote = -1;
+        int tmpNoteDel = -1;
 
 
         int x, y;
@@ -147,7 +147,7 @@ public class RulesFiveToTen {
                         gridModif = true;
                         tmpCoordsX = x;
                         tmpCoordsY = y;
-                        tmpNote = i;
+                        tmpNoteDel = i;
                     }
                 }
             }
@@ -157,14 +157,14 @@ public class RulesFiveToTen {
                         gridModif = true;
                         tmpCoordsX = x;
                         tmpCoordsY = y;
-                        tmpNote = i;
+                        tmpNoteDel = i;
                     }
                 }
             }
         }
         //Print in console where the rules is applied
         if (gridModif){
-            System.out.println("Apply Rules FiveToTen on cell(" + tmpCoordsX + ", " + tmpCoordsY + ") with note " + tmpNote);
+            System.out.println("Apply Rules FiveToTen on cell(" + tmpCoordsX + ", " + tmpCoordsY + ") with note " + tmpNoteDel);
         }
 
         return gridModif;

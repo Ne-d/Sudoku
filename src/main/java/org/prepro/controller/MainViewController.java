@@ -21,7 +21,7 @@ public class MainViewController {
 
     @FXML
     public void solveAction() {
-        System.out.println("Solving...");
+        System.out.println("Solving the grid...");
         Solver.solve(this.gridView.getGrid());
         this.gridView.update();
         System.out.println("Grid solved.");
