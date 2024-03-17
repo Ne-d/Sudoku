@@ -2,14 +2,16 @@ package org.prepro.model;
 
 public class Box {
     private final int SIZE;
+    private int val; // The absence of a value (empty box) is represented by a zero.
     private final Notes notes; // Each bit of this int represents a note. It is set to 1 if the note is set, 0 if it is unset.
 
     /**
      * Creates a new box with default value 0 and all notes set.
      */
     public Box(int size) {
+        this.val = 0;
+        this.notes = new Notes();
         this.SIZE = size;
-        this.notes = new Notes(this.SIZE);
     }
 
     /**
@@ -18,6 +20,7 @@ public class Box {
      * @param other The Box to copy.
      */
     public Box(Box other) {
+        this.val = other.val;
         this.notes = new Notes(other.notes);
         this.SIZE = other.SIZE;
     }
@@ -28,7 +31,7 @@ public class Box {
      * @return The value of this box
      */
     public int getVal() {
-        return this.notes.getUniqueNote();
+        return val;
     }
 
     /**
@@ -37,12 +40,7 @@ public class Box {
      * @param val The value to set to this box
      */
     public void setVal(int val) {
-        for (int i = 0; i < this.SIZE; i++) {
-            if (i != val) {
-                deleteNote(i);
-            }
-        }
-        addNote(val);
+        this.val = val;
     }
 
     /**
