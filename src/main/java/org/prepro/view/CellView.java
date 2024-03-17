@@ -1,18 +1,22 @@
 package org.prepro.view;
 
 import javafx.geometry.Insets;
-import javafx.scene.layout.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.prepro.model.Notes;
 
 public class CellView extends StackPane {
     private final int SIZE;
-    private ValueCellView valueView;
-    private NotesCellView notesView;
+    private ValueView valueView;
+    private NotesView notesView;
     private int value;
     private final Notes notes;
 
-    public CellView(Notes notes, int value, int size) {
+    public CellView(Notes notes, int value, int size, int column, int row, GridView gridView) {
         this.SIZE = size;
         this.notes = notes;
 
@@ -23,15 +27,19 @@ public class CellView extends StackPane {
 
         this.getChildren().addAll(valueView, notesView);
         this.update();
+
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            gridView.setSelectedCell(this);
+        });
     }
 
     private void setupNotes(Notes notes) {
-        this.notesView = new NotesCellView(notes, this.SIZE);
+        this.notesView = new NotesView(notes, this.SIZE);
     }
 
     private void setupValue(int value) {
         this.value = value;
-        this.valueView = new ValueCellView(value);
+        this.valueView = new ValueView(value);
     }
 
     private void showValue() {
@@ -45,18 +53,27 @@ public class CellView extends StackPane {
     }
 
     public void update() {
-        if(notes.getNumber() == 1) {
-            int newValue = this.notes.getUniqueNote();
-            valueView.setValue(newValue);
-            showValue();
-        }
-        if(notes.getNumber() == 0) {
+        if (notes.getNumber() == 1) {
+            this.value = this.notes.getUniqueNote();
             valueView.setValue(this.value);
             showValue();
         }
-        else {
+
+        if (notes.getNumber() == 0) {
+            valueView.setValue(this.value);
+            showValue();
+        }
+
+        if (notes.getNumber() > 1) {
             showNotes();
         }
     }
-    
+
+    public NotesView getNotesView() {
+        return this.notesView;
+    }
+
+    public ValueView getValueView() {
+        return this.valueView;
+    }
 }

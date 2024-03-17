@@ -11,14 +11,16 @@ public class Notes {
 
     /**
      * Adds a note
+     *
      * @param note The note to be added
      */
-    public void add(int note){
-        this.tab = this.tab | (int)Math.pow(2, note - 1);
+    public void add(int note) {
+        this.tab = this.tab | (int) Math.pow(2, note - 1);
     }
 
     /**
      * Find if a note is set or not
+     *
      * @param note The note to look for
      * @return Whether the note is set or not
      */
@@ -53,31 +55,33 @@ public class Notes {
 
     /**
      * Removes a note
+     *
      * @param note The note to be removed
      * @return True if the note has been deleted
      */
 
-    public boolean delete(int note){
+    public boolean delete(int note) {
         boolean alreadyPresent = isPresent(note);
-        this.tab = this.tab & ~(int)Math.pow(2, note - 1);
+        this.tab = this.tab & ~(int) Math.pow(2, note - 1);
         return alreadyPresent;
     }
 
     /**
      * Delete all the notes
      */
-    public void deleteAll(){
+    public void deleteAll() {
         this.tab = 0;
     }
 
     /**
      * Delete all notes except the note present in the argument
+     *
      * @param notes An array of the notes to keep, all the others will be deleted.
      */
-    public boolean deleteAllExcept(int []notes){
+    public boolean deleteAllExcept(int[] notes) {
         boolean modif = false;
 
-        for(int i = 1; i < this.SIZE; i++){
+        for (int i = 1; i < this.SIZE; i++) {
             boolean delete = true;
 
             for (int note : notes) {
@@ -86,26 +90,36 @@ public class Notes {
                     break;
                 }
             }
-            if(delete){if(delete(i)){modif = true;}}
+            if (delete) {
+                if (delete(i)) {
+                    modif = true;
+                }
+            }
         }
         return modif;
     }
 
     public int getUniqueNote() {
         if (this.getNumber() == 1) {
-            for (int i = 0; i < SIZE; i++) {
+            for (int i = 1; i <= SIZE; i++) {
                 if (isPresent(i)) {
                     return i;
                 }
             }
         }
 
-        if(this.getNumber() == 0)
+        if (this.getNumber() == 0)
             return 0;
 
         else
             return -1;
     }
 
-    public static class MultipleNotesException extends Exception {}
+    public void toggle(int note) {
+        if (isPresent(note)) {
+            delete(note);
+        } else {
+            add(note);
+        }
+    }
 }
