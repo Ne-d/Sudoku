@@ -3,24 +3,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.prepro.view.GridView?>
-<fx:root type="javafx.scene.layout.AnchorPane"
+<fx:root type="javafx.scene.layout.BorderPane"
          xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          fx:controller="org.prepro.controller.MainViewController">
 
-    <ToolBar AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
-        <Button>New</Button>
-        <Button>Open</Button>
-        <Separator/>
-        <Button onAction="#solveAction">Solve</Button>
-        <Button onAction="#resetAction">Reset</Button>
-        <Separator/>
-    </ToolBar>
+    <top>
+        <ToolBar>
+            <Button>New</Button>
+            <Button>Open</Button>
+            <Separator/>
+            <Button onAction="#solveAction">Solve</Button>
+            <Button onAction="#resetAction">Reset</Button>
+            <Separator/>
+        </ToolBar>
+    </top>
 
-    <GridView fx:id="gridView"
-              AnchorPane.topAnchor="100"
-              AnchorPane.bottomAnchor="100"
-              AnchorPane.leftAnchor="100"
-              AnchorPane.rightAnchor="100"/>
+    <center>
+        <HBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <GridView fx:id="gridView"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox>
+                <Region VBox.vgrow="ALWAYS"/>
+                <Label fx:id="statut" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </center>
+
 
 </fx:root>

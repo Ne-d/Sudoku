@@ -19,12 +19,6 @@ public class GridView extends GridPane {
     public GridView() {
         this.setAlignment(Pos.CENTER);
 
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID,
-                new CornerRadii(0),
-                new BorderWidths(2),
-                new Insets(0))));
-
         this.setHgap(2);
         this.setVgap(2);
 
