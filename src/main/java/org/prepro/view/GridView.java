@@ -8,8 +8,10 @@ import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
 public class GridView extends GridPane {
-    private final int SIZE;
-    private final int SQRTSIZE;
+    private Grid grid;
+    public Grid getGrid() {
+        return grid;
+    }
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
@@ -24,18 +26,19 @@ public class GridView extends GridPane {
         this.setHgap(2);
         this.setVgap(2);
 
-        Grid grid = testGrid();
+        this.grid = getStartingGrid();
+        this.actualize();
+    }
 
-        grid.print();
-        grid.printWithNotes();
-
-        this.SIZE = grid.SIZE;
-        this.SQRTSIZE = grid.SQRTSIZE;
+    /**
+     * actualize the gridView
+     */
+    public void actualize(){
+        this.grid.print();
+        this.grid.printWithNotes();
 
         // Size of the visual grid including separators (2 separators for a 9x9 grid).
-        final int TOTAL_SIZE = /*this.SIZE + (SQRTSIZE - 1);*/ SIZE;
-        int gridX = 0;
-        int gridY = 0;
+        final int TOTAL_SIZE = /*this.SIZE + (SQRTSIZE - 1);*/ this.grid.SIZE;
 
         for(int y = 0; y < TOTAL_SIZE; y++) {
             for(int x = 0; x < TOTAL_SIZE; x++) {
@@ -50,15 +53,25 @@ public class GridView extends GridPane {
                 }
                 */
 
+                Notes notes = this.grid.getNotes(x, y);
+                int value = this.grid.getVal(x, y);
 
-                Notes notes = grid.getNotes(x, y);
-                int value = grid.getVal(x, y);
-
-                this.add(new CellView(notes, value, this.SIZE), x, y);
+                this.add(new CellView(notes, value, this.grid.SIZE), x, y);
             }
         }
     }
 
+    /**
+     * roll back the grid to the starting grid
+     * @return the starting grid before all change
+     */
+    public Grid getStartingGrid(){
+        Grid start = testGrid();
+        if (this.grid != null){
+            this.grid = start;
+        }
+        return start;
+    }
     public Grid testGrid() {
         Grid grid1 = new Grid();
         grid1.addValue(0, 0, 7); //line 1

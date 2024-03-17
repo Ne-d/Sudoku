@@ -13,13 +13,15 @@
             <Button>New</Button>
             <Button>Open</Button>
             <Separator/>
-            <Button>Solve</Button>
-            <Button>Reset</Button>
+            <Button onAction="#solveAction">Solve</Button>
+            <Button onAction="#resetAction">Reset</Button>
+            <Separator/>
     </ToolBar>
 
     <GridView AnchorPane.topAnchor="100"
               AnchorPane.bottomAnchor="100"
               AnchorPane.leftAnchor="100"
-              AnchorPane.rightAnchor="100"/>
+              AnchorPane.rightAnchor="100"
+              fx:id="gridView"/>
 
 </fx:root>
