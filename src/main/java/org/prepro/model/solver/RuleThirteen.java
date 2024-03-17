@@ -183,6 +183,11 @@ public class RuleThirteen {
      */
     public static boolean solveXWing(Grid g, int note, RowOrColumn.RowOrColumnType lce, int[][] coordinates) {
         boolean hasChanged = false;
+        int rc1 = -1;
+        int rc2 = -1;
+        String typeRC = "null";
+
+//TODO Vérifier le print dans les tests
 
         int x1 = coordinates[0][0];
         int x2 = coordinates[1][0];
@@ -196,13 +201,10 @@ public class RuleThirteen {
                 if (i != y1 && i != y2) {
                     // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
                     hasChanged |= g.deleteNote(x1, i, note);
-                    System.out.println();
-                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",x1,note);
-                    System.out.println();
+                    rc1 = x1;
                     hasChanged |= g.deleteNote(x2, i, note);
-                    System.out.println();
-                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",x2,note);
-                    System.out.println();
+                    rc2 = x2;
+                    typeRC = "rows";
                 }
             }
         } else { // If we are working in a column
@@ -210,17 +212,19 @@ public class RuleThirteen {
             for (int i = 0; i < g.SIZE; i++) {
                 if (i != x1 && i != x2) {
                     hasChanged |= g.deleteNote(i, y1, note);
-                    System.out.println();
-                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",y1,note);
-                    System.out.println();
+                    rc1 = y1;
                     hasChanged |= g.deleteNote(i, y2, note);
-                    System.out.println();
-                    System.out.printf("Apply Rule 13 on coordinate %d for the note %d",y2,note);
-                    System.out.println();
+                    rc2 = y2;
+                    typeRC = "columns";
                 }
             }
         }
 
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d",typeRC,rc1,rc2,note);
+            System.out.println();
+        }
         return hasChanged;
     }
 

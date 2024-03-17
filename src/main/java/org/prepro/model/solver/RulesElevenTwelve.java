@@ -75,10 +75,14 @@ public class RulesElevenTwelve {
      */
     public static boolean solvePointingKTuple(Grid g, int k, int note, RowOrColumn rc, int block) {
         Optional<List<int[]>> coordsOptional = findPointingKTuple(g, k, note, rc, block);
+        int tempCoordinate = -1;
+        String typeRC = "null";
 
         if (coordsOptional.isEmpty()) {
             return false;
         }
+
+        //TODO Regarder le print dans les tests
 
         boolean hasChanged = false;
 
@@ -87,9 +91,8 @@ public class RulesElevenTwelve {
                 if (!g.isInBlock(x, rc.number, block)) {
                     if (g.deleteNote(x, rc.number, note)) {
                         hasChanged = true;
-                        System.out.println();
-                        System.out.printf("Apply Rule 11/12 with k = %d on row %d for the note %d",k,x,note);
-                        System.out.println();
+                        tempCoordinate = rc.number;
+                        typeRC = "row";
                     }
                 }
             }
@@ -97,15 +100,19 @@ public class RulesElevenTwelve {
             for (int y = 0; y < g.SIZE; y++) {
                 if (!g.isInBlock(rc.number, y, block)) {
                     if (g.deleteNote(rc.number, y, note)) {
-                        System.out.println();
-                        System.out.printf("Apply Rule 11/12 with k = %d on column %d for the note %d",k,y,note);
-                        System.out.println();
                         hasChanged = true;
+                        tempCoordinate = rc.number;
+                        typeRC = "column";
                     }
                 }
             }
         }
 
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d",k,typeRC,tempCoordinate,note);
+            System.out.println();
+        }
         return hasChanged;
     }
 
@@ -168,6 +175,11 @@ public class RulesElevenTwelve {
      */
     public static boolean solveBoxReduction(Grid g, int k, int note, RowOrColumn rc, int block) {
         Optional<List<int[]>> coordsOptional = findBoxReduction(g, k, note, rc, block);
+        int tempCoordinate = -1;
+        String typeRC = "null";
+
+        //TODO Regarder le print dans les tests
+
 
         if (coordsOptional.isEmpty()) {
             return false;
@@ -181,21 +193,23 @@ public class RulesElevenTwelve {
                 if (rc.type == Row && y != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
-                        System.out.println();
-                        System.out.printf("Apply Rule 11'/12' with k = %d on row %d for the note %d",k,y,note);
-                        System.out.println();
+                        tempCoordinate = x;
+                        typeRC = "row";
                     }
                 } else if (x != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
-                        System.out.println();
-                        System.out.printf("Apply Rule 11'/12' with k = %d on column %d for the note %d",k,y,note);
-                        System.out.println();
+                        tempCoordinate = y;
+                        typeRC = "column";
                     }
                 }
             }
         }
-
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d",k,typeRC,tempCoordinate,note);
+            System.out.println();
+        }
         return hasChanged;
     }
 
