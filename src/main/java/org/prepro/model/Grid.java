@@ -10,7 +10,6 @@ public class Grid {
      * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
      */
     public Grid() {
-
         this.SIZE = 9;
         this.SQRTSIZE = ((int) Math.sqrt(SIZE));
         this.board = new Box[SIZE][SIZE];
@@ -19,6 +18,25 @@ public class Grid {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 this.board[x][y] = new Box(this.SIZE);
+            }
+        }
+    }
+
+    /**
+     * Generates a new grid that is a clone of the given one.
+     * This is not the same as just creating a new Grid variable and assigning it to the old one, since that would be a reference, not a copy.
+     *
+     * @param other The grid to be copied.
+     */
+    public Grid(Grid other) {
+        this.SIZE = other.SIZE;
+        this.SQRTSIZE = ((int) Math.sqrt(other.SIZE));
+        this.board = new Box[other.SIZE][other.SIZE];
+
+        // Initialize all boxes
+        for (int x = 0; x < other.SIZE; x++) {
+            for (int y = 0; y < other.SIZE; y++) {
+                this.board[x][y] = new Box(other.getBoard()[x][y]);
             }
         }
     }

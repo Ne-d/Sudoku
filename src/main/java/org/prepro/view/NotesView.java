@@ -11,7 +11,7 @@ public class NotesView extends GridPane {
     private final int SIZE;
     private final int SQRTSIZE;
     private final Label[] labels;
-    private final Notes notes;
+    private Notes notes;
 
     public NotesView(Notes inNotes, int size) {
         this.setAlignment(Pos.CENTER);
@@ -49,5 +49,9 @@ public class NotesView extends GridPane {
 
     public Notes getNotes() {
         return this.notes;
+    }
+
+    public void setNotes(Notes notes) {
+        this.notes = notes;
     }
 }

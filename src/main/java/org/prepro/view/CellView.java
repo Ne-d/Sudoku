@@ -14,7 +14,7 @@ public class CellView extends StackPane {
     private ValueView valueView;
     private NotesView notesView;
     private int value;
-    private final Notes notes;
+    private Notes notes;
 
     public CellView(Notes notes, int value, int size, int column, int row, GridView gridView) {
         this.SIZE = size;
@@ -67,6 +67,17 @@ public class CellView extends StackPane {
         if (notes.getNumber() > 1) {
             showNotes();
         }
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+        update();
+    }
+
+    public void setNotes(Notes notes) {
+        this.notes = notes;
+        this.getNotesView().setNotes(notes);
+        update();
     }
 
     public NotesView getNotesView() {
