@@ -11,6 +11,9 @@ import org.prepro.model.Notes;
 
 public class CellView extends StackPane {
     private final int SIZE;
+    private final int COLUMN;
+    private final int ROW;
+
     private ValueView valueView;
     private NotesView notesView;
     private int value;
@@ -18,6 +21,8 @@ public class CellView extends StackPane {
 
     public CellView(Notes notes, int value, int size, int column, int row, GridView gridView) {
         this.SIZE = size;
+        this.COLUMN = column;
+        this.ROW = row;
         this.notes = notes;
 
         this.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(0), new Insets(0))));
@@ -28,9 +33,7 @@ public class CellView extends StackPane {
         this.getChildren().addAll(valueView, notesView);
         this.update();
 
-        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            gridView.setSelectedCell(this);
-        });
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> gridView.setSelectedCell(this.COLUMN, this.ROW));
     }
 
     private void setupNotes(Notes notes) {

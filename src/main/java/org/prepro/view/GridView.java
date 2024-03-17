@@ -13,7 +13,8 @@ public class GridView extends GridPane {
     private Grid grid;
     private Grid startingGrid;
     private CellView[][] cellViews;
-    private CellView selectedCellView;
+    private int selectedColumn;
+    private int selectedRow;
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
@@ -68,12 +69,17 @@ public class GridView extends GridPane {
             };
 
             if (pressedNumber > 0) {
-                NotesView notesView = this.selectedCellView.getNotesView();
+                CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
+                NotesView notesView = selectedCellView.getNotesView();
+
                 if (notesView.getNotes().isPresent(pressedNumber) && notesView.getNotes().getNumber() > 1) {
                     notesView.deleteNote(pressedNumber);
+                    this.grid.deleteNote(this.selectedColumn, this.selectedRow, pressedNumber);
                 } else {
                     notesView.addNote(pressedNumber);
+                    this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
                 }
+
                 selectedCellView.update();
             }
         });
@@ -152,7 +158,8 @@ public class GridView extends GridPane {
         this.update();
     }
 
-    public void setSelectedCell(CellView cellView) {
-        this.selectedCellView = cellView;
+    public void setSelectedCell(int column, int row) {
+        this.selectedColumn = column;
+        this.selectedRow = row;
     }
 }

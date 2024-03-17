@@ -271,6 +271,17 @@ public class Grid {
 
 
     /**
+     * Adds a note to the chosen box
+     *
+     * @param x    The x coordinate of the box to add a note to.
+     * @param y    The y coordinate of the box to add a note to.
+     * @param note The note to add to the box.
+     */
+    public void addNote(int x, int y, int note) {
+        this.board[x][y].addNote(note);
+    }
+
+    /**
      * Deletes a note of the chosen box
      *
      * @param xPos X coordinate of the chosen box
