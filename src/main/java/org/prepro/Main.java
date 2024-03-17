@@ -1,6 +1,7 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
+import org.prepro.model.GridExemple;
 import org.prepro.model.solver.RulesFiveToTen;
 import org.prepro.model.solver.RulesOneToThree;
 import org.prepro.model.solver.Solver;
@@ -124,69 +125,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Grid g = new Grid();
-
-        g.addValue(2, 0, 3);
-        g.addValue(3, 0, 8);
-        g.addValue(6, 0, 5);
-        g.addValue(7, 0, 1);
-
-        g.addValue(2, 1, 8);
-        g.addValue(3, 1, 7);
-        g.addValue(6, 1, 9);
-        g.addValue(7, 1, 3);
-
-
-        g.addValue(0, 2, 1);
-        g.addValue(3, 2, 3);
-        g.addValue(5, 2, 5);
-        g.addValue(6, 2, 7);
-        g.addValue(7, 2, 2);
-        g.addValue(8, 2, 8);
-
-        g.addValue(3, 3, 2);
-        g.addValue(6, 3, 8);
-        g.addValue(7, 3, 4);
-        g.addValue(8, 3, 9);
-
-        g.addValue(0, 4, 8);
-        g.addValue(2, 4, 1);
-        g.addValue(3, 4, 9);
-        g.addValue(5, 4, 6);
-        g.addValue(6, 4, 2);
-        g.addValue(7, 4, 5);
-        g.addValue(8, 4, 7);
-
-        g.addValue(3, 5, 5);
-        g.addValue(6, 5, 1);
-        g.addValue(7, 5, 6);
-        g.addValue(8, 5, 3);
-
-        g.addValue(0, 6, 9);
-        g.addValue(1, 6, 6);
-        g.addValue(2, 6, 4);
-        g.addValue(3, 6, 1);
-        g.addValue(4, 6, 2);
-        g.addValue(5, 6, 7);
-        g.addValue(6, 6, 3);
-        g.addValue(7, 6, 8);
-        g.addValue(8, 6, 5);
-
-        g.addValue(0, 7, 3);
-        g.addValue(1, 7, 8);
-        g.addValue(2, 7, 2);
-        g.addValue(3, 7, 6);
-        g.addValue(4, 7, 5);
-        g.addValue(5, 7, 9);
-        g.addValue(6, 7, 4);
-        g.addValue(7, 7, 7);
-        g.addValue(8, 7, 1);
-
-        g.addValue(1, 8, 1);
-        g.addValue(3, 8, 4);
-        g.addValue(6, 8, 6);
-        g.addValue(7, 8, 9);
-        g.addValue(8, 8, 2);
+        Grid g = GridExemple.grid2.getGrid();
 
         g.print();
         g.printWithNotes();
