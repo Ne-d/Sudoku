@@ -23,13 +23,24 @@ public class MainViewController {
         open.setItems(gridlist);
         actualize();
     }
+
+    /**
+     * actualize the gridview and the label
+     */
     private void actualize(){
         Grid grid = gridView.getGrid();
         gridView.actualize();
         System.out.println(gridValid.getText());
         gridValid.setText("la grille est " + (grid.isValid() ?"valide": "invalide"));
     }
-
+    @FXML
+    public void openAction() {
+        GridExemple gridChoisi = open.getValue();
+        gridView.selectGridExemple(open.getValue());
+        gridView.getStartingGrid();
+        this.actualize();
+        System.out.println("Vous avez choisi : " + gridChoisi);
+    }
     @FXML
     public void solveAction() {
         Grid grid = gridView.getGrid();
@@ -43,14 +54,5 @@ public class MainViewController {
         gridView.getStartingGrid();
         this.actualize();
         System.out.println("reset");
-    }
-
-    @FXML
-    public void openAction() {
-        GridExemple gridChoisi = open.getValue();
-        gridView.selectGridExemple(open.getValue());
-        gridView.getStartingGrid();
-        this.actualize();
-        System.out.println("Vous avez choisi : " + gridChoisi);
     }
 }

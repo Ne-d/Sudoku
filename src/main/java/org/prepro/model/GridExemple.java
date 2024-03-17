@@ -2,7 +2,9 @@ package org.prepro.model;
 
 public enum GridExemple {
     grid1,
-    grid2;
+    grid2,
+    grid3,
+    gridInvalid;
     public Grid getGrid(){
         Grid grid = new Grid();
         switch (this){
@@ -114,6 +116,71 @@ public enum GridExemple {
                 grid.addValue(6, 8, 6);
                 grid.addValue(7, 8, 9);
                 grid.addValue(8, 8, 2);
+            }
+            case grid3 -> {
+                grid.addValue(0, 0, 5); //line 1
+                grid.addValue(2, 0, 4);
+                grid.addValue(4, 0, 1);
+                grid.addValue(8, 1, 6); // line 2
+                grid.addValue(1, 2, 8); // line 3
+                grid.addValue(3, 2, 9);
+                grid.addValue(6, 2, 7);
+                grid.addValue(7, 2, 2);
+                grid.addValue(7, 3, 3); // line 4
+                grid.addValue(0, 4, 2); // line 5
+                grid.addValue(5, 4, 9);
+                grid.addValue(1, 5, 7); // line 6
+                grid.addValue(3, 5, 2);
+                grid.addValue(6, 5, 5);
+                grid.addValue(7, 5, 8);
+                grid.addValue(2, 6, 8); // line 7
+                grid.addValue(5, 6, 4);
+                grid.addValue(6, 6, 6);
+                grid.addValue(7, 6, 5);
+                grid.addValue(3, 7, 5); // line 8
+                grid.addValue(8, 7, 3);
+                grid.addValue(1, 8, 6); // line 9
+                grid.addValue(8, 8, 9);
+            }
+            case gridInvalid -> {
+                grid.addValue(0, 0, 9);
+                grid.addValue(1, 0, 7);
+                grid.addValue(2, 0, 2);
+                grid.addValue(4, 0, 8);
+                grid.addValue(5, 0, 5);
+                grid.addValue(8, 0, 4);
+
+                grid.addValue(0, 1, 8);
+                grid.addValue(1, 1, 6);
+                grid.addValue(4, 1, 3);
+                grid.addValue(7, 1, 6);
+
+                grid.addValue(2, 2, 4);
+                grid.addValue(3, 2, 2);
+                grid.addValue(4, 2, 1);
+                grid.addValue(7, 2, 3);
+
+                grid.addValue(0, 2, 3);
+                grid.addValue(2, 2, 2);
+
+                grid.addValue(7, 3, 5);
+                grid.addValue(8, 3, 2);
+
+                grid.addValue(6, 4, 3);
+                grid.addValue(7, 4, 1);
+
+                grid.addValue(0, 5, 9);
+
+                grid.addValue(0, 6, 8);
+                grid.addValue(5, 6, 6);
+
+                grid.addValue(0, 7, 2);
+                grid.addValue(1, 7, 5);
+                grid.addValue(3, 7, 4);
+                grid.addValue(8, 7, 8);
+
+                grid.addValue(5, 8, 1);
+                grid.addValue(6, 8, 6);
             }
         }
         return grid;
