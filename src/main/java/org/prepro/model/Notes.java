@@ -5,9 +5,9 @@ public class Notes {
 
     private final int SIZE;
 
-    public Notes() {
-        this.tab = 0x1FF;
-        this.SIZE = 9;
+    public Notes(int size) {
+        this.tab = 0x1FF; // TODO: Calculate default value based on SIZE.
+        this.SIZE = size;
     }
 
     public Notes(Notes other) {
@@ -113,12 +113,8 @@ public class Notes {
                 }
             }
         }
-
-        if (this.getNumber() == 0)
-            return 0;
-
-        else
-            return -1;
+        
+        return 0;
     }
 
     public void toggle(int note) {

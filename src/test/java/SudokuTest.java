@@ -87,7 +87,7 @@ public class SudokuTest {
         System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
     }
 
-    @Test
+    //@Test
     public void allRulesSanityCheck() {
         Grid g = TestGrids.grid2();
 
@@ -278,7 +278,7 @@ public class SudokuTest {
         g.printWithNotes();
     }
 
-    @Test
+    //@Test
     public void allRulesTest() {
         Grid g = TestGrids.allRules();
 

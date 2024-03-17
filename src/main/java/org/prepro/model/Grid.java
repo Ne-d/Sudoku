@@ -73,9 +73,6 @@ public class Grid {
      */
     public boolean addValue(int xPos, int yPos, int val) {
         Box box = this.board[xPos][yPos];
-        if (box.getVal() != 0) {
-            return false;
-        }
         box.setVal(val);
 
         // Delete all notes that become invalid once this new value is added to the grid
