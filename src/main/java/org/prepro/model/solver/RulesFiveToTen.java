@@ -129,6 +129,10 @@ public class RulesFiveToTen {
         boolean gridModif = false;
         int k = pK_uplet.length;
         int largeur = endX - startX + 1;
+        int tmpCoordsX = -1;
+        int tmpCoordsY = -1;
+        int tmpNote = -1;
+
 
         int x, y;
         for (int i = 0; i < g.SIZE; i++) {
@@ -141,6 +145,9 @@ public class RulesFiveToTen {
                     delete = false;
                     if (g.getBoard()[x][y].deleteAllNote(notes)) {
                         gridModif = true;
+                        tmpCoordsX = x;
+                        tmpCoordsY = y;
+                        tmpNote = i;
                     }
                 }
             }
@@ -148,10 +155,18 @@ public class RulesFiveToTen {
                 for (int j = 0; j < k; j++) {
                     if (g.getBoard()[x][y].deleteNote(notes[j])) {
                         gridModif = true;
+                        tmpCoordsX = x;
+                        tmpCoordsY = y;
+                        tmpNote = i;
                     }
                 }
             }
         }
+        //Print in console where the rules is applied
+        if (gridModif){
+            System.out.println("Apply Rules FiveToTen on cell(" + tmpCoordsX + ", " + tmpCoordsY + ") with note " + tmpNote);
+        }
+
         return gridModif;
     }
 }

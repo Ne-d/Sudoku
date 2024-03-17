@@ -82,8 +82,6 @@ public class RulesElevenTwelve {
             return false;
         }
 
-        //TODO Regarder le print dans les tests
-
         boolean hasChanged = false;
 
         if (rc.type == Row) {
@@ -110,7 +108,7 @@ public class RulesElevenTwelve {
 
         if(hasChanged){
             System.out.println();
-            System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d",k,typeRC,tempCoordinate,note);
+            System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
         }
         return hasChanged;
@@ -178,9 +176,6 @@ public class RulesElevenTwelve {
         int tempCoordinate = -1;
         String typeRC = "null";
 
-        //TODO Regarder le print dans les tests
-
-
         if (coordsOptional.isEmpty()) {
             return false;
         }
@@ -205,11 +200,13 @@ public class RulesElevenTwelve {
                 }
             }
         }
+        //Print in console where the rules is applied
         if(hasChanged){
             System.out.println();
-            System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d",k,typeRC,tempCoordinate,note);
+            System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
         }
+
         return hasChanged;
     }
 

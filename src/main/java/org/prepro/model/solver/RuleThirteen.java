@@ -187,8 +187,6 @@ public class RuleThirteen {
         int rc2 = -1;
         String typeRC = "null";
 
-//TODO Vérifier le print dans les tests
-
         int x1 = coordinates[0][0];
         int x2 = coordinates[1][0];
 
@@ -220,9 +218,10 @@ public class RuleThirteen {
             }
         }
 
+        //Print in console where the rules is applied
         if(hasChanged){
             System.out.println();
-            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d",typeRC,rc1,rc2,note);
+            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d", typeRC, rc1, rc2, note);
             System.out.println();
         }
         return hasChanged;

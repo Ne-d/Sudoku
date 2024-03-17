@@ -28,7 +28,8 @@ public class RulesOneToThree {
                             (y / g.SQRTSIZE) * g.SQRTSIZE,
                             (1 + x / g.SQRTSIZE) * g.SQRTSIZE - 1,
                             (1 + y / g.SQRTSIZE) * g.SQRTSIZE - 1);
-                    // TODO: On exécute la règle pour les blocs à chaque case donc 9 fois pour chaque bloc, faut changer ça je suppose
+                    // TODO: On exécute la règle pour les blocs à chaque case donc 9 fois pour chaque bloc,
+                    //  faut changer ça je suppose
 
                     if (continueColumn || continueRow || continueBlock) {
                         hasChanged = true;
@@ -65,6 +66,7 @@ public class RulesOneToThree {
                         j++;
                         if (nbNotes == 1) {
                             g.addValue(x, y, i);
+                            System.out.println("Apply Rules OneTwoThree on cell(" + x + ", " + y + ") with note " + i);
                             return true;
                         }
                     }
