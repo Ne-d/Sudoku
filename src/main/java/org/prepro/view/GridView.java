@@ -85,8 +85,6 @@ public class GridView extends GridPane {
                 Notes notes = this.grid.getNotes(x, y);
                 int value = this.grid.getVal(x, y);
 
-                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
-                this.add(currentCellView, x, y);
                 cellViews[x][y].setNotes(notes);
                 cellViews[x][y].setValue(value);
             }
@@ -149,11 +147,13 @@ public class GridView extends GridPane {
 
     public void resetToStartingGrid() {
         this.loadGrid(startingGrid);
-        this.update();
+        //this.update();
     }
 
     public void setSelectedCell(int column, int row) {
+        this.cellViews[this.selectedColumn][this.selectedRow].setStyle("-fx-background-color:lightgray");
         this.selectedColumn = column;
         this.selectedRow = row;
+        this.cellViews[column][row].setStyle("-fx-background-color:#FFCCFF");
     }
 }
