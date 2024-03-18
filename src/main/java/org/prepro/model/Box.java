@@ -1,8 +1,16 @@
 package org.prepro.model;
 
 public class Box {
+    /**
+     * The size of the grid this box belongs to. Used for the notes.
+     */
     private final int SIZE;
-    private final Notes notes; // Each bit of this int represents a note. It is set to 1 if the note is set, 0 if it is unset.
+
+    /**
+     * The notes this box holds.
+     * Each bit of this int represents a note. It is set to 1 if the note is set, 0 if it is unset.
+     */
+    private final Notes notes;
 
     /**
      * Creates a new box with default value 0 and all notes set.
@@ -37,7 +45,7 @@ public class Box {
      * @param val The value to set to this box
      */
     public void setVal(int val) {
-        for (int i = 0; i < this.SIZE; i++) {
+        for (int i = 1; i <= this.SIZE; i++) {
             if (i != val) {
                 deleteNote(i);
             }
@@ -105,6 +113,11 @@ public class Box {
         this.notes.print();
     }
 
+    /**
+     * Gets the notes of this box.
+     *
+     * @return The notes of this box.
+     */
     public Notes getNotes() {
         return this.notes;
     }

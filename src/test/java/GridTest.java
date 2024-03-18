@@ -1,7 +1,6 @@
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Grid;
-import org.prepro.model.Notes;
 import org.prepro.model.RowOrColumn;
 import org.prepro.model.RowOrColumn.RowOrColumnType;
 import org.prepro.model.solver.*;
@@ -9,7 +8,7 @@ import org.prepro.model.solver.*;
 import java.util.List;
 import java.util.Optional;
 
-public class SudokuTest {
+public class GridTest {
 
     /**
      * Test the 6th rule with an example
@@ -77,14 +76,21 @@ public class SudokuTest {
      * Test for a grid in parameters the 4 first rules of SUDOKU
      */
     @Test
-    public void testingRulesOneToThree() {
-        Grid grid = TestGrids.grid1();
+    public void testRuleTwo() {
+        Grid grid = TestGrids.ruleTwo();
+
         grid.print();
+        grid.printWithNotes();
         Assertions.assertTrue(grid.isValid());
 
-        Assertions.assertTrue(RulesOneToThree.solve(grid));
+        System.out.println("Solving.");
+        Assertions.assertTrue(RuleTwo.solve(grid));
+        System.out.println("Done.");
+
+        Assertions.assertEquals(8, grid.getVal(0, 7));
 
         grid.print();
+        grid.printWithNotes();
         Assertions.assertTrue(grid.isValid());
     }
 
@@ -286,90 +292,6 @@ public class SudokuTest {
         g.printWithNotes();
         Assertions.assertTrue(g.isValid());
     }
-
-    @Test
-    public void testNotesGetNumber() {
-        Notes notes = new Notes(9);
-
-        Assertions.assertEquals(9, notes.getNumber());
-
-        notes.delete(1);
-        notes.delete(2);
-        notes.delete(3);
-        notes.delete(4);
-        notes.delete(5);
-        Assertions.assertEquals(4, notes.getNumber());
-
-        notes.delete(6);
-        notes.delete(7);
-        notes.delete(8);
-        Assertions.assertEquals(1, notes.getNumber());
-
-        notes.delete(9);
-        Assertions.assertEquals(0, notes.getNumber());
-    }
-
-    @Test
-    public void testUniqueNote9() {
-        Notes notes = new Notes(9);
-
-        Assertions.assertEquals(0, notes.getUniqueNote());
-
-        notes.delete(1);
-        notes.delete(2);
-        notes.delete(3);
-        notes.delete(4);
-        notes.delete(5);
-        notes.delete(6);
-        notes.delete(7);
-        notes.delete(8);
-        Assertions.assertEquals(9, notes.getUniqueNote());
-
-        notes.delete(9);
-        Assertions.assertEquals(0, notes.getUniqueNote());
-    }
-
-    @Test
-    public void testUniqueNote1() {
-        Notes notes = new Notes(9);
-
-        Assertions.assertEquals(0, notes.getUniqueNote());
-
-        notes.delete(2);
-        notes.delete(3);
-        notes.delete(4);
-        notes.delete(5);
-        notes.delete(6);
-        notes.delete(7);
-        notes.delete(8);
-        notes.delete(9);
-        Assertions.assertEquals(1, notes.getUniqueNote());
-
-        notes.delete(1);
-        Assertions.assertEquals(0, notes.getUniqueNote());
-    }
-
-    @Test
-    public void testUniqueNote5() {
-        Notes notes = new Notes(9);
-
-        Assertions.assertEquals(0, notes.getUniqueNote());
-
-        notes.delete(1);
-        notes.delete(2);
-        notes.delete(3);
-        notes.delete(4);
-
-        notes.delete(6);
-        notes.delete(7);
-        notes.delete(8);
-        notes.delete(9);
-        Assertions.assertEquals(5, notes.getUniqueNote());
-
-        notes.delete(5);
-        Assertions.assertEquals(0, notes.getUniqueNote());
-    }
-
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
     // TODO: Tester les box-réductions sur les lignes.
