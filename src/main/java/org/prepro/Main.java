@@ -1,8 +1,8 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
+import org.prepro.model.solver.RuleTwo;
 import org.prepro.model.solver.RulesFiveToTen;
-import org.prepro.model.solver.RulesOneToThree;
 import org.prepro.model.solver.Solver;
 
 import java.util.NoSuchElementException;
@@ -29,7 +29,7 @@ public class Main {
                     grid.print();
                     break;
                 case "elementaire":
-                    RulesOneToThree.solve(grid);
+                    RuleTwo.solve(grid);
                     grid.print();
                     grid.printWithNotes();
                     break;

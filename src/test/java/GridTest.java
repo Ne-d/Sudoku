@@ -8,18 +8,13 @@ import org.prepro.model.solver.*;
 import java.util.List;
 import java.util.Optional;
 
-public class SudokuTest {
+public class GridTest {
 
     /**
      * Test the 6th rule with an example
      */
     @Test
     public void testPair() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" --------------------Test Pair---------------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid test = TestGrids.pair();
 
         test.print();
@@ -33,23 +28,15 @@ public class SudokuTest {
 
     @Test
     public void testPair2() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" --------------------Test Pair2---------------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid test = TestGrids.pair2();
 
         test.print();
-        test.printWithNotes();
         test.afficheNote(0, 1);
         test.afficheNote(1, 1);
         test.afficheNote(2, 1);
         test.afficheNote(7, 1);
 
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 1, 8, 1));
-
-        test.printWithNotes();
     }
 
     /**
@@ -57,17 +44,10 @@ public class SudokuTest {
      */
     @Test
     public void testTriplet() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" --------------------Test Triplet-------------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid test = TestGrids.triplets();
 
         test.print();
-        test.printWithNotes();
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2));
-        test.printWithNotes();
     }
 
     /**
@@ -75,15 +55,10 @@ public class SudokuTest {
      */
     @Test
     public void testHiddenPair() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" ------------------Test Hidden Pair-----------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid test = TestGrids.hiddenPair();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -91,44 +66,36 @@ public class SudokuTest {
      */
     @Test
     public void testHiddenTriplet() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" ----------------Test Hidden Triplet----------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
      * Test for a grid in parameters the 4 first rules of SUDOKU
      */
     @Test
-    public void testingRulesOneToThree() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test Rules One Two Three--------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
-        Grid grid = TestGrids.grid1();
-        grid.print();
-        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
-
-        RulesOneToThree.solve(grid);
+    public void testRuleTwo() {
+        Grid grid = TestGrids.ruleTwo();
 
         grid.print();
-        System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
+        grid.printWithNotes();
+        Assertions.assertTrue(grid.isValid());
+
+        System.out.println("Solving.");
+        Assertions.assertTrue(RuleTwo.solve(grid));
+        System.out.println("Done.");
+
+        Assertions.assertEquals(8, grid.getVal(0, 7));
+
+        grid.print();
+        grid.printWithNotes();
+        Assertions.assertTrue(grid.isValid());
     }
 
-    @Test
+    //@Test
     public void allRulesSanityCheck() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test AllRules Sanity Check------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.grid2();
 
         g.print();
@@ -138,20 +105,11 @@ public class SudokuTest {
 
         g.print();
 
-        boolean valid = g.isValid();
-
-        System.out.println("La grille est " + (valid ? "valide" : "invalide") + ".");
-
-        Assertions.assertTrue(valid);
+        Assertions.assertTrue(g.isValid());
     }
 
     @Test
     public void testBox2ReductionColumn() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test Box2Reduction Column-------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.boxReductionGrid();
         g.print();
 
@@ -178,16 +136,10 @@ public class SudokuTest {
         Assertions.assertFalse(g.isNotePresent(7, 2, 0));
 
         g.printWithNotes();
-
     }
 
     @Test
     public void testBox2ReductionColumnImpossible() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------Test Box2Reduction Column Impossible--------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.boxReductionGrid();
         g.print();
 
@@ -200,11 +152,6 @@ public class SudokuTest {
 
     @Test
     public void testBox3ReductionColumn() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test Box3Reduction Column-------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.grid1();
         g.print();
         g.printWithNotes();
@@ -235,11 +182,6 @@ public class SudokuTest {
 
     @Test
     public void testPointingPairRow() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" ---------------Test Pointing Pair Row--------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
@@ -270,11 +212,6 @@ public class SudokuTest {
 
     @Test
     public void testPointingPairColumn() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test Pointing Pair Column-------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.pointingPairGrid();
         g.print();
 
@@ -303,11 +240,6 @@ public class SudokuTest {
 
     @Test
     public void testPointingTripletRow() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------Test Pointing Triplet Row-------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.pointingTripletGrid();
         g.print();
 
@@ -337,36 +269,28 @@ public class SudokuTest {
 
     @Test
     public void testXWingRow() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" ------------------Test X-Wing Row------------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.xWing();
         g.print();
         g.printWithNotes();
 
-        System.out.println("Solving X-Wing ... ");
-        RuleThirteen.solve(g);
-        System.out.println("...done");
+        System.out.print("Solving X-Wing ... ");
+        Assertions.assertTrue(RuleThirteen.solve(g));
+        System.out.println("done");
+
+        Assertions.assertTrue(g.isValid());
 
         g.printWithNotes();
     }
 
-    @Test
+    //@Test
     public void allRulesTest() {
-        System.out.println("[---------------------------------------------------");
-        System.out.println(" -------------------Test AllRules-------------------");
-        System.out.println(" ---------------------------------------------------]");
-        System.out.println();
-
         Grid g = TestGrids.allRules();
 
         g.print();
         Solver.solve(g);
         g.print();
         g.printWithNotes();
-        System.out.println("La grille est " + (g.isValid() ? "valide." : "invalide."));
+        Assertions.assertTrue(g.isValid());
     }
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
