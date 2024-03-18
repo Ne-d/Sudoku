@@ -1,21 +1,13 @@
 package org.prepro.view;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Path;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Scanner;
+import java.io.*;
 
 public class GridView extends GridPane {
     private Grid grid;
@@ -99,22 +91,54 @@ public class GridView extends GridPane {
         }
     }
 
-//TODO FIX THAT
+    /**
+     * Load a grid from a file.
+     *
+     * @param filePath The path to the file to read.
+     * @return The grid that has been loaded.
+     * @throws IOException If the file cannot be read.
+     */
     public Grid loadGridFromFile(String filePath) throws IOException {
-        Grid gridChoosed = new Grid();
+        Grid grid = new Grid();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
-        while ((reader.read()) != -1) {
-            for (int row = 0; row < 9; row++) {
-                for (int column = 0; column < 9; column++) {
-                    if (reader.read() != ' ' || reader.read() != '0') {
-                        gridChoosed.addValue(row, column, Character.getNumericValue(reader.read()));
-                    }
-                }
+        int valueRead;
+        int row = 0;
+        int column = 0;
+        while ((valueRead = reader.read()) != -1) {
+            if (valueRead == '\n') {
+                row++;
+                column = 0;
+                continue;
             }
 
+            if (valueRead != ' ')
+                grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+
+            column++;
         }
-        return gridChoosed;
+
+        reader.close();
+
+        return grid;
+    }
+
+    public void saveGridToFile(String filePath) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+
+        for (int y = 0; y < this.grid.SIZE; y++) {
+            for (int x = 0; x < this.grid.SIZE; x++) {
+                int val = grid.getVal(x, y);
+
+                if (val != 0)
+                    writer.write(Integer.toString(val));
+                else
+                    writer.write(' ');
+            }
+            writer.write('\n');
+        }
+
+        writer.close();
     }
 
     public Grid testGrid() {

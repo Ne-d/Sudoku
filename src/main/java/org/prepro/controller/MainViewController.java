@@ -3,6 +3,7 @@ package org.prepro.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.prepro.model.solver.Solver;
 import org.prepro.view.GridView;
@@ -10,6 +11,7 @@ import org.prepro.view.GridView;
 import java.io.IOException;
 
 public class MainViewController {
+    private Stage stage;
 
     @FXML
     GridView gridView;
@@ -17,6 +19,7 @@ public class MainViewController {
     Label statut;
 
     public void setupStageEventHandlers(Stage stage) {
+        this.stage = stage;
         gridView.setupStageEventHandlers(stage);
         updateValidity();
     }
@@ -37,15 +40,23 @@ public class MainViewController {
     }
 
     @FXML
-    public void testOpenGrid() throws IOException {
-        this.gridView.loadGrid(gridView.loadGridFromFile("C:\\Users\\FunRizZ\\Desktop\\test\\gridtest2.txt"));
+    public void openGrid() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+        this.updateValidity();
     }
-    public void updateValidity(){
-        if(this.gridView.getGrid().isValid()){
+
+    @FXML
+    public void saveGrid() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        this.gridView.saveGridToFile(fileChooser.showSaveDialog(this.stage).getPath());
+    }
+
+    public void updateValidity() {
+        if (this.gridView.getGrid().isValid()) {
             statut.setText("The selected grid is valid.");
             statut.setTextFill(Color.GREEN);
-        }
-        else {
+        } else {
             statut.setText("The selected grid is not valid.");
             statut.setTextFill(Color.RED);
         }
