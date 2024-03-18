@@ -152,12 +152,13 @@ public class RulesFiveToTen {
                 }
             }
         }
-        if (gridModif) {
+        if (gridModif) { /* print the grid modified and the k-uplet use */
             g.printWithNotes();
+            System.out.print("k-uplet rules apply with ");
             for(int i = 0; i < k; i++) {
                 System.out.print(notes[i]);
             }
-            System.out.println(" " +gridModif);
+            System.out.println(" ("+startX+", "+startY+") ("+endX+", "+endY+")");
         }
         return gridModif;
     }
