@@ -1,13 +1,13 @@
 package org.prepro.view;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
+
+import java.io.*;
 
 public class GridView extends GridPane {
     private Grid grid;
@@ -18,12 +18,6 @@ public class GridView extends GridPane {
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
-
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID,
-                new CornerRadii(0),
-                new BorderWidths(2),
-                new Insets(0))));
 
         this.setHgap(2);
         this.setVgap(2);
@@ -91,12 +85,60 @@ public class GridView extends GridPane {
                 Notes notes = this.grid.getNotes(x, y);
                 int value = this.grid.getVal(x, y);
 
-                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
-                this.add(currentCellView, x, y);
                 cellViews[x][y].setNotes(notes);
                 cellViews[x][y].setValue(value);
             }
         }
+    }
+
+    /**
+     * Load a grid from a file.
+     *
+     * @param filePath The path to the file to read.
+     * @return The grid that has been loaded.
+     * @throws IOException If the file cannot be read.
+     */
+    public Grid loadGridFromFile(String filePath) throws IOException {
+        Grid grid = new Grid();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+        int valueRead;
+        int row = 0;
+        int column = 0;
+        while ((valueRead = reader.read()) != -1) {
+            if (valueRead == '\n') {
+                row++;
+                column = 0;
+                continue;
+            }
+
+            if (valueRead != ' ')
+                grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+
+            column++;
+        }
+
+        reader.close();
+
+        return grid;
+    }
+
+    public void saveGridToFile(String filePath) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+
+        for (int y = 0; y < this.grid.SIZE; y++) {
+            for (int x = 0; x < this.grid.SIZE; x++) {
+                int val = grid.getVal(x, y);
+
+                if (val != 0)
+                    writer.write(Integer.toString(val));
+                else
+                    writer.write(' ');
+            }
+            writer.write('\n');
+        }
+
+        writer.close();
     }
 
     public Grid testGrid() {
@@ -155,11 +197,13 @@ public class GridView extends GridPane {
 
     public void resetToStartingGrid() {
         this.loadGrid(startingGrid);
-        this.update();
+        //this.update();
     }
 
     public void setSelectedCell(int column, int row) {
+        this.cellViews[this.selectedColumn][this.selectedRow].setStyle("-fx-background-color:lightgray");
         this.selectedColumn = column;
         this.selectedRow = row;
+        this.cellViews[column][row].setStyle("-fx-background-color:#FFCCFF");
     }
 }

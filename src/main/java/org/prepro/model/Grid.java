@@ -2,12 +2,23 @@ package org.prepro.model;
 
 
 public class Grid {
+    /**
+     * The 2D array of boxes that constitutes the grid.
+     */
     private final Box[][] board;
-    public final int SIZE; // Number of columns and line
-    public final int SQRTSIZE; //Number for a block
 
     /**
-     * Generates a new grid with dimensions of 9 by 9, initializes all boxes and fills 17 of them.
+     * The size of the grid (number of rows and columns).
+     */
+    public final int SIZE;
+
+    /**
+     * The size of a block.
+     */
+    public final int SQRTSIZE;
+
+    /**
+     * Generates a new grid with dimensions of 9 by 9, initializes all boxes.
      */
     public Grid() {
         this.SIZE = 9;
@@ -41,6 +52,11 @@ public class Grid {
         }
     }
 
+    /**
+     * Get the grid's board.
+     *
+     * @return The grid's board.
+     */
     public Box[][] getBoard() {
         return this.board;
     }
@@ -52,6 +68,13 @@ public class Grid {
         return this.board[xPos][yPos].getVal();
     }
 
+    /**
+     * Get the notes of a box.
+     *
+     * @param xPos The x coordinate of the box.
+     * @param yPos The y coordinate of the box.
+     * @return The notes of the box.
+     */
     public Notes getNotes(int xPos, int yPos) {
         return this.board[xPos][yPos].getNotes();
     }
@@ -78,14 +101,27 @@ public class Grid {
         }
         box.setVal(val);
 
-        // Delete all notes that become invalid once this new value is added to the grid
-        this.deleteNotes(xPos, 0, xPos, this.SIZE - 1, val); //delete note column
-        this.deleteNotes(0, yPos, this.SIZE - 1, yPos, val); //delete note line
-        this.deleteNotes((xPos / this.SQRTSIZE) * this.SQRTSIZE,
-                (yPos / this.SQRTSIZE) * this.SQRTSIZE,
-                (1 + xPos / this.SQRTSIZE) * this.SQRTSIZE - 1,
-                (1 + yPos / this.SQRTSIZE) * this.SQRTSIZE - 1, val); //delete note square
-        this.deleteAllNote(xPos, yPos);
+        // Delete all notes that become invalid in the row
+        for (int x = 0; x < this.SIZE; x++) {
+            if (x != xPos) // All cells except the one we are adding a value to.
+                this.deleteNote(x, yPos, val);
+        }
+
+        for (int y = 0; y < this.SIZE; y++) {
+            if (y != yPos) // All cells except the one we are adding a value to.
+                this.deleteNote(xPos, y, val);
+        }
+
+        int blockStartX = (xPos / this.SQRTSIZE) * this.SQRTSIZE;
+        int blockEndX = (1 + xPos / this.SQRTSIZE) * this.SQRTSIZE - 1;
+        int blockStartY = (yPos / this.SQRTSIZE) * this.SQRTSIZE;
+        int blockEndY = (1 + yPos / this.SQRTSIZE) * this.SQRTSIZE - 1;
+        for (int x = blockStartX; x < blockEndX; x++) {
+            for (int y = blockStartY; y < blockEndY; y++) {
+                if (x != xPos && y != yPos)
+                    deleteNote(x, y, val);
+            }
+        }
 
         return true;
     }
@@ -158,20 +194,28 @@ public class Grid {
      * @return yes if the grid is valid else false
      */
     public boolean isValid() {
-        boolean canceled = true;
+        boolean cont = true;
 
-        for (int i = 1; i <= this.SIZE && canceled; i++) {
-            canceled = isColumnValid(i);
-            canceled = canceled && isRowValid(i);
+        for (int i = 1; i <= this.SIZE && cont; i++) {
+            cont = isColumnValid(i);
+            cont = cont && isRowValid(i);
         }
 
-        for (int i = 0; i < this.SQRTSIZE && canceled; i++) {
-            for (int j = 0; j < this.SQRTSIZE && canceled; j++) {
-                canceled = isBlockValid(i, j);
+        for (int i = 0; i < this.SQRTSIZE && cont; i++) {
+            for (int j = 0; j < this.SQRTSIZE && cont; j++) {
+                cont = isBlockValid(i, j);
             }
 
         }
-        return canceled;
+
+        for (int x = 0; x < this.SIZE && cont; x++) {
+            for (int y = 0; y < this.SIZE && cont; y++) {
+                if (getNbNotes(x, y) == 0)
+                    cont = false;
+            }
+        }
+        
+        return cont;
     }
 
     /**
@@ -241,6 +285,9 @@ public class Grid {
         }
     }
 
+    /**
+     * Prints a text representation of the grid with all notes.
+     */
     public void printWithNotes() {
         int nbEqual = SIZE * SQRTSIZE * 2 + 23;
         for (int y = 0; y < SIZE; y++) {
@@ -333,34 +380,12 @@ public class Grid {
     }
 
     /**
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX   X coordinate of the end of the rectangle.
-     * @param endY   Y coordinate of the end of the rectangle.
-     * @return if the grid has been modified
+     * Get the number of notes in a box.
+     *
+     * @param x The x coordinate of the box.
+     * @param y The y coordinate of the box.
+     * @return The number of notes in the box.
      */
-    public boolean isNotePresentOnce(int startX, int startY, int endX, int endY, int[] nbNotesRec) {
-        for (int oc = 0; oc < this.SIZE; oc++) { //parcours du tableau des notes du block
-
-            if (nbNotesRec[oc] == 1) { // regarde si une note est présente qu'une seule fois dans le rectangle
-
-                for (int x = startX; x <= endX; x++) {
-                    for (int y = startY; y <= endY; y++) {
-
-                        for (int i = 1; i <= 9; i++) { //cherche la note
-
-                            if (board[x][y].isNotePresent(i) && i == oc + 1) {
-                                this.addValue(x, y, i);
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public int getNbNotes(int x, int y) {
         return this.board[x][y].getNbNote();
     }

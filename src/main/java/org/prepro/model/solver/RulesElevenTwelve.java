@@ -75,6 +75,8 @@ public class RulesElevenTwelve {
      */
     public static boolean solvePointingKTuple(Grid g, int k, int note, RowOrColumn rc, int block) {
         Optional<List<int[]>> coordsOptional = findPointingKTuple(g, k, note, rc, block);
+        int tempCoordinate = -1;
+        String typeRC = "null";
 
         if (coordsOptional.isEmpty()) {
             return false;
@@ -87,6 +89,8 @@ public class RulesElevenTwelve {
                 if (!g.isInBlock(x, rc.number, block)) {
                     if (g.deleteNote(x, rc.number, note)) {
                         hasChanged = true;
+                        tempCoordinate = rc.number;
+                        typeRC = "row";
                     }
                 }
             }
@@ -95,11 +99,18 @@ public class RulesElevenTwelve {
                 if (!g.isInBlock(rc.number, y, block)) {
                     if (g.deleteNote(rc.number, y, note)) {
                         hasChanged = true;
+                        tempCoordinate = rc.number;
+                        typeRC = "column";
                     }
                 }
             }
         }
 
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
+            System.out.println();
+        }
         return hasChanged;
     }
 
@@ -162,6 +173,8 @@ public class RulesElevenTwelve {
      */
     public static boolean solveBoxReduction(Grid g, int k, int note, RowOrColumn rc, int block) {
         Optional<List<int[]>> coordsOptional = findBoxReduction(g, k, note, rc, block);
+        int tempCoordinate = -1;
+        String typeRC = "null";
 
         if (coordsOptional.isEmpty()) {
             return false;
@@ -175,13 +188,23 @@ public class RulesElevenTwelve {
                 if (rc.type == Row && y != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
+                        tempCoordinate = x;
+                        typeRC = "row";
                     }
                 } else if (x != rc.number) {
                     if (g.deleteNote(x, y, note)) {
                         hasChanged = true;
+                        tempCoordinate = y;
+                        typeRC = "column";
                     }
                 }
             }
+        }
+        //Print in console where the rules is applied
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
+            System.out.println();
         }
 
         return hasChanged;

@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Solver {
+    /**
+     * Solve the grid with all the rules.
+     *
+     * @param g The grid to solve.
+     */
     public static void solve(Grid g) {
-        boolean oneToThree;
+        boolean two;
         boolean fiveToTen;
         boolean elevenTwelve;
         boolean thirteen;
@@ -16,8 +21,8 @@ public class Solver {
             do {
                 do {
                     do {
-                        oneToThree = RulesOneToThree.solve(g);
-                    } while (oneToThree);
+                        two = RuleTwo.solve(g);
+                    } while (two);
 
                     fiveToTen = RulesFiveToTen.solve(g);
                 } while (fiveToTen);

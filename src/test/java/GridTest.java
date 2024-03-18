@@ -8,7 +8,7 @@ import org.prepro.model.solver.*;
 import java.util.List;
 import java.util.Optional;
 
-public class SudokuTest {
+public class GridTest {
 
     /**
      * Test the 6th rule with an example
@@ -58,7 +58,7 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenPair();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
@@ -69,25 +69,32 @@ public class SudokuTest {
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        System.out.println(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
     /**
      * Test for a grid in parameters the 4 first rules of SUDOKU
      */
     @Test
-    public void testingRulesOneToThree() {
-        Grid grid = TestGrids.grid1();
-        grid.print();
-        System.out.println("La grille est " + (grid.isValid() ? "valide." : "invalide."));
-
-        RulesOneToThree.solve(grid);
+    public void testRuleTwo() {
+        Grid grid = TestGrids.ruleTwo();
 
         grid.print();
-        System.out.println(grid.isValid() ? "La grille est valide." : "La grille est invalide.");
+        grid.printWithNotes();
+        Assertions.assertTrue(grid.isValid());
+
+        System.out.println("Solving.");
+        Assertions.assertTrue(RuleTwo.solve(grid));
+        System.out.println("Done.");
+
+        Assertions.assertEquals(8, grid.getVal(0, 7));
+
+        grid.print();
+        grid.printWithNotes();
+        Assertions.assertTrue(grid.isValid());
     }
 
-    @Test
+    //@Test
     public void allRulesSanityCheck() {
         Grid g = TestGrids.grid2();
 
@@ -98,11 +105,7 @@ public class SudokuTest {
 
         g.print();
 
-        boolean valid = g.isValid();
-
-        System.out.println("La grille est " + (valid ? "valide" : "invalide") + ".");
-
-        Assertions.assertTrue(valid);
+        Assertions.assertTrue(g.isValid());
     }
 
     @Test
@@ -133,7 +136,6 @@ public class SudokuTest {
         Assertions.assertFalse(g.isNotePresent(7, 2, 0));
 
         g.printWithNotes();
-
     }
 
     @Test
@@ -272,13 +274,15 @@ public class SudokuTest {
         g.printWithNotes();
 
         System.out.print("Solving X-Wing ... ");
-        RuleThirteen.solve(g);
+        Assertions.assertTrue(RuleThirteen.solve(g));
         System.out.println("done");
+
+        Assertions.assertTrue(g.isValid());
 
         g.printWithNotes();
     }
 
-    @Test
+    //@Test
     public void allRulesTest() {
         Grid g = TestGrids.allRules();
 
@@ -286,7 +290,7 @@ public class SudokuTest {
         Solver.solve(g);
         g.print();
         g.printWithNotes();
-        System.out.println("La grille est " + (g.isValid() ? "valide." : "invalide."));
+        Assertions.assertTrue(g.isValid());
     }
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.

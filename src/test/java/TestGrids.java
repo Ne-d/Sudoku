@@ -96,6 +96,19 @@ public class TestGrids {
         return grid2;
     }
 
+    public static Grid ruleTwo() {
+        Grid g = new Grid();
+
+        g.addValue(1, 7, 6);
+        g.addValue(0, 8, 9);
+        g.addValue(1, 8, 1);
+
+        g.addValue(2, 3, 8);
+        g.addValue(4, 6, 8);
+
+        return g;
+    }
+
     /**
      * Test the 6th rule with an example
      */

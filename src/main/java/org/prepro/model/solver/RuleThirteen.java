@@ -183,6 +183,9 @@ public class RuleThirteen {
      */
     public static boolean solveXWing(Grid g, int note, RowOrColumn.RowOrColumnType lce, int[][] coordinates) {
         boolean hasChanged = false;
+        int rc1 = -1;
+        int rc2 = -1;
+        String typeRC = "null";
 
         int x1 = coordinates[0][0];
         int x2 = coordinates[1][0];
@@ -196,7 +199,10 @@ public class RuleThirteen {
                 if (i != y1 && i != y2) {
                     // Using the binary OR operator to make hasChanged true if there is any change, but never return to false.
                     hasChanged |= g.deleteNote(x1, i, note);
+                    rc1 = x1;
                     hasChanged |= g.deleteNote(x2, i, note);
+                    rc2 = x2;
+                    typeRC = "columns";
                 }
             }
         } else { // If we are working in a column
@@ -204,11 +210,20 @@ public class RuleThirteen {
             for (int i = 0; i < g.SIZE; i++) {
                 if (i != x1 && i != x2) {
                     hasChanged |= g.deleteNote(i, y1, note);
+                    rc1 = y1;
                     hasChanged |= g.deleteNote(i, y2, note);
+                    rc2 = y2;
+                    typeRC = "rows";
                 }
             }
         }
 
+        //Print in console where the rules is applied
+        if(hasChanged){
+            System.out.println();
+            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d", typeRC, rc1, rc2, note);
+            System.out.println();
+        }
         return hasChanged;
     }
 

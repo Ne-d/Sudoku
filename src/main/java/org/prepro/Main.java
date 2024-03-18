@@ -1,8 +1,8 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
+import org.prepro.model.solver.RuleTwo;
 import org.prepro.model.solver.RulesFiveToTen;
-import org.prepro.model.solver.RulesOneToThree;
 import org.prepro.model.solver.Solver;
 
 import java.util.NoSuchElementException;
@@ -18,7 +18,7 @@ public class Main {
         int i = -1;
         try {
 
-            System.out.print("put your command: ");
+            System.out.print("Put your command: ");
             if (scanner.hasNext()) {
                 command = scanner.next(commandRecognized);
             }
@@ -29,83 +29,83 @@ public class Main {
                     grid.print();
                     break;
                 case "elementaire":
-                    RulesOneToThree.solve(grid);
+                    RuleTwo.solve(grid);
                     grid.print();
                     grid.printWithNotes();
                     break;
                 case "singleton":
-                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    System.out.print("Put your command among " + commandRecognized2 + " : ");
                     if (scanner.hasNext()) {
                         command = scanner.next(commandRecognized2);
                     }
-                    System.out.print("put the number: ");
+                    System.out.print("Put the number: ");
                     if (scanner.hasNext()) {
                         argv = scanner.next();
                     }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, 0, i, grid.SIZE - 1, i));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 1, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, i, 0, i, grid.SIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 1, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
                             int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
                             int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 1, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 1, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
                     grid.printWithNotes();
                     break;
                 case "paire":
-                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    System.out.print("Put your command among " + commandRecognized2 + " : ");
                     if (scanner.hasNext()) {
                         command = scanner.next(commandRecognized2);
                     }
-                    System.out.print("put the number: ");
+                    System.out.print("Put the number: ");
                     if (scanner.hasNext()) {
                         argv = scanner.next();
                     }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, 0, i, grid.SIZE - 1, i));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 2, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, i, 0, i, grid.SIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 2, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
                             int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
                             int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 2, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 2, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
                     grid.printWithNotes();
                     break;
                 case "triplet":
-                    System.out.print("put your command among " + commandRecognized2 + " : ");
+                    System.out.print("Put your command among " + commandRecognized2 + " : ");
                     if (scanner.hasNext()) {
                         command = scanner.next(commandRecognized2);
                     }
-                    System.out.print("put the number: ");
+                    System.out.print("Put the number: ");
                     if (scanner.hasNext()) {
                         argv = scanner.next();
                     }
                     i = Integer.parseInt(argv);
                     switch (command) {
                         case "ligne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, 0, i, grid.SIZE - 1, i));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 3, 0, i, grid.SIZE - 1, i));
                             break;
                         case "colonne":
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, i, 0, i, grid.SIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 3, i, 0, i, grid.SIZE - 1));
                             break;
                         case "block":
                             int x = (i % grid.SQRTSIZE) * grid.SQRTSIZE;
                             int y = (i / grid.SQRTSIZE) * grid.SQRTSIZE;
-                            System.out.println("la grille a été modifié : " + RulesFiveToTen.k_upletsTest(grid, 3, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
+                            System.out.println("The Grid has been modified : " + RulesFiveToTen.k_upletsTest(grid, 3, x, y, x + grid.SQRTSIZE - 1, y + grid.SQRTSIZE - 1));
                             break;
                     }
                     //grid.print();
@@ -115,7 +115,7 @@ public class Main {
                     return false;
             }
         } catch (NoSuchElementException e) {
-            System.out.println("list of command : " + commandRecognized);
+            System.out.println("List of command : " + commandRecognized);
             if (scanner.hasNext()) scanner.next(); //avoid infinity loop
         } catch (Exception e) {
             System.out.println("An error has occurred : " + e + "\n\t" + e.getMessage());
@@ -193,8 +193,9 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         while (useRule(g, sc)) {
+            //What the Hell is going on here
         }
-        System.out.println("done");
+        System.out.println("Done");
 
         g.printWithNotes();
     }
