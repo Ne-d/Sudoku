@@ -35,6 +35,7 @@ public class RulesFiveToTen {
 
                         if (continueRow || continueColumn || continueBlock) {
                             hasChanged = true;
+                            return true;
                         }
                     } while (continueColumn && continueRow && continueBlock);
                 }
@@ -61,8 +62,8 @@ public class RulesFiveToTen {
             for (int j = 0; j < k; j++) { //Tous les membres du k-uplet
                 int numcase = 0;
 
-                for (int y = startY; y <= endY; y++) { // Pour chaque case du rectangle choisi
-                    for (int x = startX; x <= endX; x++) {
+                for (int x = startX; x <= endX; x++) { // Pour chaque case du rectangle choisi
+                    for (int y = startY; y <= endY; y++) {
                         tab[j][numcase] = g.isNotePresent(tuple[j], x, y);
                         hidden = !tab[j][numcase] || g.getNbNotes(x, y) != k || !hidden;
                         numcase++;
@@ -91,7 +92,7 @@ public class RulesFiveToTen {
                 }
             }
             if (nbFound == k * comb.size()) {
-                return k_uplet_delNotes(g, pos, tuple, startX, startY, endX);
+                return k_uplet_delNotes(g, pos,tuple, startX, startY, endX, endY);
             }
         }
         return false;
@@ -124,16 +125,15 @@ public class RulesFiveToTen {
      * @param endX     X coordinate of the end of the rectangle.
      * @return True if the grid has been changed, otherwise false.
      */
-    // FIXME: This methods deletes some notes it shouldn't. We ended up with cells containing no notes at all. Fix that.
-    public static boolean k_uplet_delNotes(Grid g, int[] pK_uplet, int[] notes, int startX, int startY, int endX) {
+    public static boolean k_uplet_delNotes(Grid g, int[] pK_uplet, int[] notes, int startX, int startY, int endX, int endY) {
         boolean gridModif = false;
         int k = pK_uplet.length;
-        int largeur = endX - startX + 1;
+        int largeur = endY - startY + 1;
 
         int x, y;
         for (int i = 0; i < g.SIZE; i++) {
-            x = i % largeur + startX;
-            y = i / largeur + startY;
+            x = i / largeur + startX;
+            y = i % largeur + startY;
 
             boolean delete = true;
             for (int value : pK_uplet) {
@@ -151,6 +151,13 @@ public class RulesFiveToTen {
                     }
                 }
             }
+        }
+        if (gridModif) {
+            g.printWithNotes();
+            for(int i = 0; i < k; i++) {
+                System.out.print(notes[i]);
+            }
+            System.out.println(" " +gridModif);
         }
         return gridModif;
     }
