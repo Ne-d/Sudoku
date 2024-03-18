@@ -194,20 +194,28 @@ public class Grid {
      * @return yes if the grid is valid else false
      */
     public boolean isValid() {
-        boolean canceled = true;
+        boolean cont = true;
 
-        for (int i = 1; i <= this.SIZE && canceled; i++) {
-            canceled = isColumnValid(i);
-            canceled = canceled && isRowValid(i);
+        for (int i = 1; i <= this.SIZE && cont; i++) {
+            cont = isColumnValid(i);
+            cont = cont && isRowValid(i);
         }
 
-        for (int i = 0; i < this.SQRTSIZE && canceled; i++) {
-            for (int j = 0; j < this.SQRTSIZE && canceled; j++) {
-                canceled = isBlockValid(i, j);
+        for (int i = 0; i < this.SQRTSIZE && cont; i++) {
+            for (int j = 0; j < this.SQRTSIZE && cont; j++) {
+                cont = isBlockValid(i, j);
             }
 
         }
-        return canceled;
+
+        for (int x = 0; x < this.SIZE && cont; x++) {
+            for (int y = 0; y < this.SIZE && cont; y++) {
+                if (getNbNotes(x, y) == 0)
+                    cont = false;
+            }
+        }
+        
+        return cont;
     }
 
     /**
