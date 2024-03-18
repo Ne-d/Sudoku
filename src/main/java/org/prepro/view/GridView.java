@@ -5,9 +5,17 @@ import javafx.geometry.Pos;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class GridView extends GridPane {
     private Grid grid;
@@ -89,6 +97,24 @@ public class GridView extends GridPane {
                 cellViews[x][y].setValue(value);
             }
         }
+    }
+
+//TODO FIX THAT
+    public Grid loadGridFromFile(String filePath) throws IOException {
+        Grid gridChoosed = new Grid();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+        while ((reader.read()) != -1) {
+            for (int row = 0; row < 9; row++) {
+                for (int column = 0; column < 9; column++) {
+                    if (reader.read() != ' ' || reader.read() != '0') {
+                        gridChoosed.addValue(row, column, Character.getNumericValue(reader.read()));
+                    }
+                }
+            }
+
+        }
+        return gridChoosed;
     }
 
     public Grid testGrid() {

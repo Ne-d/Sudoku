@@ -11,7 +11,7 @@
     <top>
         <ToolBar>
             <Button>New</Button>
-            <Button>Open</Button>
+            <Button onAction="#testOpenGrid">Open</Button>
             <Separator/>
             <Button onAction="#solveAction">Solve</Button>
             <Button onAction="#resetAction">Reset</Button>

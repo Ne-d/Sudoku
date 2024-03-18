@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import org.prepro.model.solver.Solver;
 import org.prepro.view.GridView;
 
+import java.io.IOException;
+
 public class MainViewController {
 
     @FXML
@@ -34,6 +36,10 @@ public class MainViewController {
         System.out.println("Grid reset");
     }
 
+    @FXML
+    public void testOpenGrid() throws IOException {
+        this.gridView.loadGrid(gridView.loadGridFromFile("C:\\Users\\FunRizZ\\Desktop\\test\\gridtest2.txt"));
+    }
     public void updateValidity(){
         if(this.gridView.getGrid().isValid()){
             statut.setText("The selected grid is valid.");
