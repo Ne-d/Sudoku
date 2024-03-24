@@ -113,10 +113,12 @@ public class Grid {
                 this.deleteNote(xPos, y, val);
         }
 
-        int blockStartX = (xPos / this.SQRTSIZE) * this.SQRTSIZE;
-        int blockEndX = (1 + xPos / this.SQRTSIZE) * this.SQRTSIZE - 1;
-        int blockStartY = (yPos / this.SQRTSIZE) * this.SQRTSIZE;
-        int blockEndY = (1 + yPos / this.SQRTSIZE) * this.SQRTSIZE - 1;
+        int block = this.findBlock(xPos, yPos);
+        int blockStartX = this.blockStartX(block);
+        int blockEndX = this.blockEndX(block);
+        int blockStartY = this.blockStartY(block);
+        int blockEndY = this.blockEndY(block);
+
         for (int x = blockStartX; x < blockEndX; x++) {
             for (int y = blockStartY; y < blockEndY; y++) {
                 if (x != xPos && y != yPos)
