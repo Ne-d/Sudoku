@@ -55,13 +55,13 @@ public class RulesFiveToTen {
             int nbelt = 0;
             boolean[][] tab = new boolean[k][g.SIZE];
             boolean hidden = true;
-            for (int j = 0; j < k; j++) { //Tous les membres du k-uplet
+            for (int j = 0; j < k; j++) { //Tous les membres du k-tuple
                 int numcase = 0;
 
                 for (int x = startX; x <= endX; x++) { // Pour chaque case du rectangle choisi
                     for (int y = startY; y <= endY; y++) {
                         tab[j][numcase] = g.isNotePresent(tuple[j], x, y);
-                        if(tab[j][numcase]){
+                        if (tab[j][numcase]) {
                             nbelt++;
                         }
                         hidden = !tab[j][numcase] || g.getNbNotes(x, y) != k || !hidden;
@@ -95,7 +95,7 @@ public class RulesFiveToTen {
             //System.out.println("nbfound "+nbFound + " hidden:"+hidden+" nbelt:"+nbelt );
             if (nbFound == k * comb.size() && (!hidden || nbelt == k)) {
                 //System.out.println(Integer.valueOf(nbelt).toString() + hidden);
-                return k_uplet_delNotes(g, pos,tuple, startX, startY, endX, endY);
+                return k_uplet_delNotes(g, pos, tuple, startX, startY, endX, endY);
             }
         }
         return false;
@@ -156,9 +156,9 @@ public class RulesFiveToTen {
             }
         }
         if (gridModif) {
-            /* print the grid modified and the k-uplet use */
+            /* print the grid modified and the k-tuple use */
             //g.printWithNotes();
-            System.out.print("k-uplet rules apply with ");
+            System.out.print("k-tuple rules apply with ");
             for (int i = 0; i < k; i++) {
                 System.out.print(notes[i]);
             }
