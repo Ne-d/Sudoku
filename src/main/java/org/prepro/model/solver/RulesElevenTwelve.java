@@ -52,6 +52,7 @@ public class RulesElevenTwelve {
                             if (continuePointingPairRow || continuePointingPairColumn ||
                                     continueBoxReductionRow || continueBoxReductionColumn) {
                                 hasChanged = true;
+                                return true;
                             }
                         } while (continuePointingPairRow && continuePointingPairColumn &&
                                 continueBoxReductionRow && continueBoxReductionColumn);
