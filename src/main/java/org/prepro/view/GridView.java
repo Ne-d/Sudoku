@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
+import org.prepro.model.GridExemple;
 import org.prepro.model.Notes;
 
 import java.io.*;
@@ -174,51 +175,7 @@ public class GridView extends GridPane {
     }
 
     public Grid testGrid() {
-        Grid grid1 = new Grid();
-        grid1.addValue(0, 0, 7); //line 1
-        grid1.addValue(1, 0, 2);
-        grid1.addValue(2, 0, 6);
-        grid1.addValue(4, 0, 1);
-        grid1.addValue(5, 0, 8);
-        grid1.addValue(6, 0, 3);
-        grid1.addValue(7, 0, 4);
-
-        grid1.addValue(1, 1, 9); // line 2
-        grid1.addValue(4, 1, 5);
-        grid1.addValue(5, 1, 2);
-
-        grid1.addValue(0, 2, 5); //line 3
-        grid1.addValue(2, 2, 4);
-        grid1.addValue(4, 2, 3);
-        grid1.addValue(5, 2, 6);
-        grid1.addValue(6, 2, 9);
-        grid1.addValue(7, 2, 8);
-        grid1.addValue(8, 2, 2);
-
-        grid1.addValue(0, 3, 6); // line 4
-        grid1.addValue(3, 3, 3);
-        grid1.addValue(7, 3, 2);
-        grid1.addValue(8, 3, 1);
-
-        grid1.addValue(1, 4, 7); // line 5
-        grid1.addValue(5, 4, 4);
-
-        grid1.addValue(3, 5, 6); // line 6
-        grid1.addValue(5, 5, 9);
-        grid1.addValue(6, 5, 4);
-        grid1.addValue(7, 5, 5);
-
-        grid1.addValue(1, 6, 3); // line 7
-        grid1.addValue(2, 6, 7);
-        grid1.addValue(7, 6, 9);
-        grid1.addValue(8, 6, 4);
-
-        grid1.addValue(0, 7, 4); // line 8
-        grid1.addValue(2, 7, 1);
-        grid1.addValue(5, 7, 3);
-
-        grid1.addValue(3, 8, 2); // line 9
-        grid1.addValue(6, 8, 1);
+        Grid grid1 = GridExemple.grid1.getGrid();
 
         return grid1;
     }
