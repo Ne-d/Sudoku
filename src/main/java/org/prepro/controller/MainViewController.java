@@ -2,6 +2,7 @@ package org.prepro.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -23,6 +24,8 @@ public class MainViewController {
     public void setupStageEventHandlers(Stage stage) {
         this.stage = stage;
         gridView.setupStageEventHandlers(stage);
+        this.addKeyboardNavigation();
+        this.gridView.setSelectedCell(0,0);
         updateValidity();
     }
 
@@ -62,6 +65,28 @@ public class MainViewController {
             statut.setText("The selected grid is not valid.");
             statut.setTextFill(Color.RED);
         }
+    }
+
+    /**
+     * Allow to navigate with the zqsd keys in the grid
+     */
+    public void addKeyboardNavigation(){
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+                switch (event.getCode()) {
+                    case Z -> {if (this.gridView.getSelectedRow() > 0){
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow() - 1);
+                    }}
+                    case S -> {if (this.gridView.getSelectedRow() < this.gridView.getGrid().SIZE - 1){
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow() + 1);
+                    }}
+                    case Q -> {if (this.gridView.getSelectedColumn() > 0){
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() - 1, this.gridView.getSelectedRow());
+                    }}
+                    case D -> {if (this.gridView.getSelectedColumn() < this.gridView.getGrid().SIZE - 1){
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() + 1, this.gridView.getSelectedRow());
+                    }}
+                }
+        });
     }
 
     @FXML

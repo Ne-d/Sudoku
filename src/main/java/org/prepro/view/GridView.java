@@ -15,8 +15,8 @@ public class GridView extends GridPane {
     private Grid grid;
     private Grid startingGrid;
     private CellView[][] cellViews;
-    private int selectedColumn;
-    private int selectedRow;
+    private int selectedColumn = 0;
+    private int selectedRow = 0;
     /**
      * if true that means notes are selected else value are selected
      */
@@ -231,6 +231,14 @@ public class GridView extends GridPane {
     public void resetToStartingGrid() {
         this.loadGrid(startingGrid);
         //this.update();
+    }
+
+    public int getSelectedColumn(){
+        return selectedColumn;
+    }
+
+    public int getSelectedRow(){
+        return selectedRow;
     }
 
     public void setSelectedCell(int column, int row) {
