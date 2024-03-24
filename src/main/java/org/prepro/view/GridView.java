@@ -36,8 +36,8 @@ public class GridView extends GridPane {
 
         // We use the copy constructor to make a new grid that won't be a reference to the old one.
         this.startingGrid = new Grid(grid);
-
         this.cellViews = new CellView[grid.SIZE][grid.SIZE];
+        int cellSize = 60;
 
         for (int y = 0; y < this.grid.SIZE; y++) {
             for (int x = 0; x < this.grid.SIZE; x++) {
@@ -45,22 +45,21 @@ public class GridView extends GridPane {
                 Notes notes = this.grid.getNotes(x, y);
                 int value = this.grid.getVal(x, y);
 
-                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
+                CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this, cellSize);
                 this.add(currentCellView, x, y);
                 cellViews[x][y] = currentCellView;
             }
         }
 
-        int sizeCell = grid.SQRTSIZE;
         // Ajouter les bordures des boîtes (3x3)
-        for (int i = 0; i < sizeCell; i++) {
-            for (int j = 0; j < sizeCell; j++) {
-                int size = this.grid.SIZE * 6 * sizeCell - 7;
-                Rectangle cellBorder = new Rectangle(size - 1, size - 1);
+        for (int i = 0; i < grid.SQRTSIZE; i++) {
+            for (int j = 0; j < grid.SQRTSIZE; j++) {
+                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE-1)*this.getHgap());
+                Rectangle cellBorder = new Rectangle(size, size);
                 cellBorder.setFill(null);
                 cellBorder.setStroke(Color.BLACK);
-                this.add(cellBorder, j * sizeCell, i * sizeCell,
-                        sizeCell, sizeCell);
+                this.add(cellBorder, j * grid.SQRTSIZE, i * grid.SQRTSIZE,
+                        grid.SQRTSIZE, grid.SQRTSIZE);
             }
         }
     }
