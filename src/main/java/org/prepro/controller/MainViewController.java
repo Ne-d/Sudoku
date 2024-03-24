@@ -1,11 +1,18 @@
 package org.prepro.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.prepro.model.Grid;
 import org.prepro.model.solver.Solver;
 import org.prepro.view.CellView;
 import org.prepro.view.GridView;
@@ -114,6 +121,10 @@ public class MainViewController {
     }
 
     @FXML
+    public void createNewGrid(){
+        this.gridView.setGrid(new Grid());
+    }
+    @FXML
     public void saveGrid() throws IOException {
         FileChooser fileChooser = new FileChooser();
         this.gridView.saveGridToFile(fileChooser.showSaveDialog(this.stage).getPath());
@@ -159,6 +170,34 @@ public class MainViewController {
                     }}
                 }
         });
+    }
+
+    @FXML
+    public void help(){
+        Stage helpDialog = new Stage();
+        BorderPane helpPane = new BorderPane();
+        Scene helpScene = new Scene(helpPane);
+        helpDialog.setScene(helpScene);
+        Label helpMessage = new Label("Commands :\n - Z = UP\n - Q = LEFT\n - S = DOWN\n - D = RIGHT\n - N = Switch to Note mode\n - V = Switch to Value Mode");
+        helpMessage.setPadding(new Insets(20));
+        helpPane.setCenter(helpMessage);
+        helpDialog.initOwner(stage);
+        helpDialog.initModality(Modality.APPLICATION_MODAL);
+        helpDialog.showAndWait();
+    }
+
+    @FXML
+    public void about(){
+        Stage aboutDialog = new Stage();
+        BorderPane aboutPane = new BorderPane();
+        Scene aboutScene = new Scene(aboutPane);
+        aboutDialog.setScene(aboutScene);
+        Label aboutMessage = new Label("Created by Nathanael, Jean-Michel, Baptiste & Emilie\nFor educational purposes\nFor University of Poitiers");
+        aboutMessage.setPadding(new Insets(20));
+        aboutPane.setCenter(aboutMessage);
+        aboutDialog.initOwner(stage);
+        aboutDialog.initModality(Modality.APPLICATION_MODAL);
+        aboutDialog.showAndWait();
     }
 
     @FXML

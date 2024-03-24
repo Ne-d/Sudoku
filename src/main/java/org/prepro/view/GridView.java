@@ -27,6 +27,11 @@ public class GridView extends GridPane {
         loadGrid(testGrid());
     }
 
+    public void setGrid(Grid grid){
+        this.grid = grid;
+        loadGrid(grid);
+    }
+
     public void loadGrid(Grid grid) {
         this.grid = grid;
 
