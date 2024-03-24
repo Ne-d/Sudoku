@@ -19,7 +19,6 @@ import org.prepro.view.NotesView;
 import java.io.IOException;
 
 import static java.lang.System.exit;
-import static java.lang.System.setErr;
 
 public class MainViewController {
     private Stage stage;
@@ -126,7 +125,7 @@ public class MainViewController {
             this.updateMode();
             this.gridView.setSelectedCell(0, 0);
         }catch (Exception exception){
-            System.err.println("error on openGrid :" + exception.getMessage());;
+            System.err.println("error on openGrid :" + exception.getMessage());
         }
     }
 
