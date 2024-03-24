@@ -1,6 +1,7 @@
 package org.prepro.model;
 
 public enum GridExemple {
+    empty,
     grid1,
     grid2,
     grid3,
@@ -8,6 +9,7 @@ public enum GridExemple {
     public Grid getGrid(){
         Grid grid = new Grid();
         switch (this){
+            case empty -> {}
             case grid1 -> {
                 grid.addValue(0, 0, 7); //line 1
                 grid.addValue(1, 0, 2);

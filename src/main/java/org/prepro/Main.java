@@ -27,6 +27,7 @@ public class Main {
                 case "complete":
                     Solver.solve(grid);
                     grid.print();
+                    grid.printWithNotes();
                     break;
                 case "elementaire":
                     RuleTwo.solve(grid);

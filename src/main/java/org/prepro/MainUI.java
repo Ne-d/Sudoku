@@ -7,8 +7,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.prepro.controller.MainViewController;
 
-public class MainUI extends Application {
 
+public class MainUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));

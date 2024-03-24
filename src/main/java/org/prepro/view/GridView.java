@@ -3,6 +3,8 @@ package org.prepro.view;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
@@ -42,6 +44,19 @@ public class GridView extends GridPane {
                 CellView currentCellView = new CellView(notes, value, this.grid.SIZE, x, y, this);
                 this.add(currentCellView, x, y);
                 cellViews[x][y] = currentCellView;
+            }
+        }
+
+        int sizeBox = grid.SQRTSIZE;
+        // Ajouter les bordures des boîtes (3x3)
+        for (int i = 0; i < sizeBox; i++) {
+            for (int j = 0; j < sizeBox; j++) {
+                int size = this.grid.SIZE *6* sizeBox -7;
+                Rectangle boxBorder = new Rectangle(size - 1, size - 1);
+                boxBorder.setFill(null);
+                boxBorder.setStroke(Color.BLACK);
+                this.add(boxBorder, j * sizeBox, i * sizeBox,
+                        sizeBox, sizeBox);
             }
         }
     }
