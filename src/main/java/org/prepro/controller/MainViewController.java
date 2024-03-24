@@ -25,10 +25,13 @@ public class MainViewController {
 
     @FXML
     GridView gridView;
+
     @FXML
     Label statut;
+    
     @FXML
     Label mode;
+
     /**
      * if true that means notes are selected else value are selected
      */
