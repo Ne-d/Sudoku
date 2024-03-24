@@ -51,16 +51,16 @@ public class GridView extends GridPane {
             }
         }
 
-        int sizeBox = grid.SQRTSIZE;
+        int sizeCell = grid.SQRTSIZE;
         // Ajouter les bordures des boîtes (3x3)
-        for (int i = 0; i < sizeBox; i++) {
-            for (int j = 0; j < sizeBox; j++) {
-                int size = this.grid.SIZE *6* sizeBox -7;
-                Rectangle boxBorder = new Rectangle(size - 1, size - 1);
-                boxBorder.setFill(null);
-                boxBorder.setStroke(Color.BLACK);
-                this.add(boxBorder, j * sizeBox, i * sizeBox,
-                        sizeBox, sizeBox);
+        for (int i = 0; i < sizeCell; i++) {
+            for (int j = 0; j < sizeCell; j++) {
+                int size = this.grid.SIZE * 6 * sizeCell - 7;
+                Rectangle cellBorder = new Rectangle(size - 1, size - 1);
+                cellBorder.setFill(null);
+                cellBorder.setStroke(Color.BLACK);
+                this.add(cellBorder, j * sizeCell, i * sizeCell,
+                        sizeCell, sizeCell);
             }
         }
     }
@@ -81,7 +81,8 @@ public class GridView extends GridPane {
                 case NUMPAD9, DIGIT9 -> pressedNumber = 9;
                 case V -> this.notesOrValue = false;
                 case N -> this.notesOrValue = true;
-                default -> {}
+                default -> {
+                }
             }
 
             if (pressedNumber > 0 && this.notesOrValue) {
@@ -97,7 +98,8 @@ public class GridView extends GridPane {
                 }
 
                 selectedCellView.update();
-            }if (pressedNumber > 0 && !this.notesOrValue) {
+            }
+            if (pressedNumber > 0 && !this.notesOrValue) {
                 CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
                 NotesView notesView = selectedCellView.getNotesView();
 

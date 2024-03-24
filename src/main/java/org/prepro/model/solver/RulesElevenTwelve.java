@@ -106,7 +106,7 @@ public class RulesElevenTwelve {
             }
         }
 
-        if(hasChanged){
+        if (hasChanged) {
             System.out.println();
             System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
@@ -128,7 +128,7 @@ public class RulesElevenTwelve {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
 
-        // For every box in the block, stopping if we found more notes than k.
+        // For every cell in the block, stopping if we found more notes than k.
         for (int x = g.blockStartX(block); x < g.blockEndX(block) && nbFound <= k; x++) {
             for (int y = g.blockStartY(block); y < g.blockEndY(block) && nbFound <= k; y++) {
                 if (g.isNotePresent(note, x, y)) {
@@ -138,7 +138,7 @@ public class RulesElevenTwelve {
             }
         }
 
-        // If there are not exactly k boxes found, then we don't have a pointing k-uplet.
+        // If there are not exactly k cells found, then we don't have a pointing k-uplet.
         if (coords.size() != k) {
             return Optional.empty();
         }
@@ -200,8 +200,8 @@ public class RulesElevenTwelve {
                 }
             }
         }
-        //Print in console where the rules is applied
-        if(hasChanged){
+        //Print in console where the rule is applied
+        if (hasChanged) {
             System.out.println();
             System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
@@ -224,7 +224,7 @@ public class RulesElevenTwelve {
         int nbFound = 0;
         List<int[]> coords = new ArrayList<>();
 
-        // For every box in the row or column, stopping if we found more notes than k.
+        // For every cell in the row or column, stopping if we found more notes than k.
         if (lc.type == Row) { // If we are looking in a row
             for (int x = 0; x < g.SIZE && nbFound <= k; x++) {
                 if (g.isNotePresent(note, x, lc.number)) {

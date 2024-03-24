@@ -3,9 +3,9 @@ package org.prepro.model;
 
 public class Grid {
     /**
-     * The 2D array of boxes that constitutes the grid.
+     * The 2D array of cells that constitutes the grid.
      */
-    private final Box[][] board;
+    private final Cell[][] board;
 
     /**
      * The size of the grid (number of rows and columns).
@@ -18,17 +18,17 @@ public class Grid {
     public final int SQRTSIZE;
 
     /**
-     * Generates a new grid with dimensions of 9 by 9, initializes all boxes.
+     * Generates a new grid with dimensions of 9 by 9, initializes all cells.
      */
     public Grid() {
         this.SIZE = 9;
         this.SQRTSIZE = ((int) Math.sqrt(SIZE));
-        this.board = new Box[SIZE][SIZE];
+        this.board = new Cell[SIZE][SIZE];
 
         // Initialize all boxes.
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
-                this.board[x][y] = new Box(this.SIZE);
+                this.board[x][y] = new Cell(this.SIZE);
             }
         }
     }
@@ -42,12 +42,12 @@ public class Grid {
     public Grid(Grid other) {
         this.SIZE = other.SIZE;
         this.SQRTSIZE = ((int) Math.sqrt(other.SIZE));
-        this.board = new Box[other.SIZE][other.SIZE];
+        this.board = new Cell[other.SIZE][other.SIZE];
 
-        // Initialize all boxes
+        // Initialize all cells
         for (int x = 0; x < other.SIZE; x++) {
             for (int y = 0; y < other.SIZE; y++) {
-                this.board[x][y] = new Box(other.getBoard()[x][y]);
+                this.board[x][y] = new Cell(other.getBoard()[x][y]);
             }
         }
     }
@@ -57,23 +57,23 @@ public class Grid {
      *
      * @return The grid's board.
      */
-    public Box[][] getBoard() {
+    public Cell[][] getBoard() {
         return this.board;
     }
 
     /**
-     * @return Returns the value of the box at the given coordinates
+     * @return Returns the value of the cell at the given coordinates
      */
     public int getVal(int xPos, int yPos) {
         return this.board[xPos][yPos].getVal();
     }
 
     /**
-     * Get the notes of a box.
+     * Get the notes of a cell.
      *
-     * @param xPos The x coordinate of the box.
-     * @param yPos The y coordinate of the box.
-     * @return The notes of the box.
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @return The notes of the cell.
      */
     public Notes getNotes(int xPos, int yPos) {
         return this.board[xPos][yPos].getNotes();
@@ -81,26 +81,26 @@ public class Grid {
 
 
     /**
-     * @return Returns true if the box at the given coordinates is empty, false if it has a value.
+     * @return Returns true if the cell at the given coordinates is empty, false if it has a value.
      */
-    public boolean isBoxEmpty(int xPos, int yPos) {
+    public boolean isCellEmpty(int xPos, int yPos) {
         return (this.getVal(xPos, yPos) == 0);
     }
 
 
     /**
-     * Adds a value to the chosen box if it was empty.
+     * Adds a value to the chosen cell if it was empty.
      *
-     * @param val Adds a value to the box of given coordinates, only if the box had no value.
-     * @return Returns true if the box has been modified (had no value before), false otherwise.
+     * @param val Adds a value to the cell of given coordinates, only if the cell had no value.
+     * @return Returns true if the cell has been modified (had no value before), false otherwise.
      */
     public boolean addValue(int xPos, int yPos, int val) {
-        Box box = this.board[xPos][yPos];
-        if (box.getVal() != 0) {
-            System.out.println("x :"+xPos + " y:"+yPos + "val:"+val + " ko");
+        Cell cell = this.board[xPos][yPos];
+        if (cell.getVal() != 0) {
+            System.out.println("x :" + xPos + " y:" + yPos + "val:" + val + " ko");
             return false;
         }
-        box.setVal(val);
+        cell.setVal(val);
 
         // Delete all notes that become invalid in the row
         for (int x = 0; x < this.SIZE; x++) {
@@ -123,7 +123,7 @@ public class Grid {
                     deleteNote(x, y, val);
             }
         }
-       //System.out.println("x :"+xPos + " y:"+yPos + "val:"+val);
+        //System.out.println("x :"+xPos + " y:"+yPos + "val:"+val);
         return true;
     }
 
@@ -215,7 +215,7 @@ public class Grid {
                     cont = false;
             }
         }
-        
+
         return cont;
     }
 
@@ -307,10 +307,10 @@ public class Grid {
     }
 
     /**
-     * Prints the notes of the chosen box
+     * Prints the notes of the chosen cell
      *
-     * @param xPos X coordinate of the chosen box
-     * @param yPos Y coordinate of the chosen box
+     * @param xPos X coordinate of the chosen cell
+     * @param yPos Y coordinate of the chosen cell
      */
     public void afficheNote(int xPos, int yPos) {
         System.out.print("Notes case (" + xPos + ", " + yPos + "): ");
@@ -319,21 +319,21 @@ public class Grid {
 
 
     /**
-     * Adds a note to the chosen box
+     * Adds a note to the chosen cell
      *
-     * @param x    The x coordinate of the box to add a note to.
-     * @param y    The y coordinate of the box to add a note to.
-     * @param note The note to add to the box.
+     * @param x    The x coordinate of the cell to add a note to.
+     * @param y    The y coordinate of the cell to add a note to.
+     * @param note The note to add to the cell.
      */
     public void addNote(int x, int y, int note) {
         this.board[x][y].addNote(note);
     }
 
     /**
-     * Deletes a note of the chosen box
+     * Deletes a note of the chosen cell
      *
-     * @param xPos X coordinate of the chosen box
-     * @param yPos Y coordinate of the chosen box
+     * @param xPos X coordinate of the chosen cell
+     * @param yPos Y coordinate of the chosen cell
      * @param note The note to remove
      * @return True if the grid has changed (the note was removed), otherwise false (the note was not there).
      */
@@ -342,10 +342,10 @@ public class Grid {
     }
 
     /**
-     * Deletes a note of the chosen box
+     * Deletes a note of the chosen cell
      *
-     * @param xPos X coordinate of the chosen box
-     * @param yPos Y coordinate of the chosen box
+     * @param xPos X coordinate of the chosen cell
+     * @param yPos Y coordinate of the chosen cell
      */
     public void deleteAllNote(int xPos, int yPos) {
         this.board[xPos][yPos].deleteAllNote();
@@ -369,7 +369,7 @@ public class Grid {
     }
 
     /**
-     * Determines if the given note is present in a box
+     * Determines if the given note is present in a cell
      *
      * @param note The note to check
      * @param x    The x coordinate (column) to look in
@@ -381,11 +381,11 @@ public class Grid {
     }
 
     /**
-     * Get the number of notes in a box.
+     * Get the number of notes in a cell.
      *
-     * @param x The x coordinate of the box.
-     * @param y The y coordinate of the box.
-     * @return The number of notes in the box.
+     * @param x The x coordinate of the cell.
+     * @param y The y coordinate of the cell.
+     * @return The number of notes in the cell.
      */
     public int getNbNotes(int x, int y) {
         return this.board[x][y].getNbNote();
@@ -437,11 +437,11 @@ public class Grid {
     }
 
     /**
-     * Find which block a box is in
+     * Find which block a cell is in
      *
      * @param x The x coordinate of the block
      * @param y The y coordinate of the block
-     * @return The block that contains the chosen box
+     * @return The block that contains the chosen cell
      */
     public int findBlock(int x, int y) {
         int res = (y / SQRTSIZE) * SQRTSIZE + (x / SQRTSIZE);
@@ -449,7 +449,7 @@ public class Grid {
     }
 
     /**
-     * Find if a box is in the given block
+     * Find if a cell is in the given block
      *
      * @param x     The x coordinate of the block to check
      * @param y     The y coordinate of the block to check

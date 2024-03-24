@@ -1,15 +1,15 @@
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.prepro.model.Box;
+import org.prepro.model.Cell;
 
-public class BoxTests {
+public class CellTests {
     /**
      * Tests that the add, delete and isPresent methods work as expected.
      */
     @Test
     public void testBoxAddDeleteIsPresent() {
         int size = 9;
-        Box b = new Box(size);
+        Cell b = new Cell(size);
 
         for (int i = 1; i <= size; i++) {
             Assertions.assertTrue(b.isNotePresent(i));
@@ -27,7 +27,7 @@ public class BoxTests {
     @Test
     public void testGetSetValue() {
         int size = 9;
-        Box b = new Box(size);
+        Cell b = new Cell(size);
 
         for (int i = 0; i <= size; i++) {
             System.out.printf("Setting value to %d.\n", i);

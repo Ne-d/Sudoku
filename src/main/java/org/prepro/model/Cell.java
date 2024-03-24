@@ -1,48 +1,48 @@
 package org.prepro.model;
 
-public class Box {
+public class Cell {
     /**
-     * The size of the grid this box belongs to. Used for the notes.
+     * The size of the grid this cell belongs to. Used for the notes.
      */
     private final int SIZE;
 
     /**
-     * The notes this box holds.
+     * The notes this cell holds.
      * Each bit of this int represents a note. It is set to 1 if the note is set, 0 if it is unset.
      */
     private final Notes notes;
 
     /**
-     * Creates a new box with default value 0 and all notes set.
+     * Creates a new cell with default value 0 and all notes set.
      */
-    public Box(int size) {
+    public Cell(int size) {
         this.SIZE = size;
         this.notes = new Notes(this.SIZE);
     }
 
     /**
-     * Create a new Box that is a copy of the given one.
+     * Create a new Cell that is a copy of the given one.
      *
-     * @param other The Box to copy.
+     * @param other The Cell to copy.
      */
-    public Box(Box other) {
+    public Cell(Cell other) {
         this.notes = new Notes(other.notes);
         this.SIZE = other.SIZE;
     }
 
     /**
-     * Get the value of this box
+     * Get the value of this cell
      *
-     * @return The value of this box
+     * @return The value of this cell
      */
     public int getVal() {
         return this.notes.getUniqueNote();
     }
 
     /**
-     * Sets the value of this box
+     * Sets the value of this cell
      *
-     * @param val The value to set to this box
+     * @param val The value to set to this cell
      */
     public void setVal(int val) {
         for (int i = 1; i <= this.SIZE; i++) {
@@ -54,7 +54,7 @@ public class Box {
     }
 
     /**
-     * Removes a note from this box
+     * Removes a note from this cell
      *
      * @param note The note to be removed
      * @return True if the note has been deleted, false if it was not there.
@@ -81,7 +81,7 @@ public class Box {
     }
 
     /**
-     * Adds a note to this box
+     * Adds a note to this cell
      *
      * @param note The note to be added
      */
@@ -90,7 +90,7 @@ public class Box {
     }
 
     /**
-     * Find if a note is set in this box or not
+     * Find if a note is set in this cell or not
      *
      * @param note The note to look for
      * @return Whether the note is set or not
@@ -100,23 +100,23 @@ public class Box {
     }
 
     /**
-     * @return The amount of notes for this box
+     * @return The amount of notes for this cell
      */
     public int getNbNote() {
         return this.notes.getNumber();
     }
 
     /**
-     * Prints the content of the notes in this box
+     * Prints the content of the notes in this cell
      */
     public void afficheNote() {
         this.notes.print();
     }
 
     /**
-     * Gets the notes of this box.
+     * Gets the notes of this cell.
      *
-     * @return The notes of this box.
+     * @return The notes of this cell.
      */
     public Notes getNotes() {
         return this.notes;
