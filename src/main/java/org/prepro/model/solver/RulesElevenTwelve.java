@@ -68,26 +68,27 @@ public class RulesElevenTwelve {
         int tempCoordinate = -1;
         String typeRC = "null";
 
+        // If the method to find a pointing k-tuple returned Optional.empty(), there is no pointing k-tuple.
         if (coordsOptional.isEmpty()) {
             return false;
         }
 
         boolean hasChanged = false;
 
-        if (rc.type == Row) {
-            for (int x = 0; x < g.SIZE; x++) {
-                if (!g.isInBlock(x, rc.number, block)) {
-                    if (g.deleteNote(x, rc.number, note)) {
+        if (rc.type == Row) { // If we are solving a pointing k-tuple in a row.
+            for (int x = 0; x < g.SIZE; x++) { // For every cell in the row.
+                if (!g.isInBlock(x, rc.number, block)) { // If the current cell is not in the block of the pointing k-tuple.
+                    if (g.deleteNote(x, rc.number, note)) { // Delete the note, if it exists, then ...
                         hasChanged = true;
                         tempCoordinate = rc.number;
                         typeRC = "row";
                     }
                 }
             }
-        } else {
-            for (int y = 0; y < g.SIZE; y++) {
-                if (!g.isInBlock(rc.number, y, block)) {
-                    if (g.deleteNote(rc.number, y, note)) {
+        } else { // If we are solving a pointing k-tuple in a column.
+            for (int y = 0; y < g.SIZE; y++) { // For every cell in the column.
+                if (!g.isInBlock(rc.number, y, block)) { // If the current cell is not in the block of the pointing k-tuple.
+                    if (g.deleteNote(rc.number, y, note)) { // Delete the note, if it exists, then ...
                         hasChanged = true;
                         tempCoordinate = rc.number;
                         typeRC = "column";
@@ -108,8 +109,8 @@ public class RulesElevenTwelve {
      * Find if there is a pointing k-tuple in the block and give the line or column it is on, if it exists.
      *
      * @param g     The grid to look in.
-     * @param k     The amount of members in the k-uplet
-     * @param note  The note to look for in k-uplets
+     * @param k     The amount of members in the k-tuple
+     * @param note  The note to look for in k-tuples
      * @param rc    The row or column to look in.
      * @param block The block to search in
      * @return If there is a pointing k-tuple, return whether it is on a line, or a column, and the number of that line or column. Else, return Optional.empty()
@@ -128,7 +129,7 @@ public class RulesElevenTwelve {
             }
         }
 
-        // If there are not exactly k cells found, then we don't have a pointing k-uplet.
+        // If there are not exactly k cells found, then we don't have a pointing k-tuple.
         if (coords.size() != k) {
             return Optional.empty();
         }
