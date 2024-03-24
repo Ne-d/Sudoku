@@ -1,9 +1,11 @@
 package org.prepro.view;
 
 import javafx.geometry.Pos;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
@@ -53,7 +55,7 @@ public class GridView extends GridPane {
         // Ajouter les bordures des boîtes (3x3)
         for (int i = 0; i < grid.SQRTSIZE; i++) {
             for (int j = 0; j < grid.SQRTSIZE; j++) {
-                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE - 1) * this.getHgap());
+                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE-1)*this.getHgap());
                 Rectangle cellBorder = new Rectangle(size, size);
                 cellBorder.setFill(null);
                 cellBorder.setStroke(Color.BLACK);
@@ -80,11 +82,11 @@ public class GridView extends GridPane {
      *
      * @param filePath The path to the file to read.
      * @return The grid that has been loaded.
-     * @throws IOException If the file cannot be read.
      */
     public Grid loadGridFromFile(String filePath) throws IOException {
-        Grid grid = new Grid();
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        try {
+            Grid grid = new Grid();
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
         String line;
         int valueRead;
@@ -106,7 +108,11 @@ public class GridView extends GridPane {
 
         reader.close();
 
-        return grid;
+            return grid;
+        }catch (Exception exception){
+            System.err.println("error on grille load "+exception.getMessage());
+            return grid;
+        }
     }
 
     public void saveGridToFile(String filePath) throws IOException {
@@ -186,11 +192,11 @@ public class GridView extends GridPane {
         //this.update();
     }
 
-    public int getSelectedColumn() {
+    public int getSelectedColumn(){
         return selectedColumn;
     }
 
-    public int getSelectedRow() {
+    public int getSelectedRow(){
         return selectedRow;
     }
 

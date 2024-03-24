@@ -117,12 +117,16 @@ public class MainViewController {
     }
 
     @FXML
-    public void openGrid() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
-        this.updateValidity();
-        this.updateMode();
-        this.gridView.setSelectedCell(0, 0);
+    public void openGrid(){
+        try {
+            FileChooser fileChooser = new FileChooser();
+            this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+            this.updateValidity();
+            this.updateMode();
+            this.gridView.setSelectedCell(0, 0);
+        }catch (Exception exception){
+            System.err.println("error on openGrid :" + exception.getMessage());
+        }
     }
 
     @FXML
@@ -214,7 +218,7 @@ public class MainViewController {
         Scene aboutScene = new Scene(aboutPane);
         aboutDialog.setScene(aboutScene);
         Label aboutMessage = new Label("""
-                Created by Nathanael, Jean-Michel, Baptiste & Emilie
+                Created by Maitrehenry Nathanael, Chevalier Jean-Michel, Denis Baptiste & Vessella Emilie
                 For educational purposes
                 For University of Poitiers
                 """);
