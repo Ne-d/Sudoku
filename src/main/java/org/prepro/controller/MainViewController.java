@@ -42,6 +42,7 @@ public class MainViewController {
     public void resetAction() {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
+        this.gridView.setSelectedCell(0,0);
     }
 
     @FXML
@@ -49,6 +50,7 @@ public class MainViewController {
         FileChooser fileChooser = new FileChooser();
         this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
         this.updateValidity();
+        this.gridView.setSelectedCell(0,0);
     }
 
     @FXML
