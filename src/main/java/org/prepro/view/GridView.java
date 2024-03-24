@@ -69,16 +69,16 @@ public class GridView extends GridPane {
         stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             int pressedNumber = -1;
             switch (event.getCode()) {
-                case NUMPAD0 -> pressedNumber = 0;
-                case NUMPAD1 -> pressedNumber = 1;
-                case NUMPAD2 -> pressedNumber = 2;
-                case NUMPAD3 -> pressedNumber = 3;
-                case NUMPAD4 -> pressedNumber = 4;
-                case NUMPAD5 -> pressedNumber = 5;
-                case NUMPAD6 -> pressedNumber = 6;
-                case NUMPAD7 -> pressedNumber = 7;
-                case NUMPAD8 -> pressedNumber = 8;
-                case NUMPAD9 -> pressedNumber = 9;
+                case NUMPAD0, DIGIT0 -> pressedNumber = 0;
+                case NUMPAD1, DIGIT1 -> pressedNumber = 1;
+                case NUMPAD2, DIGIT2 -> pressedNumber = 2;
+                case NUMPAD3, DIGIT3 -> pressedNumber = 3;
+                case NUMPAD4, DIGIT4 -> pressedNumber = 4;
+                case NUMPAD5, DIGIT5 -> pressedNumber = 5;
+                case NUMPAD6, DIGIT6 -> pressedNumber = 6;
+                case NUMPAD7, DIGIT7 -> pressedNumber = 7;
+                case NUMPAD8, DIGIT8 -> pressedNumber = 8;
+                case NUMPAD9, DIGIT9 -> pressedNumber = 9;
                 case V -> this.notesOrValue = false;
                 case N -> this.notesOrValue = true;
                 default -> {}

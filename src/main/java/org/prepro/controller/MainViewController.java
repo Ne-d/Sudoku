@@ -10,6 +10,8 @@ import org.prepro.view.GridView;
 
 import java.io.IOException;
 
+import static java.lang.System.exit;
+
 public class MainViewController {
     private Stage stage;
 
@@ -60,6 +62,11 @@ public class MainViewController {
             statut.setText("The selected grid is not valid.");
             statut.setTextFill(Color.RED);
         }
+    }
+
+    @FXML
+    public void quit(){
+        exit(0);
     }
 }
 
