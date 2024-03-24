@@ -19,12 +19,14 @@ public class CellView extends StackPane {
     private int value;
     private Notes notes;
 
-    public CellView(Notes notes, int value, int size, int column, int row, GridView gridView) {
+    public CellView(Notes notes, int value, int size, int column, int row, GridView gridView, int cellSize) {
         this.SIZE = size;
         this.COLUMN = column;
         this.ROW = row;
         this.notes = notes;
 
+        this.setMinSize(cellSize,cellSize);
+        this.setMaxSize(cellSize,cellSize);
         this.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(0), new Insets(0))));
 
         setupNotes(this.notes);
