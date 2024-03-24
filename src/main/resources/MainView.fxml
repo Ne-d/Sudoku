@@ -17,6 +17,7 @@
             <Button onAction="#solveAction">Solve</Button>
             <Button onAction="#resetAction">Reset</Button>
             <Separator/>
+            <Button onAction="#quit">Quit</Button>
         </ToolBar>
     </top>
 
