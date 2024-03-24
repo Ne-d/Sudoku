@@ -20,24 +20,19 @@ public class RulesFiveToTen {
         for (int k = 2; k <= 3; k++) {
             for (int x = 0; x < g.SIZE; x++) {
                 for (int y = 0; y < g.SIZE; y++) {
-                    boolean continueColumn;
-                    boolean continueRow;
-                    boolean continueBlock;
 
-                    do {
-                        continueColumn = k_upletsTest(g, k, x, 0, x, g.SIZE - 1);
-                        continueRow = k_upletsTest(g, k, 0, y, g.SIZE - 1, y);
-                        continueBlock = k_upletsTest(g, k,
-                                (x / 3) * 3,
-                                (y / 3) * 3,
-                                (1 + x / 3) * 3 - 1,
-                                (1 + y / 3) * 3 - 1);
+                    boolean continueColumn = k_upletsTest(g, k, x, 0, x, g.SIZE - 1);
+                    boolean continueRow = k_upletsTest(g, k, 0, y, g.SIZE - 1, y);
+                    boolean continueBlock = k_upletsTest(g, k,
+                            (x / 3) * 3,
+                            (y / 3) * 3,
+                            (1 + x / 3) * 3 - 1,
+                            (1 + y / 3) * 3 - 1);
 
-                        if (continueRow || continueColumn || continueBlock) {
-                            hasChanged = true;
-                            return true;
-                        }
-                    } while (continueColumn && continueRow && continueBlock);
+                    if (continueRow || continueColumn || continueBlock) {
+                        return true;
+                    }
+                    //System.out.println("x :" + x + " y :"+y);
                 }
             }
         }
@@ -56,6 +51,7 @@ public class RulesFiveToTen {
     public static boolean k_upletsTest(Grid g, int k, int startX, int startY, int endX, int endY) {
 
         List<int[]> tuples = Solver.combinations(g.SIZE, k);
+        int nbelt = 0;
         for (int[] tuple : tuples) {
             boolean[][] tab = new boolean[k][g.SIZE];
             boolean hidden = true;
@@ -65,11 +61,16 @@ public class RulesFiveToTen {
                 for (int x = startX; x <= endX; x++) { // Pour chaque case du rectangle choisi
                     for (int y = startY; y <= endY; y++) {
                         tab[j][numcase] = g.isNotePresent(tuple[j], x, y);
+                        if(tab[j][numcase]){
+                            nbelt++;
+                        }
                         hidden = !tab[j][numcase] || g.getNbNotes(x, y) != k || !hidden;
                         numcase++;
                     }
                 }
             }
+            nbelt = nbelt / k;
+
 
             int nbFound = 0; // notes sur les memes
             int[] pos = new int[k];
@@ -91,7 +92,8 @@ public class RulesFiveToTen {
                     }
                 }
             }
-            if (nbFound == k * comb.size()) {
+            if (nbFound == k * comb.size() && (!hidden || nbelt == k)) {
+                //System.out.println(Integer.valueOf(nbelt).toString() + hidden);
                 return k_uplet_delNotes(g, pos,tuple, startX, startY, endX, endY);
             }
         }
@@ -152,13 +154,14 @@ public class RulesFiveToTen {
                 }
             }
         }
-        if (gridModif) { /* print the grid modified and the k-uplet use */
-            g.printWithNotes();
+        if (gridModif) {
+            /* print the grid modified and the k-uplet use */
+            //g.printWithNotes();
             System.out.print("k-uplet rules apply with ");
-            for(int i = 0; i < k; i++) {
+            for (int i = 0; i < k; i++) {
                 System.out.print(notes[i]);
             }
-            System.out.println(" ("+startX+", "+startY+") ("+endX+", "+endY+")");
+            System.out.println(" (" + startX + ", " + startY + ") (" + endX + ", " + endY + ")");
         }
         return gridModif;
     }
