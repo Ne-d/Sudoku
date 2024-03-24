@@ -43,6 +43,7 @@ public class MainViewController {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
         this.gridView.setSelectedCell(0,0);
+        updateValidity();
     }
 
     @FXML
