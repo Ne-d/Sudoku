@@ -1,11 +1,9 @@
 package org.prepro.view;
 
 import javafx.geometry.Pos;
-
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
@@ -27,7 +25,7 @@ public class GridView extends GridPane {
         loadGrid(testGrid());
     }
 
-    public void setGrid(Grid grid){
+    public void setGrid(Grid grid) {
         this.grid = grid;
         loadGrid(grid);
     }
@@ -55,7 +53,7 @@ public class GridView extends GridPane {
         // Ajouter les bordures des boîtes (3x3)
         for (int i = 0; i < grid.SQRTSIZE; i++) {
             for (int j = 0; j < grid.SQRTSIZE; j++) {
-                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE-1)*this.getHgap());
+                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE - 1) * this.getHgap());
                 Rectangle cellBorder = new Rectangle(size, size);
                 cellBorder.setFill(null);
                 cellBorder.setStroke(Color.BLACK);
@@ -88,20 +86,22 @@ public class GridView extends GridPane {
         Grid grid = new Grid();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
+        String line;
         int valueRead;
         int row = 0;
         int column = 0;
-        while ((valueRead = reader.read()) != -1) {
-            if (valueRead == '\n') {
-                row++;
-                column = 0;
-                continue;
+        while ((line = reader.readLine()) != null) { // For every line in the file
+            for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
+                valueRead = line.charAt(i);
+
+                if (valueRead != ' ')
+                    grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+
+                column++;
             }
 
-            if (valueRead != ' ')
-                grid.addValue(column, row, Character.getNumericValue((char) valueRead));
-
-            column++;
+            row++;
+            column = 0;
         }
 
         reader.close();
@@ -186,11 +186,11 @@ public class GridView extends GridPane {
         //this.update();
     }
 
-    public int getSelectedColumn(){
+    public int getSelectedColumn() {
         return selectedColumn;
     }
 
-    public int getSelectedRow(){
+    public int getSelectedRow() {
         return selectedRow;
     }
 
