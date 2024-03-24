@@ -214,7 +214,7 @@ public class MainViewController {
         Scene aboutScene = new Scene(aboutPane);
         aboutDialog.setScene(aboutScene);
         Label aboutMessage = new Label("""
-                Created by Nathanael, Jean-Michel, Baptiste & Emilie
+                Created by Maitrehenry Nathanael, Chevalier Jean-Michel, Denis Baptiste & Vessella Emilie
                 For educational purposes
                 For University of Poitiers
                 """);
