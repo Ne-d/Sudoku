@@ -41,9 +41,10 @@ public class NotesView extends GridPane {
         this.notes.delete(note);
         this.labels[note - 1].setText("");
     }
+
     public void deleteAllNote() {
         this.notes.deleteAll();
-        for(Label label: this.labels){
+        for (Label label : this.labels) {
             label.setText("");
         }
     }
@@ -51,6 +52,16 @@ public class NotesView extends GridPane {
     public void addNote(int note) {
         this.notes.add(note);
         this.labels[note - 1].setText(String.valueOf(note));
+    }
+
+    public void update() {
+        for (int i = 0; i < this.SIZE; i++) {
+            if (this.notes.isPresent(i + 1)) {
+                labels[i].setText(String.valueOf(i + 1));
+            } else {
+                labels[i].setText(" ");
+            }
+        }
     }
 
     public Notes getNotes() {

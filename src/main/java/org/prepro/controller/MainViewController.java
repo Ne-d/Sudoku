@@ -28,7 +28,7 @@ public class MainViewController {
 
     @FXML
     Label statut;
-    
+
     @FXML
     Label mode;
 
@@ -65,29 +65,36 @@ public class MainViewController {
                 }
             }
 
-            if (pressedNumber > 0 && this.notesOrValue) {
+            if (pressedNumber > 0 && this.notesOrValue) { // If we are in note editing mode.
                 CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow());
                 NotesView notesView = selectedCellView.getNotesView();
 
+                // If the desired note is present and there is more than one note in the cell.
                 if (notesView.getNotes().isPresent(pressedNumber) && notesView.getNotes().getNumber() > 1) {
+                    // Delete note from the model.
                     notesView.deleteNote(pressedNumber);
-                    gridView.getGrid().deleteNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
-                } else {
-                    notesView.addNote(pressedNumber);
-                    gridView.getGrid().addNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
-                }
 
-                selectedCellView.update();
+                    // Delete note from the view.
+                    gridView.getGrid().deleteNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
+
+                    this.gridView.update();
+                } else {
+                    // Add note to the model.
+                    notesView.addNote(pressedNumber);
+
+                    // Add note to the view.
+                    gridView.getGrid().addNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
+
+                    this.gridView.update();
+                }
             }
-            if (pressedNumber > 0 && !this.notesOrValue) {
+            if (pressedNumber > 0 && !this.notesOrValue) { // If we are in value editing mode.
                 CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow());
                 NotesView notesView = selectedCellView.getNotesView();
 
-                notesView.deleteAllNote();
-                notesView.addNote(pressedNumber);
-                gridView.getGrid().addNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
+                gridView.getGrid().addValue(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
 
-                selectedCellView.update();
+                this.gridView.update();
             }
         });
 
@@ -117,15 +124,15 @@ public class MainViewController {
     }
 
     @FXML
-    public void openGrid(){
+    public void openGrid() {
         try {
             FileChooser fileChooser = new FileChooser();
             this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
             this.updateValidity();
             this.updateMode();
             this.gridView.setSelectedCell(0, 0);
-        }catch (Exception exception){
-            System.err.println("error on openGrid :" + exception.getMessage());
+        } catch (Exception exception) {
+            System.err.println("Error on openGrid :" + exception.getMessage());
         }
     }
 

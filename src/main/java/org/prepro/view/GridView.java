@@ -1,11 +1,9 @@
 package org.prepro.view;
 
 import javafx.geometry.Pos;
-
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
 import org.prepro.model.Grid;
 import org.prepro.model.Notes;
 
@@ -55,7 +53,7 @@ public class GridView extends GridPane {
         // Ajouter les bordures des boîtes (3x3)
         for (int i = 0; i < grid.SQRTSIZE; i++) {
             for (int j = 0; j < grid.SQRTSIZE; j++) {
-                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE-1)*this.getHgap());
+                int size = (int) (this.grid.SQRTSIZE * cellSize + (grid.SQRTSIZE - 1) * this.getHgap());
                 Rectangle cellBorder = new Rectangle(size, size);
                 cellBorder.setFill(null);
                 cellBorder.setStroke(Color.BLACK);
@@ -65,12 +63,18 @@ public class GridView extends GridPane {
         }
     }
 
+    /**
+     * Update the visual aspect of every CellView in the GridView.
+     */
     public void update() {
+        // For every cell in the grid
         for (int y = 0; y < this.grid.SIZE; y++) {
             for (int x = 0; x < this.grid.SIZE; x++) {
+                // Get the value and notes of the cell in the grid
                 Notes notes = this.grid.getNotes(x, y);
                 int value = this.grid.getVal(x, y);
 
+                // Update the corresponding CellView
                 cellViews[x][y].setNotes(notes);
                 cellViews[x][y].setValue(value);
             }
@@ -83,34 +87,34 @@ public class GridView extends GridPane {
      * @param filePath The path to the file to read.
      * @return The grid that has been loaded.
      */
-    public Grid loadGridFromFile(String filePath) throws IOException {
+    public Grid loadGridFromFile(String filePath) {
         try {
             Grid grid = new Grid();
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
-        String line;
-        int valueRead;
-        int row = 0;
-        int column = 0;
-        while ((line = reader.readLine()) != null) { // For every line in the file
-            for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
-                valueRead = line.charAt(i);
+            String line;
+            int valueRead;
+            int row = 0;
+            int column = 0;
+            while ((line = reader.readLine()) != null) { // For every line in the file
+                for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
+                    valueRead = line.charAt(i);
 
-                if (valueRead != ' ')
-                    grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+                    if (valueRead != ' ')
+                        grid.addValue(column, row, Character.getNumericValue((char) valueRead));
 
-                column++;
+                    column++;
+                }
+
+                row++;
+                column = 0;
             }
 
-            row++;
-            column = 0;
-        }
-
-        reader.close();
+            reader.close();
 
             return grid;
-        }catch (Exception exception){
-            System.err.println("error on grille load "+exception.getMessage());
+        } catch (Exception exception) {
+            System.err.println("Error on grille load " + exception.getMessage());
             return grid;
         }
     }
@@ -192,11 +196,11 @@ public class GridView extends GridPane {
         //this.update();
     }
 
-    public int getSelectedColumn(){
+    public int getSelectedColumn() {
         return selectedColumn;
     }
 
-    public int getSelectedRow(){
+    public int getSelectedRow() {
         return selectedRow;
     }
 

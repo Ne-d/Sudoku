@@ -25,8 +25,8 @@ public class CellView extends StackPane {
         this.ROW = row;
         this.notes = notes;
 
-        this.setMinSize(cellSize,cellSize);
-        this.setMaxSize(cellSize,cellSize);
+        this.setMinSize(cellSize, cellSize);
+        this.setMaxSize(cellSize, cellSize);
         this.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(0), new Insets(0))));
 
         setupNotes(this.notes);
@@ -58,18 +58,24 @@ public class CellView extends StackPane {
     }
 
     public void update() {
+        // If there is only one note (a value has been found)
         if (notes.getNumber() == 1) {
             this.value = this.notes.getUniqueNote();
             valueView.setValue(this.value);
             showValue();
         }
 
+        // If there is no note, this should never happen.
         if (notes.getNumber() == 0) {
+            System.out.println("CellView.update ERROR: The cell has no notes.");
             valueView.setValue(this.value);
             showValue();
         }
 
+        // If there are several notes
         if (notes.getNumber() > 1) {
+            this.notesView.setNotes(notes);
+            this.notesView.update();
             showNotes();
         }
     }
