@@ -18,7 +18,10 @@ public class GridTest {
         Grid test = TestGrids.pair();
 
         test.print();
-        test.printWithNotes();
+        test.afficheNote(3, 0);
+        test.afficheNote(3, 1);
+        test.afficheNote(5, 1);
+        test.afficheNote(5, 2);
 
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 3, 0, 5, 2));
     }
@@ -28,7 +31,10 @@ public class GridTest {
         Grid test = TestGrids.pair2();
 
         test.print();
-        test.printWithNotes();
+        test.afficheNote(0, 1);
+        test.afficheNote(1, 1);
+        test.afficheNote(2, 1);
+        test.afficheNote(7, 1);
 
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 1, 8, 1));
     }
@@ -41,7 +47,6 @@ public class GridTest {
         Grid test = TestGrids.triplets();
 
         test.print();
-        test.printWithNotes();
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2));
     }
 
@@ -53,7 +58,6 @@ public class GridTest {
         Grid test = TestGrids.hiddenPair();
 
         test.print();
-        test.printWithNotes();
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 
@@ -65,7 +69,6 @@ public class GridTest {
         Grid test = TestGrids.hiddenTriplet();
 
         test.print();
-        test.printWithNotes();
         Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
     }
 

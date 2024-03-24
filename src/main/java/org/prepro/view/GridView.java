@@ -1,13 +1,12 @@
 package org.prepro.view;
 
 import javafx.geometry.Pos;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
+
 import org.prepro.model.Grid;
-import org.prepro.model.GridExemple;
 import org.prepro.model.Notes;
 
 import java.io.*;
@@ -18,10 +17,6 @@ public class GridView extends GridPane {
     private CellView[][] cellViews;
     private int selectedColumn = 0;
     private int selectedRow = 0;
-    /**
-     * if true that means notes are selected else value are selected
-     */
-    private boolean notesOrValue = false;
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
@@ -63,53 +58,6 @@ public class GridView extends GridPane {
                         grid.SQRTSIZE, grid.SQRTSIZE);
             }
         }
-    }
-
-    public void setupStageEventHandlers(Stage stage) {
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            int pressedNumber = -1;
-            switch (event.getCode()) {
-                case NUMPAD0, DIGIT0 -> pressedNumber = 0;
-                case NUMPAD1, DIGIT1 -> pressedNumber = 1;
-                case NUMPAD2, DIGIT2 -> pressedNumber = 2;
-                case NUMPAD3, DIGIT3 -> pressedNumber = 3;
-                case NUMPAD4, DIGIT4 -> pressedNumber = 4;
-                case NUMPAD5, DIGIT5 -> pressedNumber = 5;
-                case NUMPAD6, DIGIT6 -> pressedNumber = 6;
-                case NUMPAD7, DIGIT7 -> pressedNumber = 7;
-                case NUMPAD8, DIGIT8 -> pressedNumber = 8;
-                case NUMPAD9, DIGIT9 -> pressedNumber = 9;
-                case V -> this.notesOrValue = false;
-                case N -> this.notesOrValue = true;
-                default -> {
-                }
-            }
-
-            if (pressedNumber > 0 && this.notesOrValue) {
-                CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
-                NotesView notesView = selectedCellView.getNotesView();
-
-                if (notesView.getNotes().isPresent(pressedNumber) && notesView.getNotes().getNumber() > 1) {
-                    notesView.deleteNote(pressedNumber);
-                    this.grid.deleteNote(this.selectedColumn, this.selectedRow, pressedNumber);
-                } else {
-                    notesView.addNote(pressedNumber);
-                    this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
-                }
-
-                selectedCellView.update();
-            }
-            if (pressedNumber > 0 && !this.notesOrValue) {
-                CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
-                NotesView notesView = selectedCellView.getNotesView();
-
-                notesView.deleteAllNote();
-                notesView.addNote(pressedNumber);
-                this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
-
-                selectedCellView.update();
-            }
-        });
     }
 
     public void update() {
@@ -175,7 +123,51 @@ public class GridView extends GridPane {
     }
 
     public Grid testGrid() {
-        Grid grid1 = GridExemple.grid1.getGrid();
+        Grid grid1 = new Grid();
+        grid1.addValue(0, 0, 7); //line 1
+        grid1.addValue(1, 0, 2);
+        grid1.addValue(2, 0, 6);
+        grid1.addValue(4, 0, 1);
+        grid1.addValue(5, 0, 8);
+        grid1.addValue(6, 0, 3);
+        grid1.addValue(7, 0, 4);
+
+        grid1.addValue(1, 1, 9); // line 2
+        grid1.addValue(4, 1, 5);
+        grid1.addValue(5, 1, 2);
+
+        grid1.addValue(0, 2, 5); //line 3
+        grid1.addValue(2, 2, 4);
+        grid1.addValue(4, 2, 3);
+        grid1.addValue(5, 2, 6);
+        grid1.addValue(6, 2, 9);
+        grid1.addValue(7, 2, 8);
+        grid1.addValue(8, 2, 2);
+
+        grid1.addValue(0, 3, 6); // line 4
+        grid1.addValue(3, 3, 3);
+        grid1.addValue(7, 3, 2);
+        grid1.addValue(8, 3, 1);
+
+        grid1.addValue(1, 4, 7); // line 5
+        grid1.addValue(5, 4, 4);
+
+        grid1.addValue(3, 5, 6); // line 6
+        grid1.addValue(5, 5, 9);
+        grid1.addValue(6, 5, 4);
+        grid1.addValue(7, 5, 5);
+
+        grid1.addValue(1, 6, 3); // line 7
+        grid1.addValue(2, 6, 7);
+        grid1.addValue(7, 6, 9);
+        grid1.addValue(8, 6, 4);
+
+        grid1.addValue(0, 7, 4); // line 8
+        grid1.addValue(2, 7, 1);
+        grid1.addValue(5, 7, 3);
+
+        grid1.addValue(3, 8, 2); // line 9
+        grid1.addValue(6, 8, 1);
 
         return grid1;
     }
@@ -195,6 +187,10 @@ public class GridView extends GridPane {
 
     public int getSelectedRow(){
         return selectedRow;
+    }
+
+    public CellView getCellView(int x, int y) {
+        return cellViews[x][y];
     }
 
     public void setSelectedCell(int column, int row) {

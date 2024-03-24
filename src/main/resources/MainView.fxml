@@ -29,6 +29,7 @@
             <VBox>
                 <Region VBox.vgrow="ALWAYS"/>
                 <Label fx:id="statut" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label fx:id="mode" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
                 <Region VBox.vgrow="ALWAYS"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>

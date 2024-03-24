@@ -92,7 +92,7 @@ public class RulesFiveToTen {
                     }
                 }
             }
-            if (nbFound == k * comb.size() && (hidden || nbelt == k)) {
+            if (nbFound == k * comb.size() && (!hidden || nbelt == k)) {
                 //System.out.println(Integer.valueOf(nbelt).toString() + hidden);
                 return k_uplet_delNotes(g, pos,tuple, startX, startY, endX, endY);
             }
