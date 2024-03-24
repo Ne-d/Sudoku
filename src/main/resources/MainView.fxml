@@ -10,13 +10,15 @@
 
     <top>
         <ToolBar>
-            <Button>New</Button>
+            <Button onAction="#createNewGrid">New</Button>
             <Button onAction="#saveGrid">Save</Button>
             <Button onAction="#openGrid">Open</Button>
             <Separator/>
             <Button onAction="#solveAction">Solve</Button>
             <Button onAction="#resetAction">Reset</Button>
             <Separator/>
+            <Button onAction="#about">About</Button>
+            <Button onAction="#help">Help</Button>
             <Button onAction="#quit">Quit</Button>
         </ToolBar>
     </top>

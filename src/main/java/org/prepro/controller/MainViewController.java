@@ -1,11 +1,16 @@
 package org.prepro.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.prepro.model.Grid;
 import org.prepro.model.solver.Solver;
 import org.prepro.view.CellView;
 import org.prepro.view.GridView;
@@ -45,16 +50,20 @@ public class MainViewController {
                 case NUMPAD7, DIGIT7 -> pressedNumber = 7;
                 case NUMPAD8, DIGIT8 -> pressedNumber = 8;
                 case NUMPAD9, DIGIT9 -> pressedNumber = 9;
-                case V -> {this.notesOrValue = false;
-                    this.updateMode();}
-                case N -> {this.notesOrValue = true;
-                    this.updateMode();}
+                case V -> {
+                    this.notesOrValue = false;
+                    this.updateMode();
+                }
+                case N -> {
+                    this.notesOrValue = true;
+                    this.updateMode();
+                }
                 default -> {
                 }
             }
 
             if (pressedNumber > 0 && this.notesOrValue) {
-                CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(),this.gridView.getSelectedRow());
+                CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow());
                 NotesView notesView = selectedCellView.getNotesView();
 
                 if (notesView.getNotes().isPresent(pressedNumber) && notesView.getNotes().getNumber() > 1) {
@@ -68,7 +77,7 @@ public class MainViewController {
                 selectedCellView.update();
             }
             if (pressedNumber > 0 && !this.notesOrValue) {
-                CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(),this.gridView.getSelectedRow());
+                CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow());
                 NotesView notesView = selectedCellView.getNotesView();
 
                 notesView.deleteAllNote();
@@ -78,9 +87,9 @@ public class MainViewController {
                 selectedCellView.update();
             }
         });
-        
+
         this.addKeyboardNavigation();
-        this.gridView.setSelectedCell(0,0);
+        this.gridView.setSelectedCell(0, 0);
         this.updateValidity();
         this.updateMode();
     }
@@ -99,7 +108,7 @@ public class MainViewController {
     public void resetAction() {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
-        this.gridView.setSelectedCell(0,0);
+        this.gridView.setSelectedCell(0, 0);
         this.updateValidity();
         this.updateMode();
     }
@@ -110,7 +119,12 @@ public class MainViewController {
         this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
         this.updateValidity();
         this.updateMode();
-        this.gridView.setSelectedCell(0,0);
+        this.gridView.setSelectedCell(0, 0);
+    }
+
+    @FXML
+    public void createNewGrid() {
+        this.gridView.setGrid(new Grid());
     }
 
     @FXML
@@ -131,10 +145,9 @@ public class MainViewController {
 
     @FXML
     public void updateMode() {
-        if(this.notesOrValue){
+        if (this.notesOrValue) {
             this.mode.setText("Selected Mode : Note");
-        }
-        else {
+        } else {
             this.mode.setText("Selected Mode : Value");
         }
     }
@@ -142,27 +155,75 @@ public class MainViewController {
     /**
      * Allow to navigate with the zqsd keys in the grid
      */
-    public void addKeyboardNavigation(){
+    public void addKeyboardNavigation() {
         stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                switch (event.getCode()) {
-                    case Z -> {if (this.gridView.getSelectedRow() > 0){
+            switch (event.getCode()) {
+                case Z -> {
+                    if (this.gridView.getSelectedRow() > 0) {
                         this.gridView.setSelectedCell(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow() - 1);
-                    }}
-                    case S -> {if (this.gridView.getSelectedRow() < this.gridView.getGrid().SIZE - 1){
-                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow() + 1);
-                    }}
-                    case Q -> {if (this.gridView.getSelectedColumn() > 0){
-                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() - 1, this.gridView.getSelectedRow());
-                    }}
-                    case D -> {if (this.gridView.getSelectedColumn() < this.gridView.getGrid().SIZE - 1){
-                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() + 1, this.gridView.getSelectedRow());
-                    }}
+                    }
                 }
+                case S -> {
+                    if (this.gridView.getSelectedRow() < this.gridView.getGrid().SIZE - 1) {
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow() + 1);
+                    }
+                }
+                case Q -> {
+                    if (this.gridView.getSelectedColumn() > 0) {
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() - 1, this.gridView.getSelectedRow());
+                    }
+                }
+                case D -> {
+                    if (this.gridView.getSelectedColumn() < this.gridView.getGrid().SIZE - 1) {
+                        this.gridView.setSelectedCell(this.gridView.getSelectedColumn() + 1, this.gridView.getSelectedRow());
+                    }
+                }
+            }
         });
     }
 
     @FXML
-    public void quit(){
+    public void help() {
+        Stage helpDialog = new Stage();
+        BorderPane helpPane = new BorderPane();
+        Scene helpScene = new Scene(helpPane);
+        helpDialog.setScene(helpScene);
+        Label helpMessage = new Label("""
+                Keybindings :
+                - Z = UP
+                - Q = LEFT
+                - S = DOWN
+                - D = RIGHT
+                - N = Switch to Note mode
+                - V = Switch to Value Mode
+                """);
+        helpMessage.setPadding(new Insets(20));
+        helpPane.setCenter(helpMessage);
+        helpDialog.initOwner(stage);
+        helpDialog.initModality(Modality.APPLICATION_MODAL);
+        helpDialog.showAndWait();
+    }
+
+    @FXML
+    public void about() {
+        Stage aboutDialog = new Stage();
+        BorderPane aboutPane = new BorderPane();
+        Scene aboutScene = new Scene(aboutPane);
+        aboutDialog.setScene(aboutScene);
+        Label aboutMessage = new Label("""
+                Created by Nathanael, Jean-Michel, Baptiste & Emilie
+                For educational purposes
+                For University of Poitiers
+                """);
+        aboutMessage.setPadding(new Insets(20));
+        aboutPane.setCenter(aboutMessage);
+        aboutDialog.initOwner(stage);
+        aboutDialog.initModality(Modality.APPLICATION_MODAL);
+        aboutDialog.showAndWait();
+    }
+
+    @FXML
+    public void quit() {
         exit(0);
     }
 }
