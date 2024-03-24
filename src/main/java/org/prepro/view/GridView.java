@@ -17,6 +17,10 @@ public class GridView extends GridPane {
     private CellView[][] cellViews;
     private int selectedColumn;
     private int selectedRow;
+    /**
+     * if true that means notes are selected else value are selected
+     */
+    private boolean notesOrValue = false;
 
     public GridView() {
         this.setAlignment(Pos.CENTER);
@@ -63,21 +67,24 @@ public class GridView extends GridPane {
 
     public void setupStageEventHandlers(Stage stage) {
         stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            int pressedNumber = switch (event.getCode()) {
-                case NUMPAD0 -> 0;
-                case NUMPAD1 -> 1;
-                case NUMPAD2 -> 2;
-                case NUMPAD3 -> 3;
-                case NUMPAD4 -> 4;
-                case NUMPAD5 -> 5;
-                case NUMPAD6 -> 6;
-                case NUMPAD7 -> 7;
-                case NUMPAD8 -> 8;
-                case NUMPAD9 -> 9;
-                default -> -1;
-            };
+            int pressedNumber = -1;
+            switch (event.getCode()) {
+                case NUMPAD0 -> pressedNumber = 0;
+                case NUMPAD1 -> pressedNumber = 1;
+                case NUMPAD2 -> pressedNumber = 2;
+                case NUMPAD3 -> pressedNumber = 3;
+                case NUMPAD4 -> pressedNumber = 4;
+                case NUMPAD5 -> pressedNumber = 5;
+                case NUMPAD6 -> pressedNumber = 6;
+                case NUMPAD7 -> pressedNumber = 7;
+                case NUMPAD8 -> pressedNumber = 8;
+                case NUMPAD9 -> pressedNumber = 9;
+                case V -> this.notesOrValue = false;
+                case N -> this.notesOrValue = true;
+                default -> {}
+            }
 
-            if (pressedNumber > 0) {
+            if (pressedNumber > 0 && this.notesOrValue) {
                 CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
                 NotesView notesView = selectedCellView.getNotesView();
 
@@ -88,6 +95,15 @@ public class GridView extends GridPane {
                     notesView.addNote(pressedNumber);
                     this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
                 }
+
+                selectedCellView.update();
+            }if (pressedNumber > 0 && !this.notesOrValue) {
+                CellView selectedCellView = this.cellViews[this.selectedColumn][this.selectedRow];
+                NotesView notesView = selectedCellView.getNotesView();
+
+                notesView.deleteAllNote();
+                notesView.addNote(pressedNumber);
+                this.grid.addNote(this.selectedColumn, this.selectedRow, pressedNumber);
 
                 selectedCellView.update();
             }

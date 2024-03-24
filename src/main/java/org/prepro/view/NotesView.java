@@ -41,6 +41,12 @@ public class NotesView extends GridPane {
         this.notes.delete(note);
         this.labels[note - 1].setText("");
     }
+    public void deleteAllNote() {
+        this.notes.deleteAll();
+        for(Label label: this.labels){
+            label.setText("");
+        }
+    }
 
     public void addNote(int note) {
         this.notes.add(note);
