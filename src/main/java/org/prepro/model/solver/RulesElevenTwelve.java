@@ -21,47 +21,36 @@ public class RulesElevenTwelve {
      * @return True if the grid has changed, otherwise false.
      */
     public static boolean solve(Grid g) {
-        boolean hasChanged = false;
-
         for (int k = 2; k <= 3; k++) {
             for (int notes = 1; notes <= g.SIZE; notes++) {
                 for (int block = 1; block <= g.SIZE; block++) {
                     for (int nbRowOrColumn = 0; nbRowOrColumn < g.SIZE; nbRowOrColumn++) {
-                        boolean continuePointingPairRow;
-                        boolean continuePointingPairColumn;
-                        boolean continueBoxReductionRow;
-                        boolean continueBoxReductionColumn;
 
-                        do {
-                            // Solve pointing pair on a row
-                            RowOrColumn rowOrColumn = new RowOrColumn(Row, nbRowOrColumn);
-                            continuePointingPairRow = solvePointingKTuple(g, k, notes, rowOrColumn, block);
+                        // Solve pointing pair on a row
+                        RowOrColumn rowOrColumn = new RowOrColumn(Row, nbRowOrColumn);
+                        if (solvePointingKTuple(g, k, notes, rowOrColumn, block))
+                            return true;
 
-                            // Solve pointing pair on a column
-                            rowOrColumn = new RowOrColumn(RowOrColumn.RowOrColumnType.Column, nbRowOrColumn);
-                            continuePointingPairColumn = solvePointingKTuple(g, k, notes, rowOrColumn, block);
+                        // Solve pointing pair on a column
+                        rowOrColumn = new RowOrColumn(RowOrColumn.RowOrColumnType.Column, nbRowOrColumn);
+                        if (solvePointingKTuple(g, k, notes, rowOrColumn, block))
+                            return true;
 
-                            // Solve box reduction on a row
-                            rowOrColumn = new RowOrColumn(Row, nbRowOrColumn);
-                            continueBoxReductionRow = solveBoxReduction(g, k, notes, rowOrColumn, block);
+                        // Solve box reduction on a row
+                        rowOrColumn = new RowOrColumn(Row, nbRowOrColumn);
+                        if (solveBoxReduction(g, k, notes, rowOrColumn, block))
+                            return true;
 
-                            // Solve box reduction on a column
-                            rowOrColumn = new RowOrColumn(RowOrColumn.RowOrColumnType.Column, nbRowOrColumn);
-                            continueBoxReductionColumn = solveBoxReduction(g, k, notes, rowOrColumn, block);
-
-                            if (continuePointingPairRow || continuePointingPairColumn ||
-                                    continueBoxReductionRow || continueBoxReductionColumn) {
-                                hasChanged = true;
-                                return true;
-                            }
-                        } while (continuePointingPairRow && continuePointingPairColumn &&
-                                continueBoxReductionRow && continueBoxReductionColumn);
+                        // Solve box reduction on a column
+                        rowOrColumn = new RowOrColumn(RowOrColumn.RowOrColumnType.Column, nbRowOrColumn);
+                        if (solveBoxReduction(g, k, notes, rowOrColumn, block))
+                            return true;
                     }
                 }
             }
         }
 
-        return hasChanged;
+        return false;
     }
 
     /**
@@ -109,7 +98,7 @@ public class RulesElevenTwelve {
 
         if (hasChanged) {
             System.out.println();
-            System.out.printf("Apply Rule 11/12 with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
+            System.out.printf("Apply the pointing k-tuple rule with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
         }
         return hasChanged;
@@ -204,7 +193,7 @@ public class RulesElevenTwelve {
         //Print in console where the rule is applied
         if (hasChanged) {
             System.out.println();
-            System.out.printf("Apply Rule 11'/12' with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
+            System.out.printf("Apply the Box-Reduction rule with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
         }
 
