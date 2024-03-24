@@ -82,31 +82,35 @@ public class GridView extends GridPane {
      *
      * @param filePath The path to the file to read.
      * @return The grid that has been loaded.
-     * @throws IOException If the file cannot be read.
      */
-    public Grid loadGridFromFile(String filePath) throws IOException {
-        Grid grid = new Grid();
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+    public Grid loadGridFromFile(String filePath){
+        try {
+            Grid grid = new Grid();
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
-        int valueRead;
-        int row = 0;
-        int column = 0;
-        while ((valueRead = reader.read()) != -1) {
-            if (valueRead == '\n') {
-                row++;
-                column = 0;
-                continue;
+            int valueRead;
+            int row = 0;
+            int column = 0;
+            while ((valueRead = reader.read()) != -1) {
+                if (valueRead == '\n') {
+                    row++;
+                    column = 0;
+                    continue;
+                }
+
+                if (valueRead != ' ')
+                    grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+
+                column++;
             }
 
-            if (valueRead != ' ')
-                grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+            reader.close();
 
-            column++;
+            return grid;
+        }catch (Exception exception){
+            System.err.println("error on grille load "+exception.getMessage());
+            return grid;
         }
-
-        reader.close();
-
-        return grid;
     }
 
     public void saveGridToFile(String filePath) throws IOException {

@@ -19,6 +19,7 @@ import org.prepro.view.NotesView;
 import java.io.IOException;
 
 import static java.lang.System.exit;
+import static java.lang.System.setErr;
 
 public class MainViewController {
     private Stage stage;
@@ -117,12 +118,16 @@ public class MainViewController {
     }
 
     @FXML
-    public void openGrid() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
-        this.updateValidity();
-        this.updateMode();
-        this.gridView.setSelectedCell(0, 0);
+    public void openGrid(){
+        try {
+            FileChooser fileChooser = new FileChooser();
+            this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+            this.updateValidity();
+            this.updateMode();
+            this.gridView.setSelectedCell(0, 0);
+        }catch (Exception exception){
+            System.err.println("error on openGrid :" + exception.getMessage());;
+        }
     }
 
     @FXML
