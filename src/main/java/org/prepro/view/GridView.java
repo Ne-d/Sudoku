@@ -114,7 +114,7 @@ public class GridView extends GridPane {
 
             return grid;
         } catch (Exception exception) {
-            System.err.println("Error on grille load " + exception.getMessage());
+            System.err.println("GridView.loadGridFromFile ERROR - " + exception.getMessage());
             return grid;
         }
     }
