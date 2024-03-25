@@ -12,26 +12,25 @@ public class Solver {
      * @param g The grid to solve.
      */
     public static void solve(Grid g) {
-        boolean two;
-        boolean fiveToTen;
-        boolean elevenTwelve;
-        boolean thirteen;
+        boolean continueSolving = true;
 
-        do {
-            do {
-                do {
-                    do {
-                        two = RuleTwo.solve(g);
-                    } while (two);
+        while (continueSolving) {
+            if (RuleOneThree.solve(g))
+                continue;
 
-                    fiveToTen = RulesFiveToTen.solve(g);
-                } while (fiveToTen);
+            if (RuleTwo.solve(g))
+                continue;
 
-                elevenTwelve = RulesElevenTwelve.solve(g);
-            } while (elevenTwelve);
+            if (RulesFiveToTen.solve(g))
+                continue;
 
-            thirteen = RuleThirteen.solve(g);
-        } while (thirteen);
+            if (RulesElevenTwelve.solve(g))
+                continue;
+
+            if (!RuleThirteen.solve(g))
+                continueSolving = false;
+
+        }
     }
 
     /**
