@@ -1,6 +1,8 @@
 package org.prepro.model;
 
 
+import org.prepro.model.solver.RuleOneThree;
+
 public class Grid {
     /**
      * The 2D array of cells that constitutes the grid.
@@ -102,6 +104,9 @@ public class Grid {
         }
         cell.setVal(val);
 
+        RuleOneThree.apply(this, xPos, yPos);
+
+        /*
         // Delete all notes that become invalid in the row
         for (int x = 0; x < this.SIZE; x++) {
             if (x != xPos) // All cells except the one we are adding a value to.
@@ -125,6 +130,7 @@ public class Grid {
                     deleteNote(x, y, val);
             }
         }
+         */
         //System.out.println("x :"+xPos + " y:"+yPos + "val:"+val);
         return true;
     }
