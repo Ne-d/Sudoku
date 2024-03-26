@@ -470,6 +470,11 @@ public class Grid {
         return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
     }
 
+    /**
+     * Tries to find an empty cell (that has no value).
+     *
+     * @return The coordinates of the cell, wrapped in an Optional if such a cell exists, otherwise Optional.empty.
+     */
     public Optional<int[]> findEmptyCell() {
         for (int y = 0; y < this.SIZE; y++) {
             for (int x = 0; x < this.SIZE; x++) {
@@ -478,7 +483,7 @@ public class Grid {
                     return Optional.of(new int[]{x, y});
             }
         }
-        
+
         return Optional.empty();
     }
 }
