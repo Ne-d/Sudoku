@@ -2,41 +2,50 @@ package org.prepro.model.solver;
 
 
 import org.prepro.model.Grid;
+import org.prepro.model.Notes;
+
+import java.util.Optional;
 
 /**
  * Class implémentant le backtracking
  */
 public class Backtracking {
 
-    //TODO : Finaliser l'algo (celui ci est basé sur celui du prof)
-    // et vérifier s'il fonctionne
+    //TODO
+
     /**
      * Algo backtracking
+     *
      * @param g Grid given
+     * @return If the grid is solved or not
      */
-    public static void solve(Grid g) {
+    public static boolean solve(Grid g) {
 
-        //For every cell in the grid
-        for (int y = 0; y < g.SIZE; y++) {
-            for (int x = 0; x < g.SIZE; x++){
+        Optional<int[]> optionalCell = g.findEmptyCell();
+        if (optionalCell.isPresent()) {
+            int x = optionalCell.get()[0];
+            int y = optionalCell.get()[1];
 
-                //Cell not empty
-                if (g.getNbNotes(x, y) > 1){
-                    for (int val = 1; val <= 9; val++){
-                        //add the value
+            //If the cell is empty
+            if (g.getNbNotes(x, y) > 1) {
+                for (int val = 1; val <= (g.SIZE); val++) {
+
+                    Notes tmpNotesCell = new Notes(g.getNotes(x, y));
+
+                    //If val is present in the notes of the cell
+                    if (g.isNotePresent(val, x, y)) {
                         g.addValue(x, y, val);
-                        //Appel récursif : est-ce valable en java ???
-                        solve(g);
 
-                        //back to an empty cell
-                        for (int note = 1; note <= 9; note++){
-                            g.addNote(x, y, note);
+                        if (solve(g)){
+                            return true;
                         }
+
+                        g.getBoard()[x][y].setNotes(tmpNotesCell);
                     }
                 }
+                return false;
             }
         }
-        //Print the final grid
-        g.print();
+        return true;
     }
 }

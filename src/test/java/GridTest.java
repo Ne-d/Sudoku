@@ -296,4 +296,15 @@ public class GridTest {
 
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
     // TODO: Tester les box-réductions sur les lignes.
+
+    @Test
+    public void TestBacktracking(){
+        Grid g = TestGrids.grid1();
+
+        g.print();
+        Backtracking.solve(g);
+        g.print();
+        g.printWithNotes();
+        Assertions.assertTrue(g.isValid());
+    }
 }
