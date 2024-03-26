@@ -10,7 +10,7 @@ public class Cell {
      * The notes this cell holds.
      * Each bit of this int represents a note. It is set to 1 if the note is set, 0 if it is unset.
      */
-    private final Notes notes;
+    private Notes notes;
 
     /**
      * Creates a new cell with default value 0 and all notes set.
@@ -120,5 +120,9 @@ public class Cell {
      */
     public Notes getNotes() {
         return this.notes;
+    }
+
+    public void setNotes(Notes notes) {
+        this.notes = notes;
     }
 }
