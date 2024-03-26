@@ -3,6 +3,8 @@ package org.prepro.model;
 
 import org.prepro.model.solver.RuleOneThree;
 
+import java.util.Optional;
+
 public class Grid {
     /**
      * The 2D array of cells that constitutes the grid.
@@ -466,5 +468,17 @@ public class Grid {
      */
     public boolean isInBlock(int x, int y, int block) {
         return findBlock(x, y) == block; // +1 because we number blocks starting at 1 and not 0
+    }
+
+    public Optional<int[]> findEmptyCell() {
+        for (int y = 0; y < this.SIZE; y++) {
+            for (int x = 0; x < this.SIZE; x++) {
+
+                if (getNbNotes(x, y) > 1)
+                    return Optional.of(new int[]{x, y});
+            }
+        }
+        
+        return Optional.empty();
     }
 }
