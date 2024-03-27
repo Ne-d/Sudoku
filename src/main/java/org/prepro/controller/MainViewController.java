@@ -32,6 +32,9 @@ public class MainViewController {
     @FXML
     Label mode;
 
+    @FXML
+    Label executionTime;
+
     /**
      * if true that means notes are selected else value are selected
      */
@@ -109,8 +112,12 @@ public class MainViewController {
 
     @FXML
     public void solveAction() {
+        long startTime = System.currentTimeMillis();
         System.out.println("Solving the grid...");
         Solver.solve(this.gridView.getGrid());
+        long endTime = System.currentTimeMillis();
+        long longTime = endTime - startTime;
+        this.executionTime.setText("Execution time : " + Long.toString(longTime) + " ms");
         this.gridView.update();
         System.out.println("Grid solved.");
         this.updateValidity();
@@ -122,6 +129,7 @@ public class MainViewController {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
         this.gridView.setSelectedCell(0, 0);
+        this.executionTime.setText("Execution time : 0 ms");
         this.updateValidity();
         this.updateMode();
     }
