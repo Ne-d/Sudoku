@@ -8,8 +8,6 @@ import org.prepro.model.Grid;
 import org.prepro.model.GridExemple;
 import org.prepro.model.Notes;
 
-import java.io.*;
-
 public class GridView extends GridPane {
     /**
      * The model that contains the current sudoku grid.
@@ -113,69 +111,6 @@ public class GridView extends GridPane {
                 cellViews[x][y].setValue(value);
             }
         }
-    }
-
-    /**
-     * Load a grid from a file.
-     *
-     * @param filePath The path to the file to read.
-     * @return The grid that has been loaded.
-     */
-    public Grid loadGridFromFile(String filePath) {
-        try {
-            Grid grid = new Grid();
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-
-            String line;
-            int valueRead;
-            int row = 0;
-            int column = 0;
-
-            while ((line = reader.readLine()) != null) { // For every line in the file
-                for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
-                    valueRead = line.charAt(i);
-
-                    // If the value is a space, there is no value to insert.
-                    if (valueRead != ' ')
-                        grid.addValue(column, row, Character.getNumericValue((char) valueRead));
-
-                    column++;
-                }
-                // We have reached the end of a line, increase the line counter and reset the column counter.
-                row++;
-                column = 0;
-            }
-
-            reader.close();
-            return grid;
-        } catch (Exception exception) {
-            System.err.println("GridView.loadGridFromFile ERROR - " + exception.getMessage());
-            return grid;
-        }
-    }
-
-    /**
-     * Save the grid to a file.
-     *
-     * @param filePath The path of the file to save the grid to.
-     * @throws IOException If an I/O error occurs.
-     */
-    public void saveGridToFile(String filePath) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-
-        for (int y = 0; y < this.grid.SIZE; y++) {
-            for (int x = 0; x < this.grid.SIZE; x++) {
-                int val = grid.getVal(x, y);
-
-                if (val != 0)
-                    writer.write(Integer.toString(val));
-                else
-                    writer.write(' ');
-            }
-            writer.write('\n');
-        }
-
-        writer.close();
     }
 
     /**

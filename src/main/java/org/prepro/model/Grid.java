@@ -3,23 +3,22 @@ package org.prepro.model;
 
 import org.prepro.model.solver.RuleOneThree;
 
+import java.io.*;
 import java.util.Optional;
 
 public class Grid {
     /**
-     * The 2D array of cells that constitutes the grid.
-     */
-    private final Cell[][] board;
-
-    /**
      * The size of the grid (number of rows and columns).
      */
     public final int SIZE;
-
     /**
      * The size of a block.
      */
     public final int SQRTSIZE;
+    /**
+     * The 2D array of cells that constitutes the grid.
+     */
+    private final Cell[][] board;
 
     /**
      * Generates a new grid with dimensions of 9 by 9, initializes all cells.
@@ -57,6 +56,45 @@ public class Grid {
     }
 
     /**
+     * Load a grid from a file.
+     *
+     * @param filePath The path to the file to read.
+     * @return The grid that has been loaded.
+     */
+    public static Grid loadGridFromFile(String filePath) {
+        try {
+            Grid grid = new Grid();
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+            String line;
+            int valueRead;
+            int row = 0;
+            int column = 0;
+
+            while ((line = reader.readLine()) != null) { // For every line in the file
+                for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
+                    valueRead = line.charAt(i);
+
+                    // If the value is a space, there is no value to insert.
+                    if (valueRead != ' ')
+                        grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+
+                    column++;
+                }
+                // We have reached the end of a line, increase the line counter and reset the column counter.
+                row++;
+                column = 0;
+            }
+
+            reader.close();
+            return grid;
+        } catch (Exception exception) {
+            System.err.println("GridView.loadGridFromFile ERROR - " + exception.getMessage());
+            return new Grid();
+        }
+    }
+
+    /**
      * Get the grid's board.
      *
      * @return The grid's board.
@@ -83,14 +121,12 @@ public class Grid {
         return this.board[xPos][yPos].getNotes();
     }
 
-
     /**
      * @return Returns true if the cell at the given coordinates is empty, false if it has a value.
      */
     public boolean isCellEmpty(int xPos, int yPos) {
         return (this.getVal(xPos, yPos) == 0);
     }
-
 
     /**
      * Adds a value to the chosen cell if it was empty.
@@ -117,7 +153,6 @@ public class Grid {
 
         cell.setVal(val);
     }
-
 
     /**
      * Determines if a rectangle is correct (has no duplicate values).
@@ -150,7 +185,6 @@ public class Grid {
         return true;
     }
 
-
     /**
      * @param row The number of the row to check.
      * @return True if the row doesn't have any duplicate numbers, false otherwise.
@@ -159,7 +193,6 @@ public class Grid {
         return isValidRect(0, row - 1, this.SIZE - 1, row - 1);
     }
 
-
     /**
      * @param column The number of the column to check.
      * @return True if the column doesn't have any duplicate numbers, false otherwise.
@@ -167,7 +200,6 @@ public class Grid {
     public boolean isColumnValid(int column) {
         return isValidRect(column - 1, 0, column - 1, this.SIZE - 1);
     }
-
 
     /**
      * @param xBlock X coordinate of the block (not the first cell)
@@ -180,7 +212,6 @@ public class Grid {
                 xBlock * this.SQRTSIZE + this.SQRTSIZE - 1,
                 yBlock * this.SQRTSIZE + this.SQRTSIZE - 1);
     }
-
 
     /**
      * @return If the grid is valid or not
@@ -211,33 +242,6 @@ public class Grid {
     }
 
     /**
-     * Prints nbDash number of dashes
-     *
-     * @param nbDash the amount of dashes to be printed
-     */
-    private void printLine(int nbDash) {
-        for (int i = 0; i < nbDash - 1; i++) {
-            System.out.print("-");
-        }
-        System.out.println("-");
-
-    }
-
-    /**
-     * Prints nbEqual number of equals
-     *
-     * @param nbEqual the amount of equals to be printed
-     */
-    private void printLineEqual(int nbEqual) {
-        for (int i = 0; i < nbEqual - 1; i++) {
-            System.out.print("=");
-        }
-        System.out.println("=");
-
-    }
-
-
-    /**
      * Prints out a graphical representation of the grid to standard output.
      */
     public void print() {
@@ -255,26 +259,6 @@ public class Grid {
             System.out.print("\n");
         }
         printLine(25);
-    }
-
-    /**
-     * Prints out a graphical representation of the grid to standard output.
-     */
-    private void printWithNotes_aux(int y, int debut) {
-        int note = debut;
-        int x = -1;
-        for (int j = 0; j < SIZE * SQRTSIZE; j++) {
-            if (j % SIZE == 0) {
-                System.out.print("|");
-            }
-            if (j % SQRTSIZE == 0) {
-                System.out.print("| ");
-                note = debut;
-                x++;
-            }
-            System.out.print(!this.board[x][y].isNotePresent(note) ? "  " : note + " ");
-            note++;
-        }
     }
 
     /**
@@ -307,7 +291,6 @@ public class Grid {
         System.out.print("Notes case (" + xPos + ", " + yPos + "): ");
         this.board[xPos][yPos].afficheNote();
     }
-
 
     /**
      * Adds a note to the chosen cell
@@ -343,23 +326,6 @@ public class Grid {
     }
 
     /**
-     * delete all note in the field witch is equals to  val
-     *
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX   X coordinate of the end of the rectangle.
-     * @param endY   Y coordinate of the end of the rectangle.
-     * @param val    value of the note witch is delete
-     */
-    private void deleteNotes(int startX, int startY, int endX, int endY, int val) {
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-                this.deleteNote(x, y, val);
-            }
-        }
-    }
-
-    /**
      * Determines if the given note is present in a cell
      *
      * @param note The note to check
@@ -381,7 +347,6 @@ public class Grid {
     public int getNbNotes(int x, int y) {
         return this.board[x][y].getNbNote();
     }
-
 
     /**
      * Determines the starting X coordinate of a block
@@ -466,5 +431,92 @@ public class Grid {
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Save the grid to a file.
+     *
+     * @param filePath The path of the file to save the grid to.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void saveToFile(String filePath) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+
+        for (int y = 0; y < this.SIZE; y++) {
+            for (int x = 0; x < this.SIZE; x++) {
+                int val = this.getVal(x, y);
+
+                if (val != 0)
+                    writer.write(Integer.toString(val));
+                else
+                    writer.write(' ');
+            }
+            writer.write('\n');
+        }
+
+        writer.close();
+    }
+
+    /**
+     * Prints nbDash number of dashes
+     *
+     * @param nbDash the amount of dashes to be printed
+     */
+    private void printLine(int nbDash) {
+        for (int i = 0; i < nbDash - 1; i++) {
+            System.out.print("-");
+        }
+        System.out.println("-");
+
+    }
+
+    /**
+     * Prints nbEqual number of equals
+     *
+     * @param nbEqual the amount of equals to be printed
+     */
+    private void printLineEqual(int nbEqual) {
+        for (int i = 0; i < nbEqual - 1; i++) {
+            System.out.print("=");
+        }
+        System.out.println("=");
+
+    }
+
+    /**
+     * Prints out a graphical representation of the grid to standard output.
+     */
+    private void printWithNotes_aux(int y, int debut) {
+        int note = debut;
+        int x = -1;
+        for (int j = 0; j < SIZE * SQRTSIZE; j++) {
+            if (j % SIZE == 0) {
+                System.out.print("|");
+            }
+            if (j % SQRTSIZE == 0) {
+                System.out.print("| ");
+                note = debut;
+                x++;
+            }
+            System.out.print(!this.board[x][y].isNotePresent(note) ? "  " : note + " ");
+            note++;
+        }
+    }
+
+    /**
+     * delete all note in the field witch is equals to  val
+     *
+     * @param startX X coordinate of the beginning of the rectangle.
+     * @param startY Y coordinate of the beginning of the rectangle.
+     * @param endX   X coordinate of the end of the rectangle.
+     * @param endY   Y coordinate of the end of the rectangle.
+     * @param val    value of the note witch is delete
+     */
+    private void deleteNotes(int startX, int startY, int endX, int endY, int val) {
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                this.deleteNote(x, y, val);
+            }
+        }
     }
 }

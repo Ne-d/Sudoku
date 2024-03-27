@@ -113,7 +113,7 @@ public class MainViewController {
                     gridView.getGrid().addNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
 
                 }
-                
+
                 this.gridView.update();
                 updateValidity();
             }
@@ -201,7 +201,7 @@ public class MainViewController {
         try {
             FileChooser fileChooser = new FileChooser();
 
-            this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+            this.gridView.loadGrid(Grid.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
 
             this.updateValidity();
             this.updateMode();
@@ -227,7 +227,7 @@ public class MainViewController {
     @FXML
     public void saveGrid() throws IOException {
         FileChooser fileChooser = new FileChooser();
-        this.gridView.saveGridToFile(fileChooser.showSaveDialog(this.stage).getPath());
+        this.gridView.getGrid().saveToFile(fileChooser.showSaveDialog(this.stage).getPath());
     }
 
     /**
