@@ -14,6 +14,7 @@ public class Solver {
     public static void solve(Grid g) {
         boolean continueSolving = true;
 
+        // Try to solve the grid using heuristics.
         while (continueSolving) {
             if (RuleOneThree.solve(g))
                 continue;
@@ -29,8 +30,10 @@ public class Solver {
 
             if (!RuleThirteen.solve(g))
                 continueSolving = false;
-
         }
+
+        // If heuristics failed, try backtracking.
+        Backtracking.solve(g);
     }
 
     /**
