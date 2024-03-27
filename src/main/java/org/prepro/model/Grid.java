@@ -467,25 +467,4 @@ public class Grid {
 
         return Optional.empty();
     }
-
-    /**
-     * Find if the Grid given is solve
-     *
-     * @return Whether the grid is solve or not
-     */
-    public boolean isSolve() {
-        boolean isSolve = true;
-
-        for (int y = 0; y < SIZE; y++) {
-            for (int x = 0; x < SIZE; x++) {
-                if (getNbNotes(x, y) != 1) {
-                    isSolve = false;
-                }
-                if (!isSolve) {
-                    return isSolve;
-                }
-            }
-        }
-        return isSolve;
-    }
 }

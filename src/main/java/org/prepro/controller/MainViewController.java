@@ -105,8 +105,6 @@ public class MainViewController {
                     // Delete note from the view.
                     gridView.getGrid().deleteNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
 
-                    this.gridView.update();
-                    updateValidity();
                 } else {
                     // Add note to the model.
                     notesView.addNote(pressedNumber);
@@ -114,9 +112,10 @@ public class MainViewController {
                     // Add note to the view.
                     gridView.getGrid().addNote(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
 
-                    this.gridView.update();
-                    updateValidity();
                 }
+                
+                this.gridView.update();
+                updateValidity();
             }
             if (pressedNumber > 0 && !this.notesOrValue) { // If we are in value editing mode.
                 gridView.getGrid().addValue(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);

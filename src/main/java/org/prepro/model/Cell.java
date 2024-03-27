@@ -46,10 +46,9 @@ public class Cell {
      */
     public void setVal(int val) {
         for (int i = 1; i <= this.SIZE; i++) {
-            if (i != val) { // FIXME: This condition is probably redundant and unneeded (the value has to be re-added anyway).
-                deleteNote(i);
-            }
+            deleteNote(i);
         }
+        
         addNote(val);
     }
 

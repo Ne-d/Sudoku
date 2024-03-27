@@ -116,12 +116,4 @@ public class Notes {
 
         return 0;
     }
-
-    public void toggle(int note) {
-        if (isPresent(note)) {
-            delete(note);
-        } else {
-            add(note);
-        }
-    }
 }
