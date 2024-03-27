@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.prepro.ExecutionTime;
 import org.prepro.model.Grid;
 import org.prepro.model.solver.Backtracking;
 import org.prepro.model.solver.Solver;
@@ -18,6 +19,7 @@ import org.prepro.view.GridView;
 import org.prepro.view.NotesView;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.System.exit;
 
@@ -28,13 +30,13 @@ public class MainViewController {
     GridView gridView;
 
     @FXML
-    Label statut;
+    Label statusLabel;
 
     @FXML
-    Label mode;
+    Label modeLabel;
 
     @FXML
-    Label executionTime;
+    Label executionTimeLabel;
 
     /**
      * if true that means notes are selected else value are selected
@@ -112,13 +114,16 @@ public class MainViewController {
     }
 
     @FXML
-    public void solveAction() {
-        long startTime = System.currentTimeMillis();
-        System.out.println("Solving the grid...");
-        Solver.solve(this.gridView.getGrid());
-        long endTime = System.currentTimeMillis();
-        long longTime = endTime - startTime;
-        this.executionTime.setText("Execution time : " + Long.toString(longTime) + " ms");
+    public void solveAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        System.out.println("Solving the grid using heuristics, then backtracking...");
+
+        long nanoTime = ExecutionTime.measureNanosecond(
+                null,
+                Solver.class.getMethod("solve", Grid.class),
+                this.gridView.getGrid()
+        );
+
+        setExecutionTime(nanoTime);
         this.gridView.update();
         System.out.println("Grid solved.");
         this.updateValidity();
@@ -126,15 +131,18 @@ public class MainViewController {
     }
 
     @FXML
-    public void backtrackingAction() {
-        long startTime = System.currentTimeMillis();
-        System.out.println("Solving the grid...");
-        Backtracking.solve(this.gridView.getGrid());
-        long endTime = System.currentTimeMillis();
-        long longTime = endTime - startTime;
-        this.executionTime.setText("Execution time : " + Long.toString(longTime) + " ms");
+    public void backtrackingAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        System.out.println("Solving the grid, only using backtracking.");
+
+        long nanoTime = ExecutionTime.measureNanosecond(
+                null,
+                Backtracking.class.getMethod("solve", Grid.class),
+                this.gridView.getGrid()
+        );
+
+        setExecutionTime(nanoTime);
         this.gridView.update();
-        System.out.println("Grid solved.");
+        System.out.println("Grid solved using only backtracking.");
         this.updateValidity();
         this.updateMode();
     }
@@ -144,7 +152,6 @@ public class MainViewController {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
         this.gridView.setSelectedCell(0, 0);
-        this.executionTime.setText("Execution time : 0 ms");
         this.updateValidity();
         this.updateMode();
     }
@@ -175,21 +182,30 @@ public class MainViewController {
 
     public void updateValidity() {
         if (this.gridView.getGrid().isValid()) {
-            statut.setText("The selected grid is valid.");
-            statut.setTextFill(Color.GREEN);
+            statusLabel.setText("The selected grid is valid.");
+            statusLabel.setTextFill(Color.GREEN);
         } else {
-            statut.setText("The selected grid is not valid.");
-            statut.setTextFill(Color.RED);
+            statusLabel.setText("The selected grid is not valid.");
+            statusLabel.setTextFill(Color.RED);
         }
     }
 
     @FXML
     public void updateMode() {
         if (this.notesOrValue) {
-            this.mode.setText("Selected Mode : Note");
+            this.modeLabel.setText("Selected Mode : Note");
         } else {
-            this.mode.setText("Selected Mode : Value");
+            this.modeLabel.setText("Selected Mode : Value");
         }
+    }
+
+    public void setExecutionTime(long nanoTime) {
+        long milliTime = nanoTime / 1_000_000;
+
+        String nanoTimeFormatted = String.format("%,d", nanoTime);
+        String milliTimeFormatted = String.format("%,d", milliTime);
+
+        this.executionTimeLabel.setText("Execution time: " + milliTimeFormatted + " ms (" + nanoTimeFormatted + " ns).");
     }
 
     /**
