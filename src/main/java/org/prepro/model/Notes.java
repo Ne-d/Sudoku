@@ -105,6 +105,10 @@ public class Notes {
         return modif;
     }
 
+    /**
+     * A getter when a cell has only one note.
+     * @return
+     */
     public int getUniqueNote() {
         if (this.getNumber() == 1) {
             for (int i = 1; i <= SIZE; i++) {

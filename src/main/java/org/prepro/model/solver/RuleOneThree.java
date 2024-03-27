@@ -3,6 +3,11 @@ package org.prepro.model.solver;
 import org.prepro.model.Grid;
 
 public class RuleOneThree {
+    /**
+     * Return if the grid is changed by the rules 1 & 3
+     * @param g the grid
+     * @return true or false depending on if the grid changed
+     */
     public static boolean solve(Grid g) {
         boolean hasChanged = false;
 
@@ -15,6 +20,13 @@ public class RuleOneThree {
         return hasChanged;
     }
 
+    /**
+     * Return if the rule 1 & 3 were applied or not on a coordinate
+     * @param g the grid
+     * @param xPos
+     * @param yPos
+     * @return tur oe false depending on if the (x,y) positions was changed by rules 1 & 3
+     */
     public static boolean apply(Grid g, int xPos, int yPos) {
         boolean hasChanged = false;
 
