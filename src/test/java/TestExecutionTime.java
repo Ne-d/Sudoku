@@ -3,6 +3,13 @@ import org.prepro.ExecutionTime;
 import java.lang.reflect.InvocationTargetException;
 
 public class TestExecutionTime {
+    /**
+     * Test if the functions return the good time in 3 different formats
+     * @param args
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         System.out.println(
                 ExecutionTime.measureNanosecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +

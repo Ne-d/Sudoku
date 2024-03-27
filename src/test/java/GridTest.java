@@ -109,6 +109,9 @@ public class GridTest {
         Assertions.assertTrue(g.isValid());
     }
 
+    /**
+     * Test the 11'th rule with an example
+     */
     @Test
     public void testBox2ReductionColumn() {
         Grid g = TestGrids.boxReductionGrid();
@@ -139,6 +142,9 @@ public class GridTest {
         g.printWithNotes();
     }
 
+    /**
+     * Test the 11'th rule with an impossible example
+     */
     @Test
     public void testBox2ReductionColumnImpossible() {
         Grid g = TestGrids.boxReductionGrid();
@@ -151,6 +157,9 @@ public class GridTest {
         Assertions.assertFalse(coordsOpt.isPresent());
     }
 
+    /**
+     * Test the 12'th rule with an example
+     */
     @Test
     public void testBox3ReductionColumn() {
         Grid g = TestGrids.grid1();
@@ -181,6 +190,9 @@ public class GridTest {
         }
     }
 
+    /**
+     * Test the 11th rule on a row with an example
+     */
     @Test
     public void testPointingPairRow() {
         Grid g = TestGrids.pointingPairGrid();
@@ -211,6 +223,9 @@ public class GridTest {
         }
     }
 
+    /**
+     * Test the 11th rule on a column with an example
+     */
     @Test
     public void testPointingPairColumn() {
         Grid g = TestGrids.pointingPairGrid();
@@ -239,6 +254,9 @@ public class GridTest {
         }
     }
 
+    /**
+     * Test the 12th rule on a row with an example
+     */
     @Test
     public void testPointingTripletRow() {
         Grid g = TestGrids.pointingTripletGrid();
@@ -268,6 +286,9 @@ public class GridTest {
         }
     }
 
+    /**
+     * Test the 13th rule on a row with an example
+     */
     @Test
     public void testXWingRow() {
         Grid g = TestGrids.xWing();
@@ -297,6 +318,9 @@ public class GridTest {
     // TODO: Tester que les box-réductions pour k=3 dans un bloc avec seulement 2 notes vont bien fail.
     // TODO: Tester les box-réductions sur les lignes.
 
+    /**
+     * Test the backtracking algorithm on an example
+     */
     @Test
     public void testBacktracking() {
         Grid g = TestGrids.grid1();
