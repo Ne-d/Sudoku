@@ -19,7 +19,6 @@ import org.prepro.view.GridView;
 import org.prepro.view.NotesView;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.System.exit;
 
@@ -134,12 +133,10 @@ public class MainViewController {
     /**
      * Solves the current grid using heuristics, then backtracking.
      *
-     * @throws NoSuchMethodException     If the method name given to measureNanosecond is incorrect.
-     * @throws InvocationTargetException If the method given to measureNanosecond cannot be invoked.
-     * @throws IllegalAccessException    If the method given to measureNanosecond is inaccessible.
+     * @throws NoSuchMethodException If the method name given to measureNanosecond is incorrect.
      */
     @FXML
-    public void solveAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void solveAction() throws NoSuchMethodException {
         System.out.println("Solving the grid using heuristics, then backtracking...");
 
         long nanoTime = ExecutionTime.measureNanosecond(
@@ -158,12 +155,10 @@ public class MainViewController {
     /**
      * Solves the current grid using only backtracking.
      *
-     * @throws NoSuchMethodException     If the method name given to measureNanosecond is incorrect.
-     * @throws InvocationTargetException If the method given to measureNanosecond cannot be invoked.
-     * @throws IllegalAccessException    If the method given to measureNanosecond is inaccessible.
+     * @throws NoSuchMethodException If the method name given to measureNanosecond is incorrect.
      */
     @FXML
-    public void backtrackingAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void backtrackingAction() throws NoSuchMethodException {
         System.out.println("Solving the grid, only using backtracking.");
 
         long nanoTime = ExecutionTime.measureNanosecond(
@@ -201,7 +196,10 @@ public class MainViewController {
         try {
             FileChooser fileChooser = new FileChooser();
 
-            this.gridView.loadGrid(Grid.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+            String filename = fileChooser.showOpenDialog(this.stage).getPath();
+            Grid loadedGrid = Grid.loadFromFile(filename, true);
+
+            this.gridView.loadGrid(loadedGrid);
 
             this.updateValidity();
             this.updateMode();

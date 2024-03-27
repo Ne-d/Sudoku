@@ -61,7 +61,7 @@ public class Grid {
      * @param filePath The path to the file to read.
      * @return The grid that has been loaded.
      */
-    public static Grid loadGridFromFile(String filePath) {
+    public static Grid loadFromFile(String filePath, boolean applyRulesOneThree) {
         try {
             Grid grid = new Grid();
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -76,8 +76,12 @@ public class Grid {
                     valueRead = line.charAt(i);
 
                     // If the value is a space, there is no value to insert.
-                    if (valueRead != ' ')
-                        grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+                    if (valueRead != ' ') {
+                        if (applyRulesOneThree)
+                            grid.addValue(column, row, Character.getNumericValue((char) valueRead));
+                        else
+                            grid.setUniqueNote(column, row, Character.getNumericValue((char) valueRead));
+                    }
 
                     column++;
                 }
