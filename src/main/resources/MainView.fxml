@@ -15,7 +15,7 @@
             <Button onAction="#openGrid">Open</Button>
             <Separator/>
             <Button onAction="#solveAction">Solve</Button>
-            <Button>Backtracking</Button>
+            <Button onAction="#backtrackingAction">Backtracking</Button>
             <Button onAction="#resetAction">Reset</Button>
             <Separator/>
             <Button onAction="#about">About</Button>

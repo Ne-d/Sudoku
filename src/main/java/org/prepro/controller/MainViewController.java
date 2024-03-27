@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.prepro.model.Grid;
+import org.prepro.model.solver.Backtracking;
 import org.prepro.model.solver.Solver;
 import org.prepro.view.CellView;
 import org.prepro.view.GridView;
@@ -115,6 +116,20 @@ public class MainViewController {
         long startTime = System.currentTimeMillis();
         System.out.println("Solving the grid...");
         Solver.solve(this.gridView.getGrid());
+        long endTime = System.currentTimeMillis();
+        long longTime = endTime - startTime;
+        this.executionTime.setText("Execution time : " + Long.toString(longTime) + " ms");
+        this.gridView.update();
+        System.out.println("Grid solved.");
+        this.updateValidity();
+        this.updateMode();
+    }
+
+    @FXML
+    public void backtrackingAction() {
+        long startTime = System.currentTimeMillis();
+        System.out.println("Solving the grid...");
+        Backtracking.solve(this.gridView.getGrid());
         long endTime = System.currentTimeMillis();
         long longTime = endTime - startTime;
         this.executionTime.setText("Execution time : " + Long.toString(longTime) + " ms");
