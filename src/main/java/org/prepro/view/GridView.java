@@ -5,31 +5,64 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.prepro.model.Grid;
+import org.prepro.model.GridExemple;
 import org.prepro.model.Notes;
 
 import java.io.*;
 
 public class GridView extends GridPane {
+    /**
+     * The model that contains the current sudoku grid.
+     */
     private Grid grid;
+
+    /**
+     * The model that contains the last loaded sudoku grid.
+     */
     private Grid startingGrid;
+
+    /**
+     * A 2D array of all CellViews in the grid.
+     */
     private CellView[][] cellViews;
+
+    /**
+     * The column of the currently selected cell in the grid.
+     */
     private int selectedColumn = 0;
+
+    /**
+     * The column of the currently selected cell in the grid.
+     */
     private int selectedRow = 0;
 
+    /**
+     * Creates a new GridView with a default grid.
+     */
     public GridView() {
         this.setAlignment(Pos.CENTER);
 
         this.setHgap(2);
         this.setVgap(2);
 
-        loadGrid(testGrid());
+        loadGrid(GridExemple.grid1.getGrid());
     }
 
+    /**
+     * Sets the current grid.
+     *
+     * @param grid The grid to put into the view.
+     */
     public void setGrid(Grid grid) {
         this.grid = grid;
         loadGrid(grid);
     }
 
+    /**
+     * Loads a grid into the view.
+     *
+     * @param grid The grid to load.
+     */
     public void loadGrid(Grid grid) {
         this.grid = grid;
 
@@ -65,6 +98,7 @@ public class GridView extends GridPane {
 
     /**
      * Update the visual aspect of every CellView in the GridView.
+     * Chooses automatically between showing the value or the notes.
      */
     public void update() {
         // For every cell in the grid
@@ -96,22 +130,23 @@ public class GridView extends GridPane {
             int valueRead;
             int row = 0;
             int column = 0;
+
             while ((line = reader.readLine()) != null) { // For every line in the file
                 for (int i = 0; i < grid.SIZE; i++) { // For all the characters in the line, stopping at grid.SIZE
                     valueRead = line.charAt(i);
 
+                    // If the value is a space, there is no value to insert.
                     if (valueRead != ' ')
                         grid.addValue(column, row, Character.getNumericValue((char) valueRead));
 
                     column++;
                 }
-
+                // We have reached the end of a line, increase the line counter and reset the column counter.
                 row++;
                 column = 0;
             }
 
             reader.close();
-
             return grid;
         } catch (Exception exception) {
             System.err.println("GridView.loadGridFromFile ERROR - " + exception.getMessage());
@@ -119,6 +154,12 @@ public class GridView extends GridPane {
         }
     }
 
+    /**
+     * Save the grid to a file.
+     *
+     * @param filePath The path of the file to save the grid to.
+     * @throws IOException If an I/O error occurs.
+     */
     public void saveGridToFile(String filePath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
@@ -137,77 +178,57 @@ public class GridView extends GridPane {
         writer.close();
     }
 
-    public Grid testGrid() {
-        Grid grid1 = new Grid();
-        grid1.addValue(0, 0, 7); //line 1
-        grid1.addValue(1, 0, 2);
-        grid1.addValue(2, 0, 6);
-        grid1.addValue(4, 0, 1);
-        grid1.addValue(5, 0, 8);
-        grid1.addValue(6, 0, 3);
-        grid1.addValue(7, 0, 4);
-
-        grid1.addValue(1, 1, 9); // line 2
-        grid1.addValue(4, 1, 5);
-        grid1.addValue(5, 1, 2);
-
-        grid1.addValue(0, 2, 5); //line 3
-        grid1.addValue(2, 2, 4);
-        grid1.addValue(4, 2, 3);
-        grid1.addValue(5, 2, 6);
-        grid1.addValue(6, 2, 9);
-        grid1.addValue(7, 2, 8);
-        grid1.addValue(8, 2, 2);
-
-        grid1.addValue(0, 3, 6); // line 4
-        grid1.addValue(3, 3, 3);
-        grid1.addValue(7, 3, 2);
-        grid1.addValue(8, 3, 1);
-
-        grid1.addValue(1, 4, 7); // line 5
-        grid1.addValue(5, 4, 4);
-
-        grid1.addValue(3, 5, 6); // line 6
-        grid1.addValue(5, 5, 9);
-        grid1.addValue(6, 5, 4);
-        grid1.addValue(7, 5, 5);
-
-        grid1.addValue(1, 6, 3); // line 7
-        grid1.addValue(2, 6, 7);
-        grid1.addValue(7, 6, 9);
-        grid1.addValue(8, 6, 4);
-
-        grid1.addValue(0, 7, 4); // line 8
-        grid1.addValue(2, 7, 1);
-        grid1.addValue(5, 7, 3);
-
-        grid1.addValue(3, 8, 2); // line 9
-        grid1.addValue(6, 8, 1);
-
-        return grid1;
-    }
-
+    /**
+     * Get the current grid model.
+     *
+     * @return The current grid model.
+     */
     public Grid getGrid() {
         return this.grid;
     }
 
+    /**
+     * Reload the last loaded grid.
+     */
     public void resetToStartingGrid() {
         this.loadGrid(startingGrid);
-        //this.update();
     }
 
+    /**
+     * Get the selected cell's column.
+     *
+     * @return The selected cell's column.
+     */
     public int getSelectedColumn() {
         return selectedColumn;
     }
 
+    /**
+     * Get the selected cell's row.
+     *
+     * @return The selected cell's row.
+     */
     public int getSelectedRow() {
         return selectedRow;
     }
 
+    /**
+     * Get the CellView corresponding to the grid's cell at the given coordinates.
+     *
+     * @param x The x coordinate of the cell.
+     * @param y The y coordinate of the cell.
+     * @return The CellView at the given coordinates.
+     */
     public CellView getCellView(int x, int y) {
         return cellViews[x][y];
     }
 
+    /**
+     * Sets the currently selected cell to the given coordinates.
+     *
+     * @param column The x coordinate of the selected cell.
+     * @param row    The y coordinate of the selected cell.
+     */
     public void setSelectedCell(int column, int row) {
         this.cellViews[this.selectedColumn][this.selectedRow].setStyle("-fx-background-color:lightgray");
         this.selectedColumn = column;

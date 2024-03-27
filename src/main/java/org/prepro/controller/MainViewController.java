@@ -24,30 +24,52 @@ import java.lang.reflect.InvocationTargetException;
 import static java.lang.System.exit;
 
 public class MainViewController {
+    /**
+     * The main stage of the application, used to add keyboard event handlers.
+     */
     private Stage stage;
 
+    /**
+     * The visual representation of the grid.
+     */
     @FXML
-    GridView gridView;
+    private GridView gridView;
 
+    /**
+     * The label indicating the validity of the grid.
+     */
     @FXML
-    Label statusLabel;
+    private Label validityLabel;
 
+    /**
+     * The label indicating the current editing mode (note or value).
+     */
     @FXML
-    Label modeLabel;
+    private Label modeLabel;
 
+    /**
+     * The label indicating the execution time of the last solve operation.
+     */
     @FXML
-    Label executionTimeLabel;
+    private Label executionTimeLabel;
 
     /**
      * if true that means notes are selected else value are selected
      */
     private boolean notesOrValue = false;
 
+    /**
+     * Adds to the main window's stage the event handlers that need to be set there (keyboard events).
+     *
+     * @param stage The stage to add the event handlers to.
+     */
     public void setupStageEventHandlers(Stage stage) {
         this.stage = stage;
 
         stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             int pressedNumber = -1;
+
+            // Get the key events.
             switch (event.getCode()) {
                 case NUMPAD0, DIGIT0 -> pressedNumber = 0;
                 case NUMPAD1, DIGIT1 -> pressedNumber = 1;
@@ -97,9 +119,6 @@ public class MainViewController {
                 }
             }
             if (pressedNumber > 0 && !this.notesOrValue) { // If we are in value editing mode.
-                CellView selectedCellView = this.gridView.getCellView(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow());
-                NotesView notesView = selectedCellView.getNotesView();
-
                 gridView.getGrid().addValue(this.gridView.getSelectedColumn(), this.gridView.getSelectedRow(), pressedNumber);
 
                 this.gridView.update();
@@ -113,6 +132,13 @@ public class MainViewController {
         this.updateMode();
     }
 
+    /**
+     * Solves the current grid using heuristics, then backtracking.
+     *
+     * @throws NoSuchMethodException     If the method name given to measureNanosecond is incorrect.
+     * @throws InvocationTargetException If the method given to measureNanosecond cannot be invoked.
+     * @throws IllegalAccessException    If the method given to measureNanosecond is inaccessible.
+     */
     @FXML
     public void solveAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         System.out.println("Solving the grid using heuristics, then backtracking...");
@@ -122,14 +148,21 @@ public class MainViewController {
                 Solver.class.getMethod("solve", Grid.class),
                 this.gridView.getGrid()
         );
-
-        setExecutionTime(nanoTime);
-        this.gridView.update();
         System.out.println("Grid solved.");
+
+        this.setExecutionTime(nanoTime);
+        this.gridView.update();
         this.updateValidity();
         this.updateMode();
     }
 
+    /**
+     * Solves the current grid using only backtracking.
+     *
+     * @throws NoSuchMethodException     If the method name given to measureNanosecond is incorrect.
+     * @throws InvocationTargetException If the method given to measureNanosecond cannot be invoked.
+     * @throws IllegalAccessException    If the method given to measureNanosecond is inaccessible.
+     */
     @FXML
     public void backtrackingAction() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         System.out.println("Solving the grid, only using backtracking.");
@@ -140,27 +173,37 @@ public class MainViewController {
                 this.gridView.getGrid()
         );
 
-        setExecutionTime(nanoTime);
-        this.gridView.update();
         System.out.println("Grid solved using only backtracking.");
+
+        this.setExecutionTime(nanoTime);
+        this.gridView.update();
         this.updateValidity();
         this.updateMode();
     }
 
+    /**
+     * Resets the grid to its default state (the last grid that was loaded).
+     */
     @FXML
     public void resetAction() {
         gridView.resetToStartingGrid();
         System.out.println("Grid reset");
+
         this.gridView.setSelectedCell(0, 0);
         this.updateValidity();
         this.updateMode();
     }
 
+    /**
+     * Open a grid from a file, chosen through a File Chooser.
+     */
     @FXML
-    public void openGrid() {
+    public void openAction() {
         try {
             FileChooser fileChooser = new FileChooser();
+
             this.gridView.loadGrid(gridView.loadGridFromFile(fileChooser.showOpenDialog(this.stage).getPath()));
+
             this.updateValidity();
             this.updateMode();
             this.gridView.setSelectedCell(0, 0);
@@ -169,27 +212,41 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Sets the current grid to a new empty grid.
+     */
     @FXML
-    public void createNewGrid() {
+    public void newAction() {
         this.gridView.setGrid(new Grid());
     }
 
+    /**
+     * Saves the current grid to a file, chosen through a File Chooser.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     @FXML
     public void saveGrid() throws IOException {
         FileChooser fileChooser = new FileChooser();
         this.gridView.saveGridToFile(fileChooser.showSaveDialog(this.stage).getPath());
     }
 
+    /**
+     * Updates the label which indicates the validity of the grid.
+     */
     public void updateValidity() {
         if (this.gridView.getGrid().isValid()) {
-            statusLabel.setText("The selected grid is valid.");
-            statusLabel.setTextFill(Color.GREEN);
+            validityLabel.setText("The selected grid is valid.");
+            validityLabel.setTextFill(Color.GREEN);
         } else {
-            statusLabel.setText("The selected grid is not valid.");
-            statusLabel.setTextFill(Color.RED);
+            validityLabel.setText("The selected grid is not valid.");
+            validityLabel.setTextFill(Color.RED);
         }
     }
 
+    /**
+     * Update the label which indicates the editing mode (note or value).
+     */
     @FXML
     public void updateMode() {
         if (this.notesOrValue) {
@@ -199,6 +256,11 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Sets the text of the label that indicates the execution time for solving operations.
+     *
+     * @param nanoTime The time in nanoseconds that the execution took.
+     */
     public void setExecutionTime(long nanoTime) {
         long milliTime = nanoTime / 1_000_000;
 
@@ -209,7 +271,7 @@ public class MainViewController {
     }
 
     /**
-     * Allow to navigate with the zqsd keys in the grid
+     * Sets up keyboard navigation using z, q, s and d to select cells on the grid.
      */
     public void addKeyboardNavigation() {
         stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -238,6 +300,9 @@ public class MainViewController {
         });
     }
 
+    /**
+     * Shows a dialog window containing the program's keyboards shortcuts.
+     */
     @FXML
     public void help() {
         Stage helpDialog = new Stage();
@@ -260,6 +325,9 @@ public class MainViewController {
         helpDialog.showAndWait();
     }
 
+    /**
+     * Shows a dialog window that gives information about the project.
+     */
     @FXML
     public void about() {
         Stage aboutDialog = new Stage();
@@ -278,9 +346,11 @@ public class MainViewController {
         aboutDialog.showAndWait();
     }
 
+    /**
+     * Exits the application.
+     */
     @FXML
     public void quit() {
         exit(0);
     }
 }
-

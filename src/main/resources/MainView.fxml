@@ -10,9 +10,9 @@
 
     <top>
         <ToolBar>
-            <Button onAction="#createNewGrid">New</Button>
+            <Button onAction="#newAction">New</Button>
             <Button onAction="#saveGrid">Save</Button>
-            <Button onAction="#openGrid">Open</Button>
+            <Button onAction="#openAction">Open</Button>
             <Separator/>
             <Button onAction="#solveAction">Solve</Button>
             <Button onAction="#backtrackingAction">Backtracking</Button>
@@ -31,7 +31,7 @@
             <Region HBox.hgrow="ALWAYS"/>
             <VBox>
                 <Region VBox.vgrow="ALWAYS"/>
-                <Label fx:id="statusLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label fx:id="validityLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
                 <Label fx:id="modeLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
                 <Label fx:id="executionTimeLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
                 <Region VBox.vgrow="ALWAYS"/>
