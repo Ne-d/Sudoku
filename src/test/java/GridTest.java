@@ -298,11 +298,11 @@ public class GridTest {
     // TODO: Tester les box-réductions sur les lignes.
 
     @Test
-    public void TestBacktracking(){
+    public void testBacktracking() {
         Grid g = TestGrids.grid1();
 
         g.print();
-        Backtracking.solve(g);
+        Assertions.assertTrue(Backtracking.solve(g));
         g.print();
         g.printWithNotes();
         Assertions.assertTrue(g.isValid());

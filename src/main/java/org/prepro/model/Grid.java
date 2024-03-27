@@ -104,37 +104,18 @@ public class Grid {
             System.out.println("x :" + xPos + " y:" + yPos + "val:" + val + " ko");
             return false;
         }
+
         cell.setVal(val);
 
-        //RuleOneThree.apply(this, xPos, yPos);
+        RuleOneThree.apply(this, xPos, yPos);
 
-        /*
-        // Delete all notes that become invalid in the row
-        for (int x = 0; x < this.SIZE; x++) {
-            if (x != xPos) // All cells except the one we are adding a value to.
-                this.deleteNote(x, yPos, val);
-        }
-
-        for (int y = 0; y < this.SIZE; y++) {
-            if (y != yPos) // All cells except the one we are adding a value to.
-                this.deleteNote(xPos, y, val);
-        }
-
-        int block = this.findBlock(xPos, yPos);
-        int blockStartX = this.blockStartX(block);
-        int blockEndX = this.blockEndX(block);
-        int blockStartY = this.blockStartY(block);
-        int blockEndY = this.blockEndY(block);
-
-        for (int x = blockStartX; x < blockEndX; x++) {
-            for (int y = blockStartY; y < blockEndY; y++) {
-                if (x != xPos && y != yPos)
-                    deleteNote(x, y, val);
-            }
-        }
-         */
-        //System.out.println("x :"+xPos + " y:"+yPos + "val:"+val);
         return true;
+    }
+
+    public void setUniqueNote(int xPos, int yPos, int val) {
+        Cell cell = this.board[xPos][yPos];
+
+        cell.setVal(val);
     }
 
 
@@ -489,17 +470,18 @@ public class Grid {
 
     /**
      * Find if the Grid given is solve
+     *
      * @return Whether the grid is solve or not
      */
-    public boolean isSolve(){
+    public boolean isSolve() {
         boolean isSolve = true;
 
-        for (int y = 0; y < SIZE; y++){
-            for (int x = 0; x < SIZE; x++){
-                if(getNbNotes(x,y) != 1){
+        for (int y = 0; y < SIZE; y++) {
+            for (int x = 0; x < SIZE; x++) {
+                if (getNbNotes(x, y) != 1) {
                     isSolve = false;
                 }
-                if (!isSolve){
+                if (!isSolve) {
                     return isSolve;
                 }
             }
