@@ -1,12 +1,15 @@
+.root {
+    -fx-font-family: serif;
+}
+
 .Toolbar-content Button{
     -fx-fill: rgb(255, 255, 255);
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-font-family: Georgia;
 
     -fx-background-color: #D2D2D2;
     -fx-text-fill: #373737;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
 }
 
 .Toolbar-content Button:hover {
