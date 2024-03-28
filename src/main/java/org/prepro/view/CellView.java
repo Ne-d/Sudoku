@@ -47,16 +47,25 @@ public class CellView extends StackPane {
         this.valueView = new ValueView(value);
     }
 
+    /**
+     * Shows the value and hides the notes
+     */
     private void showValue() {
         this.valueView.setVisible(true);
         this.notesView.setVisible(false);
     }
 
+    /**
+     * Shows the notes and hides the value
+     */
     private void showNotes() {
         this.valueView.setVisible(false);
         this.notesView.setVisible(true);
     }
 
+    /**
+     * Update the view of a cell
+     */
     public void update() {
         // If there is only one note (a value has been found)
         if (notes.getNumber() == 1) {
