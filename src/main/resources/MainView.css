@@ -15,3 +15,8 @@
 .Toolbar-content Button:hover {
     -fx-background-color: #FFFFFF;
 }
+
+.Vbox-labels Label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}

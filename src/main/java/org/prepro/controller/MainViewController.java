@@ -242,7 +242,7 @@ public class MainViewController {
             validityLabel.setText("The selected grid is valid.");
             validityLabel.setTextFill(Color.GREEN);
         } else {
-            validityLabel.setText("The selected grid is not valid.");
+            validityLabel.setText("The selected grid is not valid.\nUnable to solve this grid !");
             validityLabel.setTextFill(Color.RED);
         }
     }
