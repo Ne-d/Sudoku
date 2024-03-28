@@ -3,12 +3,12 @@ package org.prepro.model.solver;
 import org.prepro.model.Grid;
 
 /**
- * A class containing static methods to solve a grid with the first three rules.
+ * A class containing static methods to solve a grid with rule two.
  */
 public class RuleTwo {
 
     /**
-     * Try to solve one zone with the first three rules.
+     * Try to solve one zone with rule two.
      *
      * @param g The grid to solve.
      * @return True if the grid has changed, otherwise false.
@@ -21,23 +21,21 @@ public class RuleTwo {
                 boolean continueColumn;
                 boolean continueRow;
                 boolean continueBlock;
-                do {
-                    continueColumn = applyRulesOneToThree(g, x, 0, x, 8);
-                    continueRow = applyRulesOneToThree(g, 0, y, 8, y);
-                    continueBlock = applyRulesOneToThree(g, (x / g.SQRTSIZE) * g.SQRTSIZE,
-                            (y / g.SQRTSIZE) * g.SQRTSIZE,
-                            (1 + x / g.SQRTSIZE) * g.SQRTSIZE - 1,
-                            (1 + y / g.SQRTSIZE) * g.SQRTSIZE - 1);
-                    // TODO: On exécute la règle pour les blocs à chaque case donc 9 fois pour chaque bloc, faut changer ça je suppose
+                if (findNotesForRuleTwo(g, x, 0, x, 8))
+                    return true;
 
-                    if (continueColumn || continueRow || continueBlock) {
-                        hasChanged = true;
-                    }
-                } while (continueColumn && continueRow && continueBlock);
+                if (findNotesForRuleTwo(g, 0, y, 8, y))
+                    return true;
+
+                if (findNotesForRuleTwo(g, (x / g.SQRTSIZE) * g.SQRTSIZE,
+                        (y / g.SQRTSIZE) * g.SQRTSIZE,
+                        (1 + x / g.SQRTSIZE) * g.SQRTSIZE - 1,
+                        (1 + y / g.SQRTSIZE) * g.SQRTSIZE - 1))
+                    return true;
             }
         }
 
-        return hasChanged;
+        return false;
     }
 
     /**
@@ -50,7 +48,7 @@ public class RuleTwo {
      * @param endY   Y coordinate of the end of the rectangle.
      * @return True if the grid has been modified, false otherwise.
      */
-    public static boolean applyRulesOneToThree(Grid g, int startX, int startY, int endX, int endY) {
+    public static boolean findNotesForRuleTwo(Grid g, int startX, int startY, int endX, int endY) {
         int[] nbNotesRec = new int[g.SIZE];
         int nbNotes;
         int notesFound;
@@ -67,17 +65,12 @@ public class RuleTwo {
                     if (g.isNotePresent(i, x, y)) {
                         nbNotesRec[i - 1]++; // Increment the value corresponding to this note in the array.
                         notesFound++;
-
-//                        if (nbNotes == 1) {
-//                            g.addValue(x, y, i);
-//                            return true;
-//                        }
                     }
                 }
             }
         }
 
-        return isNotePresentOnce(g, startX, startY, endX, endY, nbNotesRec);
+        return applyRuleTwo(g, startX, startY, endX, endY, nbNotesRec);
     }
 
     /**
@@ -88,7 +81,7 @@ public class RuleTwo {
      * @param endY   Y coordinate of the end of the rectangle.
      * @return if the grid has been modified
      */
-    public static boolean isNotePresentOnce(Grid g, int startX, int startY, int endX, int endY, int[] nbNotesRec) {
+    public static boolean applyRuleTwo(Grid g, int startX, int startY, int endX, int endY, int[] nbNotesRec) {
         // For every value in the array (noteIndex corresponds to the note - 1).
         for (int noteIndex = 0; noteIndex < g.SIZE; noteIndex++) {
 

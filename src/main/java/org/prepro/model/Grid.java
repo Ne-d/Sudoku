@@ -2,6 +2,7 @@ package org.prepro.model;
 
 
 import org.prepro.model.solver.RuleOneThree;
+import org.prepro.model.solver.Solver;
 
 import java.io.*;
 import java.util.Optional;
@@ -147,7 +148,8 @@ public class Grid {
 
         cell.setVal(val);
 
-        RuleOneThree.apply(this, xPos, yPos);
+        if (Solver.RULE_ONE_THREE_ON_ADD_VALUE)
+            RuleOneThree.apply(this, xPos, yPos);
 
         return true;
     }
@@ -173,8 +175,8 @@ public class Grid {
         boolean[] presentNumbers = new boolean[(endX - startX + 1) * (endY - startY + 1)];
         int val;
 
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
                 val = getVal(x, y);
                 if (val != 0) {
                     if (presentNumbers[val - 1]) {
@@ -190,31 +192,33 @@ public class Grid {
     }
 
     /**
+     * Check if a Row has duplicate values.
+     *
      * @param row The number of the row to check.
-     * @return True if the row doesn't have any duplicate numbers, false otherwise.
+     * @return True if the row doesn't have any duplicate values, false otherwise.
      */
     public boolean isRowValid(int row) {
-        return isValidRect(0, row - 1, this.SIZE - 1, row - 1);
+        return isValidRect(0, row, this.SIZE, row);
     }
 
     /**
+     * Check if a column has duplicate values.
+     *
      * @param column The number of the column to check.
-     * @return True if the column doesn't have any duplicate numbers, false otherwise.
+     * @return True if the column doesn't have any duplicate values, false otherwise.
      */
     public boolean isColumnValid(int column) {
-        return isValidRect(column - 1, 0, column - 1, this.SIZE - 1);
+        return isValidRect(column, 0, column, this.SIZE);
     }
 
     /**
-     * @param xBlock X coordinate of the block (not the first cell)
-     * @param yBlock y coordinate of the block (not the first cell)
-     * @return True if the block doesn't have any duplicate numbers, false otherwise.
+     * Check if a block has duplicate values.
+     *
+     * @param block The number of the block to check.
+     * @return True if the block doesn't have any duplicate values, false otherwise.
      */
-    public boolean isBlockValid(int xBlock, int yBlock) {
-        return isValidRect(xBlock * this.SQRTSIZE,
-                yBlock * this.SQRTSIZE,
-                xBlock * this.SQRTSIZE + this.SQRTSIZE - 1,
-                yBlock * this.SQRTSIZE + this.SQRTSIZE - 1);
+    public boolean isBlockValid(int block) {
+        return isValidRect(blockStartX(block), blockStartY(block), blockEndX(block), blockEndY(block));
     }
 
     /**
@@ -225,20 +229,29 @@ public class Grid {
 
         for (int i = 1; i <= this.SIZE && cont; i++) {
             cont = isColumnValid(i);
-            cont = cont && isRowValid(i);
-        }
-
-        for (int i = 0; i < this.SQRTSIZE && cont; i++) {
-            for (int j = 0; j < this.SQRTSIZE && cont; j++) {
-                cont = isBlockValid(i, j);
+            if (!cont) {
+                System.out.printf("Column %d is invalid.\n", i);
             }
 
+            cont = cont && isRowValid(i);
+            if (!cont) {
+                System.out.printf("Row %d is invalid.\n", i);
+            }
+        }
+
+        for (int i = 1; i <= this.SIZE && cont; i++) {
+            cont = isBlockValid(i);
+            if (!cont) {
+                System.out.printf("Block %d, is invalid.\n", i);
+            }
         }
 
         for (int x = 0; x < this.SIZE && cont; x++) {
             for (int y = 0; y < this.SIZE && cont; y++) {
-                if (getNbNotes(x, y) == 0)
+                if (getNbNotes(x, y) == 0) {
+                    System.out.printf("Cell %d, %d is empty.\n", x, y);
                     cont = false;
+                }
             }
         }
 

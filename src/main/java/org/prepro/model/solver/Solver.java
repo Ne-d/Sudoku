@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Solver {
     public static final boolean PRINT_ENABLED = true;
+    public static final boolean RULE_ONE_THREE_ON_ADD_VALUE = true;
 
     /**
      * Solve the grid with all the rules.
@@ -14,10 +15,14 @@ public class Solver {
      * @param g The grid to solve.
      */
     public static void solve(Grid g) {
-        boolean continueSolving = true;
+        System.out.println("\n================================ Solving the grid. ================================");
 
         // Try to solve the grid using heuristics.
-        while (continueSolving) {
+        while (true) {
+            System.out.println("\n================================ New solving step. ================================\n");
+            System.out.println("The grid is " + (g.isValid() ? "valid" : "NOT VALID") + ".");
+            //g.printWithNotes();
+
             if (RuleOneThree.solve(g))
                 continue;
 
@@ -31,10 +36,11 @@ public class Solver {
                 continue;
 
             if (!RuleThirteen.solve(g))
-                continueSolving = false;
+                break;
         }
 
         // If heuristics failed, try backtracking.
+        System.out.println("Couldn't solve the grid with heuristics, attempting backtracking.");
         Backtracking.solve(g);
     }
 

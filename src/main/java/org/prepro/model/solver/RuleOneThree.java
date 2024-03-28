@@ -3,6 +3,8 @@ package org.prepro.model.solver;
 import org.prepro.model.Grid;
 
 public class RuleOneThree {
+    public static final boolean SOLVE_RECURSIVELY = true;
+
     /**
      * Solve a grid using rules one and three.
      *
@@ -10,15 +12,14 @@ public class RuleOneThree {
      * @return True if the grid changed, otherwise false.
      */
     public static boolean solve(Grid g) {
-        boolean hasChanged = false;
-
         for (int x = 0; x < g.SIZE; x++) {
             for (int y = 0; y < g.SIZE; y++) {
-                hasChanged |= apply(g, x, y);
+                if (apply(g, x, y))
+                    return true;
             }
         }
 
-        return hasChanged;
+        return false;
     }
 
     /**
@@ -71,7 +72,7 @@ public class RuleOneThree {
                 hasChanged |= g.deleteNote(x, yPos, val);
 
                 // If the current cell had several notes, but now has only one, we must apply the rule to it as well.
-                if (hadSeveralNotes && g.getNbNotes(x, yPos) == 1)
+                if (SOLVE_RECURSIVELY && hadSeveralNotes && g.getNbNotes(x, yPos) == 1)
                     apply(g, x, yPos);
             }
         }
@@ -100,7 +101,7 @@ public class RuleOneThree {
                 hasChanged |= g.deleteNote(xPos, y, val);
 
                 // If the current cell had several notes, but now has only one, we must apply the rule to it as well.
-                if (hadSeveralNotes && g.getNbNotes(xPos, y) == 1)
+                if (SOLVE_RECURSIVELY && hadSeveralNotes && g.getNbNotes(xPos, y) == 1)
                     apply(g, xPos, y);
             }
         }
@@ -135,7 +136,7 @@ public class RuleOneThree {
                     hasChanged |= g.deleteNote(x, y, val);
 
                     // If the current cell had several notes, but now has only one, we must apply the rule to it as well.
-                    if (hadSeveralNotes && g.getNbNotes(x, y) == 1)
+                    if (SOLVE_RECURSIVELY && hadSeveralNotes && g.getNbNotes(x, y) == 1)
                         apply(g, x, y);
                 }
             }
