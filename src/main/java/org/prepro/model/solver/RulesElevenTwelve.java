@@ -97,7 +97,7 @@ public class RulesElevenTwelve {
             }
         }
 
-        if (hasChanged) {
+        if (Solver.PRINT_ENABLED && hasChanged) {
             System.out.println();
             System.out.printf("Apply the pointing k-tuple rule with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();
@@ -192,7 +192,7 @@ public class RulesElevenTwelve {
             }
         }
         //Print in console where the rule is applied
-        if (hasChanged) {
+        if (Solver.PRINT_ENABLED && hasChanged) {
             System.out.println();
             System.out.printf("Apply the Box-Reduction rule with k = %d on %s %d for the note %d", k, typeRC, tempCoordinate, note);
             System.out.println();

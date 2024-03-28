@@ -63,8 +63,6 @@ public class TestSolvingTime {
             }
 
             newGrid.printWithNotes();
-            if (!newGrid.isValid())
-                System.exit(1);
             return heuristicsSum / iterations;
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Solver {
+    public static final boolean PRINT_ENABLED = true;
+
     /**
      * Solve the grid with all the rules.
      *

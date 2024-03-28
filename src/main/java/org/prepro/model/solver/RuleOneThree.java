@@ -4,9 +4,10 @@ import org.prepro.model.Grid;
 
 public class RuleOneThree {
     /**
-     * Return if the grid is changed by the rules 1 & 3
-     * @param g the grid
-     * @return true or false depending on if the grid changed
+     * Solve a grid using rules one and three.
+     *
+     * @param g The grid to solve.
+     * @return True if the grid changed, otherwise false.
      */
     public static boolean solve(Grid g) {
         boolean hasChanged = false;
@@ -21,11 +22,12 @@ public class RuleOneThree {
     }
 
     /**
-     * Return if the rule 1 & 3 were applied or not on a coordinate
-     * @param g the grid
-     * @param xPos
-     * @param yPos
-     * @return tur oe false depending on if the (x,y) positions was changed by rules 1 & 3
+     * Apply rules one and three on a cell of the grid.
+     *
+     * @param g    The grid to apply the rule in.
+     * @param xPos The x coordinate of the cell to apply the rule to.
+     * @param yPos The x coordinate of the cell to apply the rule to.
+     * @return True if the grid has changed, otherwise false.
      */
     public static boolean apply(Grid g, int xPos, int yPos) {
         boolean hasChanged = false;
@@ -42,13 +44,24 @@ public class RuleOneThree {
         hasChanged |= solveColumn(g, xPos, yPos, val);
         hasChanged |= solveBlock(g, xPos, yPos, val);
 
-        if (hasChanged)
+        if (Solver.PRINT_ENABLED && hasChanged)
             System.out.printf("Apply rules one and three on cell %d, %d.\n", xPos, yPos);
 
         return hasChanged;
     }
 
-    public static boolean solveRow(Grid g, int xPos, int yPos, int val) {
+    /**
+     * Removes all notes that should be removed according to rules one and three in the row of the given cell.
+     * This should be called upon adding a value to the given cell.
+     *
+     * @param g    The grid to solve in.
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @param val  The value that was added to the given cell.
+     * @return True if the grid has changed, otherwise false.
+     */
+    // FIXME: Having the value as an argument seems redundant.
+    private static boolean solveRow(Grid g, int xPos, int yPos, int val) {
         boolean hasChanged = false;
 
         // Delete all notes that become invalid in the row.
@@ -66,6 +79,17 @@ public class RuleOneThree {
         return hasChanged;
     }
 
+    /**
+     * Removes all notes that should be removed according to rules one and three in the column of the given cell.
+     * This should be called upon adding a value to the given cell.
+     *
+     * @param g    The grid to solve in.
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @param val  The value that was added to the given cell.
+     * @return True if the grid has changed, otherwise false.
+     */
+    // FIXME: Having the value as an argument seems redundant (bis).
     public static boolean solveColumn(Grid g, int xPos, int yPos, int val) {
         boolean hasChanged = false;
 
@@ -84,6 +108,17 @@ public class RuleOneThree {
         return hasChanged;
     }
 
+    /**
+     * Removes all notes that should be removed according to rules one and three in the block of the given cell.
+     * This should be called upon adding a value to the given cell.
+     *
+     * @param g    The grid to solve in.
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @param val  The value that was added to the given cell.
+     * @return True if the grid has changed, otherwise false.
+     */
+    // FIXME: Having the value as an argument seems redundant (ter).
     public static boolean solveBlock(Grid g, int xPos, int yPos, int val) {
         boolean hasChanged = false;
 

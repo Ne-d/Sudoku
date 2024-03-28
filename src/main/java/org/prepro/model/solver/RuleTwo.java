@@ -103,7 +103,8 @@ public class RuleTwo {
                         if (g.isNotePresent(noteIndex + 1, x, y) && g.getNbNotes(x, y) > 1) {
                             g.addValue(x, y, noteIndex + 1);
 
-                            System.out.printf("Apply rule two on cell (%d, %d) with note %d.\n", x, y, noteIndex + 1);
+                            if (Solver.PRINT_ENABLED)
+                                System.out.printf("Apply rule two on cell (%d, %d) with note %d.\n", x, y, noteIndex + 1);
                             return true;
                         }
                     }

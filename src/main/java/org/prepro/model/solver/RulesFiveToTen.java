@@ -155,7 +155,7 @@ public class RulesFiveToTen {
                 }
             }
         }
-        if (gridModif) {
+        if (Solver.PRINT_ENABLED && gridModif) {
             /* print the grid modified and the k-tuple use */
             //g.printWithNotes();
             System.out.print("k-tuple rules apply with ");

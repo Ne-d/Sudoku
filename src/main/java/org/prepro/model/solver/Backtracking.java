@@ -66,7 +66,7 @@ public class Backtracking {
                 return false;
             }
         }
-        
+
         return true;
     }
 

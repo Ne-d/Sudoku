@@ -3,7 +3,6 @@ package org.prepro.model.solver;
 import org.prepro.model.Grid;
 import org.prepro.model.RowOrColumn;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +43,6 @@ public class RuleThirteen {
                 Optional<int[][]> coords = checkXWing(g, note, column1, column2);
 
                 if (coords.isPresent()) {
-                    System.out.println("Found X-Wing in columns for note " + note + " at coords " + Arrays.deepToString(coords.get()));
                     hasChanged = solveXWing(g, note, RowOrColumn.RowOrColumnType.Column, coords.get());
 
                     if (hasChanged) {
@@ -92,8 +90,6 @@ public class RuleThirteen {
             int[][] coordinates = new int[2][2];
             coordinates[0] = first.get()[0];
             coordinates[1] = second.get()[1];
-
-            System.out.println("xWingGetCoordinates - note : " + note + ", coordinates : " + Arrays.deepToString(coordinates));
 
             return Optional.of(coordinates);
         }
@@ -219,7 +215,7 @@ public class RuleThirteen {
         }
 
         //Print in console where the rules is applied
-        if(hasChanged){
+        if (Solver.PRINT_ENABLED && hasChanged) {
             System.out.println();
             System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d", typeRC, rc1, rc2, note);
             System.out.println();
