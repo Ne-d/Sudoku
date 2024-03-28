@@ -52,6 +52,9 @@ public class MainViewController {
     @FXML
     private Label executionTimeLabel;
 
+    @FXML
+    private Label typeOfSolve;
+
     /**
      * if true that means notes are selected else value are selected
      */
@@ -150,6 +153,7 @@ public class MainViewController {
         this.gridView.update();
         this.updateValidity();
         this.updateMode();
+        this.typeOfSolve.setText("Method used : Rules + Backtracking");
     }
 
     /**
@@ -173,6 +177,7 @@ public class MainViewController {
         this.gridView.update();
         this.updateValidity();
         this.updateMode();
+        this.typeOfSolve.setText("Method used : Backtracking only");
     }
 
     /**
@@ -186,6 +191,7 @@ public class MainViewController {
         this.gridView.setSelectedCell(0, 0);
         this.updateValidity();
         this.updateMode();
+        this.typeOfSolve.setText("");
     }
 
     /**
