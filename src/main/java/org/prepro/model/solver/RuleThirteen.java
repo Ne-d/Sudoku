@@ -6,9 +6,12 @@ import org.prepro.model.RowOrColumn;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A class to solve a sudoku grid with the X-Wing rule.
+ */
 public class RuleThirteen {
     /**
-     * Try to solve an X-Wing
+     * Try to solve an X-Wing.
      *
      * @param g The grid to solve in.
      * @return True if the grid has changed (an X-Wing has been found and solved), otherwise false.
@@ -58,6 +61,7 @@ public class RuleThirteen {
     /**
      * Checks if the given rows or columns contain an X-Wing.
      *
+     * @param g    The grid to check in.
      * @param note The note to look for.
      * @param rc1  The first row or column to check.
      * @param rc2  The second row or column to check.
@@ -98,8 +102,9 @@ public class RuleThirteen {
     /**
      * Finds if the given Row or Column could be in an X-Wing (has the candidate note exactly twice).
      *
-     * @param note The note to look for
-     * @param rc   Whether we are looking in a Row or a Column
+     * @param g    The grid to search in.
+     * @param note The note to look for.
+     * @param rc   Whether we are looking in a Row or a Column.
      * @return If there are exactly two candidates in the row or column, return their coordinates. Else return Empty.
      */
     public static Optional<int[][]> xWingGetCoordinates(Grid g, int note, RowOrColumn rc) {
@@ -173,8 +178,10 @@ public class RuleThirteen {
     /**
      * Solve X-wing
      *
-     * @param note The note to look for in the tuple
-     * @param lce  Whether we are looking in rows or columns
+     * @param g           The grid to solve in.
+     * @param note        The note to look for in the tuple.
+     * @param lce         Whether we are looking in rows or columns.
+     * @param coordinates The coordinates of the X-Wing.
      * @return Whether the grid has been changed by solving the X-Wing.
      */
     public static boolean solveXWing(Grid g, int note, RowOrColumn.RowOrColumnType lce, int[][] coordinates) {
@@ -214,10 +221,10 @@ public class RuleThirteen {
             }
         }
 
-        //Print in console where the rules is applied
+        //Print in console where the rules are applied
         if (Solver.PRINT_ENABLED && hasChanged) {
             System.out.println();
-            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d", typeRC, rc1, rc2, note);
+            System.out.printf("Apply Rule 13 on the %s %d and %d for the note %d.", typeRC, rc1, rc2, note);
             System.out.println();
         }
         return hasChanged;

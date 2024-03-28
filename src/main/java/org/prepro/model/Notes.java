@@ -1,15 +1,34 @@
 package org.prepro.model;
 
+/**
+ * A class that represents the notes of a cell in a sudoku grid.
+ */
 public class Notes {
+    /**
+     * An integer that acts as an array of booleans, each representing a note in the cell.
+     */
     private int tab;
 
+    /**
+     * The size of the grid these notes are a part of. This determines the amount of notes.
+     */
     private final int SIZE;
 
+    /**
+     * Creates a new Notes object.
+     *
+     * @param size The amount of notes (equal to the size of the grid).
+     */
     public Notes(int size) {
         this.tab = 0x1FF; // TODO: Calculate default value based on SIZE.
         this.SIZE = size;
     }
 
+    /**
+     * Creates a new Notes object, which is a copy of the one given as an argument.
+     *
+     * @param other The Notes object to copy.
+     */
     public Notes(Notes other) {
         this.tab = other.tab;
         this.SIZE = other.SIZE;
@@ -83,6 +102,7 @@ public class Notes {
      * Delete all notes except the note present in the argument
      *
      * @param notes An array of the notes to keep, all the others will be deleted.
+     * @return True if the grid has been modified, otherwise false.
      */
     public boolean deleteAllExcept(int[] notes) {
         boolean modif = false;
@@ -106,8 +126,9 @@ public class Notes {
     }
 
     /**
-     * A getter when a cell has only one note.
-     * @return
+     * Get the only present note, if there is only one.
+     *
+     * @return The only present note if there is only one, otherwise zero.
      */
     public int getUniqueNote() {
         if (this.getNumber() == 1) {

@@ -5,9 +5,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.prepro.model.Grid;
-import org.prepro.model.GridExemple;
+import org.prepro.model.GridExample;
 import org.prepro.model.Notes;
 
+/**
+ * A visual representation of a sudoku grid.
+ */
 public class GridView extends GridPane {
     /**
      * The model that contains the current sudoku grid.
@@ -43,7 +46,7 @@ public class GridView extends GridPane {
         this.setHgap(2);
         this.setVgap(2);
 
-        loadGrid(GridExemple.grid1.getGrid());
+        loadGrid(GridExample.grid1.getGrid());
     }
 
     /**

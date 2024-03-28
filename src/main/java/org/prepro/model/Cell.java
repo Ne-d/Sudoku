@@ -1,5 +1,8 @@
 package org.prepro.model;
 
+/**
+ * A class that represents a cell in a grid of sudoku.
+ */
 public class Cell {
     /**
      * The size of the grid this cell belongs to. Used for the notes.
@@ -14,6 +17,8 @@ public class Cell {
 
     /**
      * Creates a new cell with default value 0 and all notes set.
+     *
+     * @param size The size of the grid this cell is in. This determines the possible notes.
      */
     public Cell(int size) {
         this.SIZE = size;
@@ -48,7 +53,7 @@ public class Cell {
         for (int i = 1; i <= this.SIZE; i++) {
             deleteNote(i);
         }
-        
+
         addNote(val);
     }
 
@@ -74,6 +79,7 @@ public class Cell {
      * Delete all notes except the note present in the argument
      *
      * @param notes An array of the notes to keep, all the others will be deleted.
+     * @return True if the grid has been modified, otherwise false.
      */
     public boolean deleteAllNote(int[] notes) {
         return this.notes.deleteAllExcept(notes);
@@ -121,6 +127,11 @@ public class Cell {
         return this.notes;
     }
 
+    /**
+     * Sets the notes of this cell to the given Notes object.
+     *
+     * @param notes The notes to put into this cell.
+     */
     public void setNotes(Notes notes) {
         this.notes = notes;
     }

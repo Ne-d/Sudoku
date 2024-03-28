@@ -1,8 +1,13 @@
 import org.prepro.model.Grid;
 
+/**
+ * A class containing example grids to test the rules of the solver.
+ */
 public class TestGrids {
     /**
      * Generates and returns a grid
+     *
+     * @return Some random valid grid with values.
      */
     public static Grid grid1() {
         Grid grid1 = new Grid();
@@ -56,7 +61,9 @@ public class TestGrids {
     }
 
     /**
-     * Generates and returns another grid
+     * Generates and returns a grid
+     *
+     * @return Some random valid grid with values.
      */
     public static Grid grid2() {
         Grid grid2 = new Grid();
@@ -96,6 +103,11 @@ public class TestGrids {
         return grid2;
     }
 
+    /**
+     * Generates an example grid designed to test rule two.
+     *
+     * @return An example grid designed to test rule two.
+     */
     public static Grid ruleTwo() {
         Grid g = new Grid();
 
@@ -110,7 +122,9 @@ public class TestGrids {
     }
 
     /**
-     * Test the 6th rule with an example
+     * Generates an example grid designed to test the pair rule.
+     *
+     * @return An example grid designed to test the pair rule.
      */
     public static Grid pair() {
         Grid test = new Grid();
@@ -150,6 +164,11 @@ public class TestGrids {
         return test;
     }
 
+    /**
+     * Generates an example grid designed to test the pair rule.
+     *
+     * @return An example grid designed to test the pair rule.
+     */
     public static Grid pair2() {
         Grid test = new Grid();
 
@@ -200,6 +219,11 @@ public class TestGrids {
         return test;
     }
 
+    /**
+     * Generates an example grid designed to test the triplet rule.
+     *
+     * @return An example grid designed to test the triplet rule.
+     */
     public static Grid triplets() {
         Grid test = new Grid();
         test.addValue(0, 0, 3);
@@ -236,6 +260,11 @@ public class TestGrids {
         return test;
     }
 
+    /**
+     * Generates an example grid designed to test the hidden pair rule.
+     *
+     * @return An example grid designed to test the hidden pair rule.
+     */
     public static Grid hiddenPair() {
         Grid test = new Grid();
 
@@ -274,6 +303,11 @@ public class TestGrids {
         return test;
     }
 
+    /**
+     * Generates an example grid designed to test the hidden triplet rule.
+     *
+     * @return An example grid designed to test the hidden triplet rule.
+     */
     public static Grid hiddenTriplet() {
         Grid test = new Grid();
 
@@ -307,6 +341,11 @@ public class TestGrids {
         return test;
     }
 
+    /**
+     * Generates an example grid designed to test the box-reduction rule.
+     *
+     * @return An example grid designed to test the box-reduction rule.
+     */
     public static Grid boxReductionGrid() {
         Grid g = new Grid();
 
@@ -375,6 +414,11 @@ public class TestGrids {
         return g;
     }
 
+    /**
+     * Generates an example grid designed to test the pointing pair rule.
+     *
+     * @return An example grid designed to test the pointing pair rule.
+     */
     public static Grid pointingPairGrid() {
         Grid g = new Grid();
 
@@ -433,6 +477,11 @@ public class TestGrids {
         return g;
     }
 
+    /**
+     * Generates an example grid designed to test the pointing triplet rule.
+     *
+     * @return An example grid designed to test the pointing triplet rule.
+     */
     public static Grid pointingTripletGrid() {
         Grid g = new Grid();
 
@@ -473,6 +522,11 @@ public class TestGrids {
         return g;
     }
 
+    /**
+     * Generates an example grid designed to test the X-Wing rule.
+     *
+     * @return An example grid designed to test the X-Wing rule.
+     */
     public static Grid xWing() {
         Grid g = new Grid();
 
@@ -541,6 +595,11 @@ public class TestGrids {
         return g;
     }
 
+    /**
+     * Generates an example grid designed to test all the rules.
+     *
+     * @return An example grid designed to test all the rules.
+     */
     public static Grid allRules() {
         Grid g = new Grid();
 

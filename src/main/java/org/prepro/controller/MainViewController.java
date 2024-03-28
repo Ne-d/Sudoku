@@ -22,6 +22,9 @@ import java.io.IOException;
 
 import static java.lang.System.exit;
 
+/**
+ * The controller for the application's graphical user interface.
+ */
 public class MainViewController {
     /**
      * The main stage of the application, used to add keyboard event handlers.
@@ -52,8 +55,11 @@ public class MainViewController {
     @FXML
     private Label executionTimeLabel;
 
+    /**
+     * A label indicating the solving method used for the last solving operation (rules + backtracking or backtracking only).
+     */
     @FXML
-    private Label typeOfSolve;
+    private Label solvingMethodLabel;
 
     /**
      * if true that means notes are selected else value are selected
@@ -153,7 +159,7 @@ public class MainViewController {
         this.gridView.update();
         this.updateValidity();
         this.updateMode();
-        this.typeOfSolve.setText("Method used : Rules + Backtracking");
+        this.solvingMethodLabel.setText("Method used : Rules + Backtracking");
     }
 
     /**
@@ -177,7 +183,7 @@ public class MainViewController {
         this.gridView.update();
         this.updateValidity();
         this.updateMode();
-        this.typeOfSolve.setText("Method used : Backtracking only");
+        this.solvingMethodLabel.setText("Method used : Backtracking only");
     }
 
     /**
@@ -191,7 +197,7 @@ public class MainViewController {
         this.gridView.setSelectedCell(0, 0);
         this.updateValidity();
         this.updateMode();
-        this.typeOfSolve.setText("");
+        this.solvingMethodLabel.setText("");
     }
 
     /**

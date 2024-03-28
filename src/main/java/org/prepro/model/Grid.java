@@ -7,6 +7,9 @@ import org.prepro.model.solver.Solver;
 import java.io.*;
 import java.util.Optional;
 
+/**
+ * A sudoku grid.
+ */
 public class Grid {
     /**
      * The size of the grid (number of rows and columns).
@@ -59,7 +62,8 @@ public class Grid {
     /**
      * Load a grid from a file.
      *
-     * @param filePath The path to the file to read.
+     * @param filePath           The path to the file to read.
+     * @param applyRulesOneThree True to apply rules one and three when placing the value, false to ignore them.
      * @return The grid that has been loaded.
      */
     public static Grid loadFromFile(String filePath, boolean applyRulesOneThree) {
@@ -109,7 +113,11 @@ public class Grid {
     }
 
     /**
-     * @return Returns the value of the cell at the given coordinates
+     * Gets the value of a cell.
+     *
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @return The value of the cell at the given coordinates
      */
     public int getVal(int xPos, int yPos) {
         return this.board[xPos][yPos].getVal();
@@ -127,16 +135,11 @@ public class Grid {
     }
 
     /**
-     * @return Returns true if the cell at the given coordinates is empty, false if it has a value.
-     */
-    public boolean isCellEmpty(int xPos, int yPos) {
-        return (this.getVal(xPos, yPos) == 0);
-    }
-
-    /**
      * Adds a value to the chosen cell if it was empty.
      *
-     * @param val Adds a value to the cell of given coordinates, only if the cell had no value.
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @param val  Adds a value to the cell of given coordinates, only if the cell had no value.
      * @return Returns true if the cell has been modified (had no value before), false otherwise.
      */
     public boolean addValue(int xPos, int yPos, int val) {
@@ -154,6 +157,13 @@ public class Grid {
         return true;
     }
 
+    /**
+     * Sets the value of a cell, without applying rules one and three.
+     *
+     * @param xPos The x coordinate of the cell.
+     * @param yPos The y coordinate of the cell.
+     * @param val  The value to set teh cell to.
+     */
     public void setUniqueNote(int xPos, int yPos, int val) {
         Cell cell = this.board[xPos][yPos];
 
@@ -502,6 +512,9 @@ public class Grid {
 
     /**
      * Prints out a graphical representation of the grid to standard output.
+     *
+     * @param y
+     * @param debut
      */
     private void printWithNotes_aux(int y, int debut) {
         int note = debut;

@@ -8,8 +8,10 @@ import org.prepro.model.solver.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A class to test the Grid and Solver classes.
+ */
 public class GridTest {
-
     /**
      * Test the 6th rule with an example
      */
@@ -24,6 +26,9 @@ public class GridTest {
         test.printWithNotes();
     }
 
+    /**
+     * Tests the pair rule.
+     */
     @Test
     public void testPair2() {
         Grid test = TestGrids.pair2();
@@ -57,7 +62,7 @@ public class GridTest {
         test.print();
         test.printWithNotes();
 
-        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 3, 2, 5)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 3, 2, 5));
     }
 
     /**
@@ -70,7 +75,7 @@ public class GridTest {
         test.print();
         test.printWithNotes();
 
-        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2)); //TODO A REVOIR ! -JM
+        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 2, 0, 0, 2, 2));
     }
 
     /**
@@ -95,7 +100,10 @@ public class GridTest {
         Assertions.assertTrue(grid.isValid());
     }
 
-    //@Test
+    /**
+     * A class to verify that solving a grid with every applicable rule yields a valid grid.
+     */
+    @Test
     public void allRulesSanityCheck() {
         Grid g = TestGrids.grid2();
 
@@ -110,7 +118,7 @@ public class GridTest {
     }
 
     /**
-     * Test the 11'th rule with an example
+     * Test the 11th rule with an example
      */
     @Test
     public void testBox2ReductionColumn() {
@@ -304,7 +312,10 @@ public class GridTest {
         g.printWithNotes();
     }
 
-    //@Test
+    /**
+     * Tests that the solver is able to solve a grid using heuristics, and produces a valid grid.
+     */
+    @Test
     public void allRulesTest() {
         Grid g = TestGrids.allRules();
 

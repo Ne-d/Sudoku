@@ -2,6 +2,9 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Cell;
 
+/**
+ * A class to test the Cell class.
+ */
 public class CellTests {
     /**
      * Tests that the add, delete and isPresent methods work as expected.

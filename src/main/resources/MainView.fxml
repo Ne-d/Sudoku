@@ -35,7 +35,7 @@
                 <Label fx:id="validityLabel"/>
                 <Label fx:id="modeLabel"/>
                 <Label fx:id="executionTimeLabel"/>
-                <Label fx:id="typeOfSolve"/>
+                <Label fx:id="solvingMethodLabel"/>
                 <Region VBox.vgrow="ALWAYS"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>

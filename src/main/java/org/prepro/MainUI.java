@@ -7,7 +7,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.prepro.controller.MainViewController;
 
-
+/**
+ * The class to launch the program's graphical user interface.
+ */
 public class MainUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {

@@ -2,7 +2,13 @@ package org.prepro.model.solver;
 
 import org.prepro.model.Grid;
 
+/**
+ * Solves a grid using rules one and three.
+ */
 public class RuleOneThree {
+    /**
+     * Enable this at compile-time to solve rules one and three recursively.
+     */
     public static final boolean SOLVE_RECURSIVELY = true;
 
     /**

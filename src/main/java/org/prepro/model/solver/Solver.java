@@ -5,12 +5,23 @@ import org.prepro.model.Grid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class to solve the grid using all available methods (heuristics and backtracking).
+ */
 public class Solver {
+    /**
+     * Set this at compile-time to enable or disable information messages in the console when applying rules.
+     */
     public static final boolean PRINT_ENABLED = true;
+
+    /**
+     * Set this at compile-time to enable or disable the application of rules one and three when placing a value.
+     */
     public static final boolean RULE_ONE_THREE_ON_ADD_VALUE = true;
 
     /**
-     * Solve the grid with all the rules.
+     * Solve the grid with all available rules, in the correct order.
+     * If this fails to complete the grid, attempt backtracking.
      *
      * @param g The grid to solve.
      */
@@ -21,7 +32,6 @@ public class Solver {
         while (true) {
             System.out.println("\n================================ New solving step. ================================\n");
             System.out.println("The grid is " + (g.isValid() ? "valid" : "NOT VALID") + ".");
-            //g.printWithNotes();
 
             if (RuleOneThree.solve(g))
                 continue;
@@ -39,9 +49,14 @@ public class Solver {
                 break;
         }
 
-        // If heuristics failed, try backtracking.
-        System.out.println("Couldn't solve the grid with heuristics, attempting backtracking.");
-        Backtracking.solve(g);
+        if (g.findEmptyCell().isPresent()) {
+            System.out.println("Couldn't solve the grid with heuristics, attempting backtracking.");
+
+            if (Backtracking.solve(g))
+                System.out.println("Solved the grid using backtracking.");
+            else
+                System.out.println("Failed to solve the grid using backtracking: no solution exists.");
+        }
     }
 
     /**

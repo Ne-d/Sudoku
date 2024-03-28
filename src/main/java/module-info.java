@@ -1,3 +1,6 @@
+/**
+ * The main module containing the Sudoku project.
+ */
 module org.prepro {
     requires javafx.controls;
     requires javafx.fxml;

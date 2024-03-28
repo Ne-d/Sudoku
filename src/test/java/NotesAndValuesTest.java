@@ -2,7 +2,14 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.prepro.model.Notes;
 
+/**
+ * A class to test the Notes class, including the way it handles values.
+ */
 public class NotesAndValuesTest {
+
+    /**
+     * Tests the getNumber method.
+     */
     @Test
     public void testNotesGetNumber() {
         Notes notes = new Notes(9);
@@ -25,6 +32,9 @@ public class NotesAndValuesTest {
         Assertions.assertEquals(0, notes.getNumber());
     }
 
+    /**
+     * Tests the getUniqueNote method for the value 9.
+     */
     @Test
     public void testUniqueNote9() {
         Notes notes = new Notes(9);
@@ -45,6 +55,9 @@ public class NotesAndValuesTest {
         Assertions.assertEquals(0, notes.getUniqueNote());
     }
 
+    /**
+     * Tests the getUniqueNote method for the value 1.
+     */
     @Test
     public void testUniqueNote1() {
         Notes notes = new Notes(9);
@@ -65,6 +78,9 @@ public class NotesAndValuesTest {
         Assertions.assertEquals(0, notes.getUniqueNote());
     }
 
+    /**
+     * Tests the getUniqueNote method for the value 5.
+     */
     @Test
     public void testUniqueNote5() {
         Notes notes = new Notes(9);
@@ -86,6 +102,9 @@ public class NotesAndValuesTest {
         Assertions.assertEquals(0, notes.getUniqueNote());
     }
 
+    /**
+     * Tests the add, delete and isPresent methods.
+     */
     @Test
     public void testNoteAddDeleteIsPresent() {
         int size = 9;

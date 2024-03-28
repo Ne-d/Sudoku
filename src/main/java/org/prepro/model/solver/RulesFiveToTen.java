@@ -41,6 +41,9 @@ public class RulesFiveToTen {
     }
 
     /**
+     * Check if there are k-tuples in the given rectangle.
+     *
+     * @param g      The grid to solve in.
      * @param k      The amount of members in the k-tuple (2 for a pair, 3 for a triplet, etc.).
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
@@ -55,10 +58,10 @@ public class RulesFiveToTen {
             int nbelt = 0;
             boolean[][] tab = new boolean[k][g.SIZE];
             boolean hidden = true;
-            for (int j = 0; j < k; j++) { //Tous les membres du k-tuple
+            for (int j = 0; j < k; j++) { // Every member of the k-tuple
                 int numcase = 0;
 
-                for (int x = startX; x <= endX; x++) { // Pour chaque case du rectangle choisi
+                for (int x = startX; x <= endX; x++) { // For every cell in the rectangle
                     for (int y = startY; y <= endY; y++) {
                         tab[j][numcase] = g.isNotePresent(tuple[j], x, y);
                         if (tab[j][numcase]) {
@@ -72,16 +75,16 @@ public class RulesFiveToTen {
             nbelt = nbelt / k;
 
 
-            int nbFound = 0; // notes sur les memes
+            int nbFound = 0; // Number of notes corresponding to the k-tuple
             int[] pos = new int[k];
             int ajouter = 0;
             int largeur = endY - startY + 1;
             List<int[]> comb = Solver.combinations(k, 2);
 
-            for (int t = 0; t < g.SIZE; t++) { // Pour chaque case de la zone
-                for (int[] ints : comb) { // Pour chaque combinaison entre les colonnes de tab
+            for (int t = 0; t < g.SIZE; t++) { // For each cell in the zone
+                for (int[] ints : comb) { // For each combination of columns in tab
 
-                    if (tab[ints[0] - 1][t] && tab[ints[1] - 1][t]) { // Compare les valeurs pour chaque combinaison de colonnes
+                    if (tab[ints[0] - 1][t] && tab[ints[1] - 1][t]) { // Compares the values for each combination
                         if (hidden || g.getNbNotes((t / largeur) + startX, (t % largeur) + startY) == k) {
                             if (!checkIsPresent(pos, t) && ajouter != k) {
                                 pos[ajouter] = t;
@@ -92,9 +95,9 @@ public class RulesFiveToTen {
                     }
                 }
             }
-            //System.out.println("nbfound "+nbFound + " hidden:"+hidden+" nbelt:"+nbelt );
+            //System.out.println("nbFound " + nbFound + " hidden:" + hidden + " nbElt:" + nbElt);
             if (nbFound == k * comb.size() && (!hidden || nbelt == k)) {
-                //System.out.println(Integer.valueOf(nbelt).toString() + hidden);
+                //System.out.println(Integer.valueOf(nbElt).toString() + hidden);
                 return k_uplet_delNotes(g, pos, tuple, startX, startY, endX, endY);
             }
         }
@@ -121,11 +124,13 @@ public class RulesFiveToTen {
     /**
      * Solves the given k-tuple in a grid.
      *
+     * @param g        The grid to solve in.
      * @param pK_uplet Coordinates of the k-tuple.
      * @param notes    The note of the k-tuple.
      * @param startX   X coordinate of the beginning of the rectangle.
      * @param startY   Y coordinate of the beginning of the rectangle.
      * @param endX     X coordinate of the end of the rectangle.
+     * @param endY     Y coordinate of the end of the rectangle.
      * @return True if the grid has been changed, otherwise false.
      */
     public static boolean k_uplet_delNotes(Grid g, int[] pK_uplet, int[] notes, int startX, int startY, int endX, int endY) {

@@ -1,17 +1,46 @@
 package org.prepro.model;
 
-public enum GridExemple {
+/**
+ * A class containing example grids for testing purposes.
+ */
+public enum GridExample {
+    /**
+     * An empty grid.
+     */
     empty,
+
+    /**
+     * Some random grid.
+     */
     grid1,
+
+    /**
+     * Some random grid.
+     */
     grid2,
+
+    /**
+     * Some random grid.
+     */
     grid3,
+
+    /**
+     * A purposefully invalid grid.
+     */
     gridInvalid;
-    public Grid getGrid(){
+
+    /**
+     * Gets the grid corresponding to the value of the enum.
+     *
+     * @return The grid corresponding to the value of the enum.
+     */
+    public Grid getGrid() {
         Grid grid = new Grid();
-        switch (this){
-            case empty -> {}
+        switch (this) {
+            case empty -> {
+            }
             case grid1 -> {
-                grid.addValue(0, 0, 7); //line 1
+                grid.addValue(0, 0, 7);
                 grid.addValue(1, 0, 2);
                 grid.addValue(2, 0, 6);
                 grid.addValue(4, 0, 1);
@@ -19,11 +48,11 @@ public enum GridExemple {
                 grid.addValue(6, 0, 3);
                 grid.addValue(7, 0, 4);
 
-                grid.addValue(1, 1, 9); // line 2
+                grid.addValue(1, 1, 9);
                 grid.addValue(4, 1, 5);
                 grid.addValue(5, 1, 2);
 
-                grid.addValue(0, 2, 5); //line 3
+                grid.addValue(0, 2, 5);
                 grid.addValue(2, 2, 4);
                 grid.addValue(4, 2, 3);
                 grid.addValue(5, 2, 6);
@@ -31,29 +60,29 @@ public enum GridExemple {
                 grid.addValue(7, 2, 8);
                 grid.addValue(8, 2, 2);
 
-                grid.addValue(0, 3, 6); // line 4
+                grid.addValue(0, 3, 6);
                 grid.addValue(3, 3, 3);
                 grid.addValue(7, 3, 2);
                 grid.addValue(8, 3, 1);
 
-                grid.addValue(1, 4, 7); // line 5
+                grid.addValue(1, 4, 7);
                 grid.addValue(5, 4, 4);
 
-                grid.addValue(3, 5, 6); // line 6
+                grid.addValue(3, 5, 6);
                 grid.addValue(5, 5, 9);
                 grid.addValue(6, 5, 4);
                 grid.addValue(7, 5, 5);
 
-                grid.addValue(1, 6, 3); // line 7
+                grid.addValue(1, 6, 3);
                 grid.addValue(2, 6, 7);
                 grid.addValue(7, 6, 9);
                 grid.addValue(8, 6, 4);
 
-                grid.addValue(0, 7, 4); // line 8
+                grid.addValue(0, 7, 4);
                 grid.addValue(2, 7, 1);
                 grid.addValue(5, 7, 3);
 
-                grid.addValue(3, 8, 2); // line 9
+                grid.addValue(3, 8, 2);
                 grid.addValue(6, 8, 1);
             }
             case grid2 -> {
@@ -120,28 +149,36 @@ public enum GridExemple {
                 grid.addValue(8, 8, 2);
             }
             case grid3 -> {
-                grid.addValue(0, 0, 5); //line 1
+                grid.addValue(0, 0, 5);
                 grid.addValue(2, 0, 4);
                 grid.addValue(4, 0, 1);
-                grid.addValue(8, 1, 6); // line 2
-                grid.addValue(1, 2, 8); // line 3
+
+                grid.addValue(8, 1, 6);
+
+                grid.addValue(1, 2, 8);
                 grid.addValue(3, 2, 9);
                 grid.addValue(6, 2, 7);
                 grid.addValue(7, 2, 2);
-                grid.addValue(7, 3, 3); // line 4
-                grid.addValue(0, 4, 2); // line 5
+
+                grid.addValue(7, 3, 3);
+
+                grid.addValue(0, 4, 2);
                 grid.addValue(5, 4, 9);
-                grid.addValue(1, 5, 7); // line 6
+
+                grid.addValue(1, 5, 7);
                 grid.addValue(3, 5, 2);
                 grid.addValue(6, 5, 5);
                 grid.addValue(7, 5, 8);
-                grid.addValue(2, 6, 8); // line 7
+
+                grid.addValue(2, 6, 8);
                 grid.addValue(5, 6, 4);
                 grid.addValue(6, 6, 6);
                 grid.addValue(7, 6, 5);
-                grid.addValue(3, 7, 5); // line 8
+
+                grid.addValue(3, 7, 5);
                 grid.addValue(8, 7, 3);
-                grid.addValue(1, 8, 6); // line 9
+
+                grid.addValue(1, 8, 6);
                 grid.addValue(8, 8, 9);
             }
             case gridInvalid -> {

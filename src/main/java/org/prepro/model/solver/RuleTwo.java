@@ -14,20 +14,20 @@ public class RuleTwo {
      * @return True if the grid has changed, otherwise false.
      */
     public static boolean solve(Grid g) {
-        boolean hasChanged = false;
-
+        // For every cell in the grid.
         for (int x = 0; x < g.SIZE; x++) {
             for (int y = 0; y < g.SIZE; y++) {
-                boolean continueColumn;
-                boolean continueRow;
-                boolean continueBlock;
-                if (findNotesForRuleTwo(g, x, 0, x, 8))
+
+                // Apply rule two in the column.
+                if (applyRuleTwo(g, x, 0, x, 8))
                     return true;
 
-                if (findNotesForRuleTwo(g, 0, y, 8, y))
+                // Apply rule two in the row.
+                if (applyRuleTwo(g, 0, y, 8, y))
                     return true;
 
-                if (findNotesForRuleTwo(g, (x / g.SQRTSIZE) * g.SQRTSIZE,
+                // Apply rule two in the block.
+                if (applyRuleTwo(g, (x / g.SQRTSIZE) * g.SQRTSIZE,
                         (y / g.SQRTSIZE) * g.SQRTSIZE,
                         (1 + x / g.SQRTSIZE) * g.SQRTSIZE - 1,
                         (1 + y / g.SQRTSIZE) * g.SQRTSIZE - 1))
@@ -42,13 +42,14 @@ public class RuleTwo {
      * Completes a zone with the first three rules.
      * WARNING: the rectangle must be a zone of the grid (row, column or square).
      *
+     * @param g      The grid to solve in.
      * @param startX X coordinate of the beginning of the rectangle.
      * @param startY Y coordinate of the beginning of the rectangle.
      * @param endX   X coordinate of the end of the rectangle.
      * @param endY   Y coordinate of the end of the rectangle.
      * @return True if the grid has been modified, false otherwise.
      */
-    public static boolean findNotesForRuleTwo(Grid g, int startX, int startY, int endX, int endY) {
+    public static boolean applyRuleTwo(Grid g, int startX, int startY, int endX, int endY) {
         int[] nbNotesRec = new int[g.SIZE];
         int nbNotes;
         int notesFound;
@@ -70,18 +71,19 @@ public class RuleTwo {
             }
         }
 
-        return applyRuleTwo(g, startX, startY, endX, endY, nbNotesRec);
+        return applyRuleTwo_aux(g, startX, startY, endX, endY, nbNotesRec);
     }
 
     /**
-     * @param g      The grid to apply rules to.
-     * @param startX X coordinate of the beginning of the rectangle.
-     * @param startY Y coordinate of the beginning of the rectangle.
-     * @param endX   X coordinate of the end of the rectangle.
-     * @param endY   Y coordinate of the end of the rectangle.
+     * @param g          The grid to apply rules to.
+     * @param startX     X coordinate of the beginning of the rectangle.
+     * @param startY     Y coordinate of the beginning of the rectangle.
+     * @param endX       X coordinate of the end of the rectangle.
+     * @param endY       Y coordinate of the end of the rectangle.
+     * @param nbNotesRec An array containing the number of occurrences of each note in the rectangle.
      * @return if the grid has been modified
      */
-    public static boolean applyRuleTwo(Grid g, int startX, int startY, int endX, int endY, int[] nbNotesRec) {
+    public static boolean applyRuleTwo_aux(Grid g, int startX, int startY, int endX, int endY, int[] nbNotesRec) {
         // For every value in the array (noteIndex corresponds to the note - 1).
         for (int noteIndex = 0; noteIndex < g.SIZE; noteIndex++) {
 

@@ -1,7 +1,7 @@
 package org.prepro;
 
 import org.prepro.model.Grid;
-import org.prepro.model.GridExemple;
+import org.prepro.model.GridExample;
 import org.prepro.model.solver.RuleTwo;
 import org.prepro.model.solver.RulesFiveToTen;
 import org.prepro.model.solver.Solver;
@@ -9,14 +9,24 @@ import org.prepro.model.solver.Solver;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * The main class of the application, to run in the command line.
+ */
 public class Main {
 
+    /**
+     * Runs an interactive shell to solve a grid using various rules.
+     *
+     * @param grid    The grid to solve.
+     * @param scanner The scanner to use for interaction with the user.
+     * @return False if the user quits, otherwise true.
+     */
     public static boolean useRule(Grid grid, Scanner scanner) {
         String command = "";
         String commandRecognized = "complete|elementaire|singleton|paire|triplet|QUIT"; //number of the recognize rule
         String commandRecognized2 = "block|ligne|colonne";
         String argv = "";
-        int i = -1;
+        int i;
         try {
 
             System.out.print("Put your command: ");
@@ -125,8 +135,13 @@ public class Main {
         return true;
     }
 
+    /**
+     * The main method of the program's command line mode, runs an interactive shell to solve a grid.
+     *
+     * @param args The command line arguments given to the program. They do absolutely nothing.
+     */
     public static void main(String[] args) {
-        Grid g = GridExemple.grid3.getGrid();
+        Grid g = GridExample.grid3.getGrid();
 
         g.print();
         g.printWithNotes();
@@ -134,6 +149,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while (useRule(g, sc)) {
             //What the Hell is going on here
+            // I'm waking up, to ash and dust, I wipe my brow and I sweat my rust. - Ned
         }
         System.out.println("Done");
 

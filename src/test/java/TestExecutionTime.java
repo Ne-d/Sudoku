@@ -1,29 +1,35 @@
 import org.prepro.ExecutionTime;
 
-import java.lang.reflect.InvocationTargetException;
-
+/**
+ * Tests the ExecutionTime class.
+ */
 public class TestExecutionTime {
     /**
      * Test if the functions return the good time in 3 different formats
-     * @param args
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     *
+     * @param args The arguments given to the program. They do literally nothing.
      */
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        System.out.println(
-                ExecutionTime.measureNanosecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
-                        " ns");
+    public static void main(String[] args) {
+        try {
+            System.out.println(
+                    ExecutionTime.measureNanosecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
+                            " ns");
 
-        System.out.println(
-                ExecutionTime.measureMillisecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
-                        " ms");
+            System.out.println(
+                    ExecutionTime.measureMillisecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
+                            " ms");
 
-        System.out.println(
-                ExecutionTime.measureSecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
-                        " s");
+            System.out.println(
+                    ExecutionTime.measureSecond(null, TestExecutionTime.class.getMethod("waitOneSecond")) +
+                            " s");
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Waits one second. Simple as that.
+     */
     public static void waitOneSecond() {
         final long INTERVAL = 1_000_000_000;
 
