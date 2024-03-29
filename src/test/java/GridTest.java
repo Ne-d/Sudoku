@@ -49,7 +49,8 @@ public class GridTest {
         test.print();
         test.printWithNotes();
 
-        Assertions.assertTrue(RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2));
+        boolean res = RulesFiveToTen.k_upletsTest(test, 3, 0, 0, 2, 2);
+        Assertions.assertTrue(res);
     }
 
     /**

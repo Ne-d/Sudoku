@@ -15,21 +15,24 @@ public class RulesFiveToTen {
      * @return True if the grid has changed, otherwise false.
      */
     public static boolean solve(Grid g) {
-        boolean hasChanged = false;
-
         for (int k = 2; k <= 3; k++) {
             for (int x = 0; x < g.SIZE; x++) {
                 for (int y = 0; y < g.SIZE; y++) {
 
                     boolean continueColumn = k_upletsTest(g, k, x, 0, x, g.SIZE - 1);
+                    if(continueColumn){
+                        return true;
+                    }
                     boolean continueRow = k_upletsTest(g, k, 0, y, g.SIZE - 1, y);
+                    if (continueRow){
+                        return true;
+                    }
                     boolean continueBlock = k_upletsTest(g, k,
                             (x / 3) * 3,
                             (y / 3) * 3,
                             (1 + x / 3) * 3 - 1,
                             (1 + y / 3) * 3 - 1);
-
-                    if (continueRow || continueColumn || continueBlock) {
+                    if (continueBlock) {
                         return true;
                     }
                     //System.out.println("x :" + x + " y :"+y);
@@ -37,7 +40,7 @@ public class RulesFiveToTen {
             }
         }
 
-        return hasChanged;
+        return false;
     }
 
     /**
@@ -72,7 +75,7 @@ public class RulesFiveToTen {
                     }
                 }
             }
-            nbelt = nbelt / k;
+            nbelt = nbelt / k + nbelt % k;
 
 
             int nbFound = 0; // Number of notes corresponding to the k-tuple
@@ -95,9 +98,10 @@ public class RulesFiveToTen {
                     }
                 }
             }
-            //System.out.println("nbFound " + nbFound + " hidden:" + hidden + " nbElt:" + nbElt);
+            //System.out.println("nbFound " + nbFound + " hidden:" + hidden + " nbElt:" + nbelt);
             if (nbFound == k * comb.size() && (!hidden || nbelt == k)) {
-                //System.out.println(Integer.valueOf(nbElt).toString() + hidden);
+                //g.printWithNotes();
+                //System.out.println(Integer.valueOf(nbelt).toString() + hidden);
                 return k_uplet_delNotes(g, pos, tuple, startX, startY, endX, endY);
             }
         }

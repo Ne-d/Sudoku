@@ -30,8 +30,8 @@ public class Solver {
 
         // Try to solve the grid using heuristics.
         while (true) {
-            System.out.println("\n================================ New solving step. ================================\n");
-            System.out.println("The grid is " + (g.isValid() ? "valid" : "NOT VALID") + ".");
+            //System.out.println("\n================================ New solving step. ================================\n");
+            //System.out.println("The grid is " + (g.isValid() ? "valid" : "NOT VALID") + ".");
 
             if (RuleOneThree.solve(g))
                 continue;
@@ -40,10 +40,12 @@ public class Solver {
                 continue;
 
             if (RulesFiveToTen.solve(g))
-                continue;
+                break;
 
-            if (RulesElevenTwelve.solve(g))
+            if (RulesElevenTwelve.solve(g)){
+                g.printWithNotes();
                 continue;
+            }
 
             if (!RuleThirteen.solve(g))
                 break;

@@ -3,6 +3,7 @@ package org.prepro;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.prepro.controller.MainViewController;
@@ -24,5 +25,6 @@ public class MainUI extends Application {
         stage.setScene(scene);
         stage.setTitle("Project Sudoku");
         stage.show();
+        //stage.getIcons().add(new Image("/game.jpg"));
     }
 }
